@@ -1,0 +1,18 @@
+# Editor poo #
+##############
+.#*
+\#*#
+*~
+
+# OS generated files #
+######################
+.DS_Store?
+.dirstamp
+ehthumbs.db
+Icon?
+Thumbs.db
+TAGS
+
+# VM files #
+############
+data/*
