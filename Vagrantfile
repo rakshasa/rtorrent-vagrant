@@ -1,25 +1,53 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# All Vagrant configuration is done below. The '2' in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
+DEFAULT_BOX = 'ubuntu/trusty64'
+
+nodes = [
+  { hostname: 'builder',
+    primary: true
+  },
+  { hostname: 'node1',
+    data: './data/node',
+    autostart: false
+  },
+]
+
+def node_data_folder(node)
+  node[:data] || "./data/#{node[:hostname]}"
+end
+
+def node_define_params(node)
+  { primary: node[:primary],
+    autostart: (node[:autostart] || true)
+  }
+end
+
+def add_builder_repo(config, repo_name, repo_branch = 'master', repo_user = 'rakshasa')
+  config.git.add_repo { |rc|
+    rc.target = "git@github.com:#{repo_user}/#{repo_name}.git"
+    rc.path = "./data/builder/#{repo_name}"
+    rc.branch = repo_branch
+  }
+end
+
 Vagrant.configure('2') do |config|
-  # config.vm.box = 'hashicorp/precise64'
-  config.vm.box = 'ubuntu/trusty64'
+  nodes.each do |node|
+    config.vm.define node[:hostname], node_define_params(node) do |node_config|
+      node_config.vm.box = (node[:box] || DEFAULT_BOX)
+      node_config.vm.hostname = "rt-#{node[:hostname]}"
+      node_config.vm.synced_folder node_data_folder(node), '/data'
 
-  config.vm.synced_folder './data', '/data'
+      config.vm.network 'private_network', type: 'dhcp'
 
-  #config.vm.network 'public_network', type: 'dhcp', auto_config: false
-  config.vm.network 'private_network', type: 'dhcp'
+      config.vm.provider 'virtualbox' do |vb|
+        vb.memory = node[:memory] if node[:memory]
+      end
+    end
+  end
 
   config.vbguest.auto_update = false
   config.vbguest.installer_arguments = ['--nox11']
-
-  # config.vm.provider 'virtualbox' do |vb|
-  #   vb.memory = '1024'
-  # end
 
   if Vagrant.has_plugin?('vagrant-cachier')
     config.cache.scope = :box
@@ -31,21 +59,13 @@ Vagrant.configure('2') do |config|
     puppet.module_path = 'puppet/modules'
   end
 
-  config.git.add_repo do |rc|
-    rc.target = 'git@github.com:rakshasa/libtorrent.git'
-    rc.path = './data/libtorrent'
-    rc.branch = 'master'
-  end
+  add_builder_repo(config, 'libtorrent')
+  add_builder_repo(config, 'rtorrent')
 
-  config.git.add_repo do |rc|
-    rc.target = 'git@github.com:rakshasa/rtorrent.git'
-    rc.path = './data/rtorrent'
-    rc.branch = 'master'
-  end
-
+  # TODO: Try to add this just to the builder node.
   config.trigger.after :destroy do
-    run 'rm -Rf data/rtorrent'
-    run 'rm -Rf data/libtorrent'
+    run 'rm -Rf data/builder/rtorrent'
+    run 'rm -Rf data/builder/libtorrent'
   end
 
 end

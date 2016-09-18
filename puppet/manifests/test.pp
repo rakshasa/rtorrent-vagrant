@@ -10,17 +10,6 @@ class { 'baseconfig':
   stage => 'pre'
 }
 
-# node 'build' {
-#   include foo
-# }
-
-# class test {
-
-#   # class {
-#   #   build: before => Class[clients];
-#   #   clients:;
-#   # }
-
-# }
-
-#include test
+node 'default' {
+  include builder
+}
