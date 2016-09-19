@@ -7,17 +7,17 @@ DEFAULT_BOX = 'ubuntu/trusty64'
 # TODO: Move to dataset file.
 nodes = [
   { hostname: 'builder',
+    data: 'builder',
     primary: true
   },
   { hostname: 'node1',
-    data: './data/node',
     autostart: false
   },
 ]
 
 # TODO: Move to helper method file.
 def node_data_folder(node)
-  node[:data] || "./data/#{node[:hostname]}"
+  "./data/#{node[:data]}"
 end
 
 def node_define_params(node)
@@ -43,7 +43,9 @@ Vagrant.configure('2') do |config|
     config.vm.define node[:hostname], node_define_params(node) do |node_config|
       node_config.vm.box = (node[:box] || DEFAULT_BOX)
       node_config.vm.hostname = "rt-#{node[:hostname]}"
-      node_config.vm.synced_folder node_data_folder(node), '/data'
+
+      node_config.vm.synced_folder './data/shared', '/data/shared'
+      node_config.vm.synced_folder node_data_folder(node), '/data/local' if node[:data]
 
       node_config.vm.network 'private_network', type: 'dhcp'
 

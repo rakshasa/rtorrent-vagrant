@@ -1,18 +1,20 @@
 #!/bin/bash
 
-# TODO: Replace with a shared build/package script.
-
-set +x
-
 export CXX="g++-4.8"
-export CXX_FLAGS="-Wno-strict-aliasing"
+export CXXFLAGS="-Wno-error=strict-aliasing -I/data/shared/pkg/usr/local/include"
+export PKG_CONFIG_PATH="/data/shared/pkg/usr/local/lib/pkgconfig"
+export LD_LIBRARY_PATH="/data/shared/pkg/usr/local/lib:$LD_LIBRARY_PATH"
+
+export BUILD_DIR=/data/shared/pkg/
 
 # Build libTorrent.
-cd /data/libtorrent
-
-./autogen.sh && ./configure --enable-extra-debug --enable-werror && make && sudo make install || exit 1
+cd /data/local/libtorrent
+./autogen.sh && ./configure && make || exit 1
+sudo DESTDIR=$BUILD_DIR make install || exit 1
 
 # Build rTorrent.
-cd /data/rtorrent
+cd /data/local/rtorrent
+./autogen.sh && ./configure && make || exit 1
+sudo DESTDIR=$BUILD_DIR make install || exit 1
 
-./autogen.sh && ./configure --enable-extra-debug --enable-werror --with-xmlrpc-c && make && sudo make install || exit 1
+#tar -C /data/shared/pkg/ -cf - . | sudo tar -C / -xf -

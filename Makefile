@@ -3,6 +3,9 @@ all: up
 up:
 	vagrant up
 
+build:
+	vagrant ssh -c /home/vagrant/build-rtorrent.sh
+
 setup:
 	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-git
