@@ -1,8 +1,10 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+# TODO: Move to config file.
 DEFAULT_BOX = 'ubuntu/trusty64'
 
+# TODO: Move to dataset file.
 nodes = [
   { hostname: 'builder',
     primary: true
@@ -13,6 +15,7 @@ nodes = [
   },
 ]
 
+# TODO: Move to helper method file.
 def node_data_folder(node)
   node[:data] || "./data/#{node[:hostname]}"
 end
@@ -29,6 +32,10 @@ def add_builder_repo(config, repo_name, repo_branch = 'master', repo_user = 'rak
     rc.path = "./data/builder/#{repo_name}"
     rc.branch = repo_branch
   }
+
+  config.trigger.after :destroy, vm: ['builder'], force: true do
+    run "rm -rf ./data/builder/#{repo_name}"
+  end
 end
 
 Vagrant.configure('2') do |config|
@@ -38,9 +45,9 @@ Vagrant.configure('2') do |config|
       node_config.vm.hostname = "rt-#{node[:hostname]}"
       node_config.vm.synced_folder node_data_folder(node), '/data'
 
-      config.vm.network 'private_network', type: 'dhcp'
+      node_config.vm.network 'private_network', type: 'dhcp'
 
-      config.vm.provider 'virtualbox' do |vb|
+      node_config.vm.provider 'virtualbox' do |vb|
         vb.memory = node[:memory] if node[:memory]
       end
     end
@@ -61,11 +68,4 @@ Vagrant.configure('2') do |config|
 
   add_builder_repo(config, 'libtorrent')
   add_builder_repo(config, 'rtorrent')
-
-  # TODO: Try to add this just to the builder node.
-  config.trigger.after :destroy do
-    run 'rm -Rf data/builder/rtorrent'
-    run 'rm -Rf data/builder/libtorrent'
-  end
-
 end

@@ -14,4 +14,12 @@ class baseconfig {
       require => Exec['update-apt']
   }
 
+  file { '/etc/environment':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => 'puppet:///modules/baseconfig/environment',
+  }
+
 }
