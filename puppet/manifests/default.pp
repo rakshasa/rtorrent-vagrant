@@ -11,5 +11,9 @@ class { 'baseconfig':
 }
 
 node 'default' {
+  include client
+}
+
+node 'builder' {
   include builder
 }

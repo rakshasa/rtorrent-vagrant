@@ -16,5 +16,3 @@ sudo DESTDIR=$BUILD_DIR make install || exit 1
 cd /data/local/rtorrent
 ./autogen.sh && ./configure && make || exit 1
 sudo DESTDIR=$BUILD_DIR make install || exit 1
-
-#tar -C /data/shared/pkg/ -cf - . | sudo tar -C / -xf -

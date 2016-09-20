@@ -11,7 +11,7 @@ class builder {
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/builder/build-rtorrent.sh',
+    source => 'puppet:///modules/builder/build-rtorrent.sh'
   }
 
 }

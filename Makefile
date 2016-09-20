@@ -1,10 +1,14 @@
-all: up
-
-up:
-	vagrant up
+all: clean
+	make build
+	make nodes
 
 build:
-	vagrant ssh -c /home/vagrant/build-rtorrent.sh
+	vagrant up builder
+	vagrant ssh builder -c /home/vagrant/build-rtorrent.sh
+
+nodes:
+	vagrant up node1
+	vagrant ssh node1 -c /home/vagrant/install-rtorrent.sh
 
 setup:
 	vagrant plugin install vagrant-cachier

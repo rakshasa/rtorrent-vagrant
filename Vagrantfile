@@ -8,7 +8,8 @@ DEFAULT_BOX = 'ubuntu/trusty64'
 nodes = [
   { hostname: 'builder',
     data: 'builder',
-    primary: true
+    primary: true,
+    autostart: false
   },
   { hostname: 'node1',
     autostart: false
@@ -42,7 +43,7 @@ Vagrant.configure('2') do |config|
   nodes.each do |node|
     config.vm.define node[:hostname], node_define_params(node) do |node_config|
       node_config.vm.box = (node[:box] || DEFAULT_BOX)
-      node_config.vm.hostname = "rt-#{node[:hostname]}"
+      node_config.vm.hostname = node[:hostname]
 
       node_config.vm.synced_folder './data/shared', '/data/shared'
       node_config.vm.synced_folder node_data_folder(node), '/data/local' if node[:data]
@@ -52,6 +53,14 @@ Vagrant.configure('2') do |config|
       node_config.vm.provider 'virtualbox' do |vb|
         vb.memory = node[:memory] if node[:memory]
       end
+
+      node_config.vm.provision 'puppet' do |puppet|
+        puppet.manifest_file = 'default.pp'
+        puppet.manifests_path = 'puppet/manifests'
+        puppet.module_path = 'puppet/modules'
+
+        puppet.options="--verbose --debug"
+      end
     end
   end
 
@@ -60,12 +69,6 @@ Vagrant.configure('2') do |config|
 
   if Vagrant.has_plugin?('vagrant-cachier')
     config.cache.scope = :box
-  end
-
-  config.vm.provision 'puppet' do |puppet|
-    puppet.manifest_file  = 'test.pp'
-    puppet.manifests_path = 'puppet/manifests'
-    puppet.module_path = 'puppet/modules'
   end
 
   add_builder_repo(config, 'libtorrent')
