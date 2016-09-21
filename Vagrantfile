@@ -43,7 +43,7 @@ Vagrant.configure('2') do |config|
   nodes.each do |node|
     config.vm.define node[:hostname], node_define_params(node) do |node_config|
       node_config.vm.box = (node[:box] || DEFAULT_BOX)
-      node_config.vm.hostname = node[:hostname]
+      node_config.vm.hostname = node[:hostname] + '.example.com'
 
       node_config.vm.synced_folder './data/shared', '/data/shared'
       node_config.vm.synced_folder node_data_folder(node), '/data/local' if node[:data]
@@ -55,11 +55,9 @@ Vagrant.configure('2') do |config|
       end
 
       node_config.vm.provision 'puppet' do |puppet|
-        puppet.manifest_file = 'default.pp'
         puppet.manifests_path = 'puppet/manifests'
         puppet.module_path = 'puppet/modules'
-
-        puppet.options="--verbose --debug"
+        #puppet.options="--verbose --debug"
       end
     end
   end

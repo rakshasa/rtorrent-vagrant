@@ -14,6 +14,14 @@ node 'default' {
   include client
 }
 
-node 'builder' {
+# node 'builder' {
+#   include builder
+# }
+
+# if $hostname == 'builder' {
+#   include builder
+# }
+
+node 'builder.example.com' {
   include builder
 }
