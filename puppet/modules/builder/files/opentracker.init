@@ -1,0 +1,44 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          opentracker
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Opentracker init script
+# Description:       This a init script for Opentracker (a bittorrent tracker).
+### END INIT INFO
+
+### Configuration // Configuracion ###
+#
+# Configure file // Archivo de configuracion:
+CONF_FILE=/etc/opentracker.conf
+#
+# Opentracker binary // Ejecutable de Opentracker:
+BIN=/usr/local/bin/opentracker
+#
+### End of Configuration // Fin de configuracion ###
+
+case "$1" in
+  start)
+                echo -n "Starting Open Bittorrent Tracker ..."
+
+                if [ -f /var/log/opentracker/opentracker.log ]; then
+                    mv /var/log/opentracker/opentracker.log /var/log/opentracker/opentracker.log.`date +%F_%R`
+                fi
+
+                sudo -u opentracker sh -c "$BIN -f $CONF_FILE > /var/log/opentracker/opentracker.log" &
+
+		echo " [ OK ]"
+                echo "."
+                ;;
+  stop)
+                echo -n "Stopping Open Bittorrent Tracker"
+                sudo -u opentracker kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
+                echo "."
+                ;;
+
+  *)
+                echo "Usage: /etc/init.d/opentracker {start|stop}"
+                exit 1
+esac

@@ -27,9 +27,9 @@ def node_define_params(node)
   }
 end
 
-def add_builder_repo(config, repo_name, repo_branch = 'master', repo_user = 'rakshasa')
+def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@github.com:rakshasa')
   config.git.add_repo { |rc|
-    rc.target = "git@github.com:#{repo_user}/#{repo_name}.git"
+    rc.target = "#{repo_root}/#{repo_name}.git"
     rc.path = "./data/builder/#{repo_name}"
     rc.branch = repo_branch
   }
@@ -69,6 +69,11 @@ Vagrant.configure('2') do |config|
     config.cache.scope = :box
   end
 
-  add_builder_repo(config, 'libtorrent')
-  add_builder_repo(config, 'rtorrent')
+  add_builder_repo(config, repo_name: 'libtorrent')
+  add_builder_repo(config, repo_name: 'rtorrent')
+  add_builder_repo(config, repo_name: 'opentracker')
+
+  config.trigger.after :destroy, vm: ['builder'], force: true do
+    run "rm -rf ./data/shared/pkg"
+  end
 end

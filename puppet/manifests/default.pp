@@ -10,18 +10,10 @@ class { 'baseconfig':
   stage => 'pre'
 }
 
-node 'default' {
-  include client
+node /^builder\./ {
+  include builder
 }
 
-# node 'builder' {
-#   include builder
-# }
-
-# if $hostname == 'builder' {
-#   include builder
-# }
-
-node 'builder.example.com' {
-  include builder
+node /^node\d+\./ {
+  include client
 }

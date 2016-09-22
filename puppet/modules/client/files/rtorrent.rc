@@ -1,0 +1,6 @@
+print = "Loaded from '/etc/rtorrent.rc'"
+
+# directory.watch.added = /data/shared/watch, load.start
+
+#directory.default.set = "/data/torrents"
+#session.path.set = "/data/session"
