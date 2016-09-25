@@ -11,7 +11,9 @@ build:
 
 nodes:
 	vagrant up node1
+	vagrant up node2
 	vagrant ssh node1 -c /home/vagrant/install-rtorrent.sh
+	vagrant ssh node2 -c /home/vagrant/install-rtorrent.sh
 
 setup:
 	vagrant plugin install vagrant-cachier
@@ -20,10 +22,14 @@ setup:
 	vagrant plugin install vagrant-vbguest
 
 tracker:
-	vagrant ssh builder -c service opentracker start
+	vagrant ssh builder -c "sudo service opentracker start"
 
 clients:
-	vagrant ssh node1 -c service rtorrent start
+	vagrant ssh node1 -c "/home/vagrant/run-rtorrent.sh"
+	vagrant ssh node2 -c "/home/vagrant/run-rtorrent.sh"
+
+node1screen:
+	vagrant ssh node1 -c "sudo -u rtorrent bash -c 'script -qc \"screen -r\" /dev/null'"
 
 clean:
 	-vagrant destroy -f

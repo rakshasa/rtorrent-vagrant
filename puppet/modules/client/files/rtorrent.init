@@ -15,35 +15,38 @@
 # moving the script to "/etc/init.d/rtorrent" and issuing the command
 # "update-rc.d rtorrent defaults 99"
 
-USER=rtorrent # username to run rtorrent under
-SCREEN=/usr/bin/screen # screen binary
-SCREEN_NAME=rtorrent # screen name (this way you can screen -r rtorrent)
-PIDFILE=/var/run/rtorrent.pid # pidfile
+USER=vagrant
+PIDFILE=/data/session/rtorrent-init.pid
 
-RTORRENT="/usr/bin/rtorrent -n -O try_import=/etc/rtorrent.rc"
+RTORRENT="/usr/local/bin/rtorrent"
+RTORRENT_ARGS="-n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
 
 case "$1" in
 
     start)
         echo "Starting rtorrent."
         start-stop-daemon --start --background --oknodo \
-            --pidfile "$PIDFILE" --make-pidfile \
             --chuid $USER \
-            --exec $SCREEN -- -DmUS $SCREEN_NAME $RTORRENT
+            --pidfile "$PIDFILE" --make-pidfile \
+            --exec /home/vagrant/run-rtorrent.sh
+
         if [[ $? -ne 0 ]]; then
             echo "Error: rtorrent failed to start."
             exit 1
         fi
+
         echo "rtorrent started successfully."
         ;;
 
     stop)
         echo "Stopping rtorrent."
         start-stop-daemon --stop --oknodo --pidfile "$PIDFILE"
+
         if [[ $? -ne 0 ]]; then
             echo "Error: failed to stop rtorrent process."
             exit 1
         fi
+
         echo "rtorrent stopped successfully."
         ;;
 

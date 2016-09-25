@@ -1,6 +1,41 @@
+#
+# Logging
+#
+
+# TODO: Move log files to /data/local/logs/rtorrent.
+
+# TODO: Rename 'critical' to something more descriptive.
+log.open_file = "crash.log", (cat,/data/local/logs/rtorrent/crash.log.,(system.pid))
+log.add_output = "critical", "crash.log"
+
+log.open_file = "tracker.log", (cat,/data/local/logs/rtorrent/tracker.log.,(system.pid))
+log.add_output = "tracker_debug", "tracker.log"
+
+
+# TODO: Refactor:
+log.open_file = "rtorrent.log", (cat,/data/local/logs/rtorrent/rtorrent.log.,(system.pid))
+log.open_file = "torrent.log", (cat,/data/local/logs/rtorrent/torrent.log.,(system.pid))
+log.open_file = "connection.log", (cat,/data/local/logs/rtorrent/connection.log.,(system.pid))
+log.open_file = "socket.log", (cat,/data/local/logs/rtorrent/socket.log.,(system.pid))
+log.open_file = "storage.log", (cat,/data/local/logs/rtorrent/storage.log.,(system.pid))
+log.open_file = "thread.log", (cat,/data/local/logs/rtorrent/thread.log.,(system.pid))
+
+log.add_output = "debug", "rtorrent.log"
+log.add_output = "torrent_debug", "torrent.log"
+log.add_output = "connection_debug", "connection.log"
+log.add_output = "socket_debug", "socket.log"
+log.add_output = "storage_debug", "storage.log"
+log.add_output = "thread_debug", "thread.log"
+
+
+#
+# Settings
+#
+
 print = "Loaded from '/etc/rtorrent.rc'"
 
-# directory.watch.added = /data/shared/watch, load.start
+directory.default.set = "/data/local/torrents"
+session.path.set = "/data/local/session"
 
-#directory.default.set = "/data/torrents"
-#session.path.set = "/data/session"
+#directory.watch.added = /data/shared/watch, load.start
+
