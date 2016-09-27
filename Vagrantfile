@@ -59,6 +59,7 @@ Vagrant.configure('2') do |config|
 
       node_config.vm.network 'private_network', type: 'dhcp'
       node_config.vm.synced_folder './data/shared', '/data/shared', create: node[:primary]
+      node_config.vm.synced_folder './data/torrents', '/data/torrents', create: node[:primary]
 
       add_data_local(node_config,
                      node_name: node_name,
@@ -89,5 +90,6 @@ Vagrant.configure('2') do |config|
 
   config.trigger.after :destroy, vm: ['builder'], force: true do
     run 'rm -rf ./data/shared'
+    run 'rm -rf ./data/torrents'
   end
 end
