@@ -22,4 +22,15 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/environment',
   }
 
+  file { '/data/local/metadata':
+    ensure => directory,
+    mode   => '0755'
+  }
+
+  file { '/home/vagrant/update-metadata.sh':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/update-metadata.sh',
+  }
+
 }
