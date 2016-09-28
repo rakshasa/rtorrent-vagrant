@@ -34,7 +34,7 @@ log.add_output = "thread_debug", "thread.log"
 
 print = "Loaded from '/etc/rtorrent.rc'"
 
-directory.default.set = "/data/local/torrents"
+directory.default.set = "/data/torrents"
 session.path.set = "/data/local/session"
 
 #directory.watch.added = /data/shared/watch, load.start

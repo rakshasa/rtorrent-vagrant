@@ -31,5 +31,15 @@ clients:
 node1screen:
 	vagrant ssh node1 -c "sudo -u rtorrent bash -c 'script -qc \"screen -r\" /dev/null'"
 
+activate_test1:
+	./scripts/make-torrent.sh test1
+	./scripts/activate-torrent.sh test1
+
+activate_test2:
+	./scripts/make-torrent.sh test2
+	./scripts/activate-torrent.sh test2
+
+# TODO: Add script to show all torrent states of all nodes using xmlrpc.
+
 clean:
 	-vagrant destroy -f

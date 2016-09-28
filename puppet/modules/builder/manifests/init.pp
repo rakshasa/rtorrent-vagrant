@@ -58,6 +58,11 @@ class builder {
     ensure => directory,
   }
 
+  file { '/data/shared/torrents':
+    ensure => directory,
+    mode   => '0555',
+  }
+
   file { '/data/shared/watch':
     ensure => directory,
     mode   => '0555',

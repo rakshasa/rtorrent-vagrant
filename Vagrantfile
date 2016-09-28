@@ -33,9 +33,9 @@ def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@
   end
 end
 
-def add_data_local(config, node_name:, data_user: nil, data_group: nil, should_create: true)
+def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_create: true)
   if node_name.nil?
-    raise Vagrant::Errors::VagrantError.new, "add_data_local called for '#{node[:hostname]}' with no valid 'node_name:'"
+    raise Vagrant::Errors::VagrantError.new, "add_local_data called for '#{node[:hostname]}' with no valid 'node_name:'"
   end
 
   config.vm.synced_folder "./data/#{node_name}", '/data/local', owner: data_user, group: data_group, create: should_create
@@ -58,10 +58,11 @@ Vagrant.configure('2') do |config|
       node_config.vm.hostname = node_name + '.example.com'
 
       node_config.vm.network 'private_network', type: 'dhcp'
-      node_config.vm.synced_folder './data/shared', '/data/shared', create: node[:primary]
-      node_config.vm.synced_folder './data/torrents', '/data/torrents', create: node[:primary]
 
-      add_data_local(node_config,
+      # TODO: Make 'add_data_shared'.
+      node_config.vm.synced_folder './data/shared', '/data/shared', create: node[:primary]
+
+      add_local_data(node_config,
                      node_name: node_name,
                      data_user: node[:data_user], data_group: node[:data_group])
 
@@ -90,6 +91,5 @@ Vagrant.configure('2') do |config|
 
   config.trigger.after :destroy, vm: ['builder'], force: true do
     run 'rm -rf ./data/shared'
-    run 'rm -rf ./data/torrents'
   end
 end

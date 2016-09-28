@@ -1,18 +1,16 @@
 class client {
 
   package {
-    [
-     #'screen'
-     ]:
+    []:
       ensure => installed,
       require => Exec['update-apt']
   }
 
-  # @group { rtorrent: ensure=> present }
-  # @user  { rtorrent: ensure=> present, gid => rtorrent }
+  @group { rtorrent: ensure=> present }
+  @user  { rtorrent: ensure=> present, gid => rtorrent }
 
-  # realize Group[rtorrent]
-  # realize User[rtorrent]
+  realize Group[rtorrent]
+  realize User[rtorrent]
 
   file { '/home/vagrant/install-rtorrent.sh':
     ensure => file,
@@ -53,8 +51,15 @@ class client {
     ensure => directory,
   }
 
-  file { '/data/local/torrents':
+  file { '/data/torrents':
     ensure => directory,
+    owner  => 'vagrant',
+    group  => 'vagrant',
+  }
+
+  file { '/home/vagrant/logs-rtorrent':
+    ensure => link,
+    target => '/data/local/logs/rtorrent'
   }
 
 }

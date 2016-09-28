@@ -3,12 +3,12 @@
 SEED_NODE=${2:-node1}
 
 DATA_FILENAME=${1:?no filename provided}
-DATA_PATH="./data/torrents/${DATA_FILENAME}"
+DATA_VM_PATH="/data/shared/torrents/${DATA_FILENAME}"
+DATA_VM_TORRENTS="/data/torrents/"
+DATA_HOST_PATH="./data/shared/torrents/${DATA_FILENAME}"
+DATA_HOST_WATCH="./data/shared/watch/"
 
 # TODO: Check that filename and torrent exists.
 
-# TODO: Change this so that we move the torrent data to a non-NFS
-# filesystem belonging to the vm.
-
-ln ${DATA_PATH} ./data/${SEED_NODE}/torrents/${DATA_FILENAME}
-ln ${DATA_PATH}.torrent ./data/shared/watch/
+vagrant ssh ${SEED_NODE} -c "cp -r '${DATA_VM_PATH}' '${DATA_VM_TORRENTS}'"
+ln ${DATA_HOST_PATH}.torrent ${DATA_HOST_WATCH}
