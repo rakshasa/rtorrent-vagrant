@@ -38,4 +38,4 @@ directory.default.set = "/data/local/torrents"
 session.path.set = "/data/local/session"
 
 #directory.watch.added = /data/shared/watch, load.start
-
+schedule = watch_directory,5,5,load.start=/data/shared/watch/*.torrent

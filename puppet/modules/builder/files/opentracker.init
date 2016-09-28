@@ -1,4 +1,5 @@
 #! /bin/sh
+
 ### BEGIN INIT INFO
 # Provides:          opentracker
 # Required-Start:    $remote_fs $syslog
@@ -9,36 +10,50 @@
 # Description:       This a init script for Opentracker (a bittorrent tracker).
 ### END INIT INFO
 
-### Configuration // Configuracion ###
-#
-# Configure file // Archivo de configuracion:
-CONF_FILE=/etc/opentracker.conf
-#
-# Opentracker binary // Ejecutable de Opentracker:
-BIN=/usr/local/bin/opentracker
-#
-### End of Configuration // Fin de configuracion ###
+CONF_FILE="/etc/opentracker.conf"
+BIN="/usr/local/bin/opentracker"
+
+PID_FILE="/var/run/opentracker.pid"
+LOG_FILE="/var/log/opentracker/opentracker.log"
+
 
 case "$1" in
   start)
-                echo -n "Starting Open Bittorrent Tracker ..."
+    echo -n "Starting Open Bittorrent Tracker ..."
 
-                if [ -f /var/log/opentracker/opentracker.log ]; then
-                    mv /var/log/opentracker/opentracker.log /var/log/opentracker/opentracker.log.`date +%F_%R`
-                fi
+    if [ -f ${LOG_FILE} ]; then
+        mv ${LOG_FILE} ${LOG_FILE}.`date +%F_%R`
+    fi
 
-                sudo -u opentracker sh -c "$BIN -f $CONF_FILE > /var/log/opentracker/opentracker.log" &
+    #sudo -u opentracker sh -c "$BIN -f $CONF_FILE > /var/log/opentracker/opentracker.log" &
 
-		echo " [ OK ]"
-                echo "."
-                ;;
+    start-stop-daemon --start --background --oknodo \
+      --chuid "vagrant" \
+      --pidfile "${PID_FILE}" --make-pidfile \
+      --exec /bin/bash -- -c "${BIN} -f ${CONF_FILE} > ${LOG_FILE}"
+
+    if [ $? -ne 0 ]; then
+      echo "Error: opentracker failed to start."
+      exit 1
+    fi
+
+    echo -n " [ OK ]"
+    echo "."
+    ;;
+
   stop)
-                echo -n "Stopping Open Bittorrent Tracker"
-                sudo -u opentracker kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
-                echo "."
-                ;;
+    echo -n "Stopping Open Bittorrent Tracker"
+    #sudo -u opentracker kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
+    #kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
+
+    if [ -f ${PID_FILE} ]; then
+      kill `cat ${PID_FILE}`
+    fi
+
+    echo "."
+    ;;
 
   *)
-                echo "Usage: /etc/init.d/opentracker {start|stop}"
-                exit 1
+    echo "Usage: /etc/init.d/opentracker {start|stop}"
+    exit 1
 esac

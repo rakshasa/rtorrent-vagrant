@@ -3,7 +3,8 @@ class builder {
   package {
     ['g++-4.8', 'automake', 'libtool', 'make', 'pkg-config', 'git-core',
      'libcppunit-dev', 'libcurl4-openssl-dev', 'libncurses5-dev', 'libxmlrpc-core-c3-dev',
-     'libowfat-dev', 'mktorrent']:
+     'libowfat-dev'
+     ]:
       ensure => installed,
       require => Exec['update-apt']
   }
@@ -30,6 +31,14 @@ class builder {
     source => 'puppet:///modules/builder/build-tracker.sh'
   }
 
+  file { '/home/vagrant/run-tracker.sh':
+    ensure => file,
+    owner  => 'vagrant',
+    group  => 'vagrant',
+    mode   => '0755',
+    source => 'puppet:///modules/builder/run-tracker.sh'
+  }
+
   file { '/etc/init.d/opentracker':
     ensure => file,
     owner  => 'root',
@@ -42,15 +51,16 @@ class builder {
     ensure => file,
     owner  => 'root',
     group  => 'root',
-    mode   => '0644',
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
-  file { '/var/log/opentracker':
+  file { '/data/local/logs/tracker':
     ensure => directory,
-    owner  => 'opentracker',
-    group  => 'opentracker',
-    mode   => '0755'
+  }
+
+  file { '/data/shared/watch':
+    ensure => directory,
+    mode   => '0555',
   }
 
 }

@@ -18,13 +18,15 @@ class baseconfig {
     ensure => file,
     owner  => 'root',
     group  => 'root',
-    mode   => '0644',
     source => 'puppet:///modules/baseconfig/environment',
+  }
+
+  file { '/data/local/logs':
+    ensure => directory,
   }
 
   file { '/data/local/metadata':
     ensure => directory,
-    mode   => '0755'
   }
 
   file { '/home/vagrant/update-metadata.sh':

@@ -22,7 +22,7 @@ setup:
 	vagrant plugin install vagrant-vbguest
 
 tracker:
-	vagrant ssh builder -c "sudo service opentracker start"
+	vagrant ssh builder -c "/home/vagrant/run-tracker.sh"
 
 clients:
 	vagrant ssh node1 -c "/home/vagrant/run-rtorrent.sh"

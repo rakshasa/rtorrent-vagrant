@@ -1,11 +1,14 @@
 #!/bin/bash
 
-DATA_FILE=${1:?no data path given}
-DATA_COUNT=${DATA_COUNT:=512}
+DATA_COUNT=${DATA_COUNT:=64}
+DATA_FILENAME=${1:?no filename provided}
+DATA_PATH="./data/torrents/${DATA_FILENAME}"
 
 IPV4_TRACKER=`cat ./data/builder/metadata/ipv4.address`
 IPV6_TRACKER=`cat ./data/builder/metadata/ipv6.address`
 
-dd bs=1m count=${DATA_COUNT} if=/dev/urandom of=${DATA_FILE}
+ANNOUNCE_URLS="http://${IPV4_TRACKER}:6969/announce"
 
-mktorrent -v -a http://${IPV4_TRACKER}:6969 ${DATA_FILE}
+dd bs=1m count=${DATA_COUNT} if=/dev/urandom of=${DATA_PATH}
+
+mktorrent -v -a ${ANNOUNCE_URLS} -o ${DATA_PATH}.torrent ${DATA_PATH}
