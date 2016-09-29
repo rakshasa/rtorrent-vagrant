@@ -1,0 +1,17 @@
+#!/bin/bash
+
+DEBUG=1
+
+NODES=${1:-node1 node2}
+CLIENT="./scripts/xmlrpc2scgi.py"
+
+call_rpc() {
+    NODE_URL="scgi://`cat ./data/node2/metadata/ipv4.address`:5001"
+
+    if [[ $DEBUG ]]; then
+        echo $CLIENT -p $NODE_URL $@
+    fi
+
+    $CLIENT -p $NODE_URL $@
+    #$CLIENT $NODE_URL $@
+}

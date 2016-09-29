@@ -29,7 +29,7 @@ log.add_output = "thread_debug", "thread.log"
 
 
 #
-# Settings
+# Settings:
 #
 
 print = "Loaded from '/etc/rtorrent.rc'"
@@ -39,3 +39,9 @@ session.path.set = "/data/local/session"
 
 #directory.watch.added = /data/shared/watch, load.start
 schedule = watch_directory,5,5,load.start=/data/shared/watch/*.torrent
+
+#
+# Others:
+#
+
+network.scgi.open_port = ":5001"

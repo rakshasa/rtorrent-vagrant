@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./scripts/sources/call
+
+for NODE in ${NODES}; do
+    call_rpc d.multicall2 s/ main d.name= d.is_open= d.is_active=
+done
