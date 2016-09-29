@@ -6,12 +6,16 @@ NODES=${1:-node1 node2}
 CLIENT="./scripts/xmlrpc2scgi.py"
 
 call_rpc() {
-    NODE_URL="scgi://`cat ./data/node2/metadata/ipv4.address`:5001"
+    NODE_URL="scgi://`cat ./data/${NODE}/metadata/ipv4.address`:5001"
+    CALL_CMD="$CLIENT -s $NODE_URL $@"
 
-    if [[ $DEBUG ]]; then
-        echo $CLIENT -p $NODE_URL $@
-    fi
+    echo $CALL_CMD
 
-    $CLIENT -p $NODE_URL $@
-    #$CLIENT $NODE_URL $@
+    $CALL_CMD
+}
+
+call_nodes() {
+    for NODE in ${NODES}; do
+        call_rpc $@
+    done
 }

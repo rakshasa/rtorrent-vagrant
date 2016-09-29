@@ -2,6 +2,5 @@
 
 source ./scripts/sources/call
 
-for NODE in ${NODES}; do
-    call_rpc d.multicall2 s/ main d.name= d.is_open= d.is_active=
-done
+# Why d.complete and not d.is_complete.
+call_nodes d.multicall2 s/ main d.hash= d.is_open= d.is_active= d.complete= d.name=
