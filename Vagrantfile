@@ -1,5 +1,6 @@
 # -*- mode: ruby -*-
-# vi: set ft=ruby :
+
+require './lib/helpers.rb'
 
 # TODO: Move to config file.
 DEFAULT_BOX = 'ubuntu/trusty64'
@@ -15,40 +16,6 @@ nodes = [
   },
 ]
 
-def node_define_params(node)
-  { primary: node[:primary],
-    autostart: node[:autostart]
-  }
-end
-
-def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@github.com:rakshasa')
-  config.git.add_repo { |rc|
-    rc.target = "#{repo_root}/#{repo_name}.git"
-    rc.path = "./data/builder/#{repo_name}"
-    rc.branch = repo_branch
-  }
-
-  config.trigger.after :destroy, vm: ['builder'], force: true do
-    run "rm -rf ./data/builder/#{repo_name}"
-  end
-end
-
-def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_create: true)
-  if node_name.nil?
-    raise Vagrant::Errors::VagrantError.new, "add_local_data called for '#{node[:hostname]}' with no valid 'node_name:'"
-  end
-
-  config.vm.synced_folder "./data/#{node_name}", '/data/local', owner: data_user, group: data_group, create: should_create
-
-  config.trigger.after :up do
-    run_remote '/home/vagrant/update-metadata.sh'
-  end
-
-  config.trigger.after :destroy, vm: [node_name], force: true do
-    run "rm -rf ./data/#{node_name}"
-  end
-end
-
 Vagrant.configure('2') do |config|
   nodes.each do |node|
     config.vm.define node[:hostname], node_define_params(node) do |node_config|
@@ -59,12 +26,8 @@ Vagrant.configure('2') do |config|
 
       node_config.vm.network 'private_network', type: 'dhcp'
 
-      # TODO: Make 'add_data_shared'.
-      node_config.vm.synced_folder './data/shared', '/data/shared', create: node[:primary]
-
-      add_local_data(node_config,
-                     node_name: node_name,
-                     data_user: node[:data_user], data_group: node[:data_group])
+      add_local_data(node_config, node_name: node_name)
+      add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
 
       node_config.vm.provider 'virtualbox' do |vb|
         vb.memory = node[:memory] if node[:memory]
@@ -88,8 +51,4 @@ Vagrant.configure('2') do |config|
   add_builder_repo(config, repo_name: 'libtorrent')
   add_builder_repo(config, repo_name: 'rtorrent')
   add_builder_repo(config, repo_name: 'opentracker')
-
-  config.trigger.after :destroy, vm: ['builder'], force: true do
-    run 'rm -rf ./data/shared'
-  end
 end

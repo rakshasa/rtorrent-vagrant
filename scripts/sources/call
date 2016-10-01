@@ -9,13 +9,14 @@ call_rpc() {
     NODE_URL="scgi://`cat ./data/${NODE}/metadata/ipv4.address`:5001"
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 
-    echo $CALL_CMD
+    #echo $CALL_CMD
 
-    $CALL_CMD
+    $CALL_CMD | awk -f ./scripts/sources/${AWK_FILE}.awk
 }
 
 call_nodes() {
     for NODE in ${NODES}; do
+        echo "${NODE}:"
         call_rpc $@
     done
 }
