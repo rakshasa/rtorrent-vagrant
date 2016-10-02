@@ -25,10 +25,6 @@ def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_c
 
   config.vm.synced_folder "./data/#{node_name}", '/data/local', owner: data_user, group: data_group, create: should_create
 
-  config.trigger.after :up do
-    run_remote '/home/vagrant/update-metadata.sh'
-  end
-
   config.trigger.after :destroy, vm: [node_name], force: true do
     run "rm -rf ./data/#{node_name}"
   end
