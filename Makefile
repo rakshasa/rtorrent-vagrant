@@ -39,6 +39,18 @@ activate_test2:
 	./scripts/make-torrent test2
 	./scripts/activate-torrent test2
 
+enable_inet_node1:
+	vagrant ssh node1 -c "/home/vagrant/enable-inet"
+
+enable_inet_node2:
+	vagrant ssh node2 -c "/home/vagrant/enable-inet"
+
+disable_inet_node1:
+	vagrant ssh node1 -c "/home/vagrant/disable-inet"
+
+disable_inet_node2:
+	vagrant ssh node2 -c "/home/vagrant/disable-inet"
+
 # TODO: Add script to show all torrent states of all nodes using xmlrpc.
 
 clean:

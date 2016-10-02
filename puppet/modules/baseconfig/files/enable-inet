@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source /home/vagrant/metadata.source
+
+sudo ip addr add ${METADATA_PRIVATE_INET} dev ${PRIVATE_DEV}

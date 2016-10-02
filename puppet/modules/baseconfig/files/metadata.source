@@ -1,0 +1,4 @@
+METADATA="/data/local/metadata"
+PRIVATE_DEV="eth1"
+
+METADATA_PRIVATE_INET="`cat $METADATA/ipv4.address`/`cat $METADATA/ipv4.prefix`"

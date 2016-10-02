@@ -31,10 +31,28 @@ class baseconfig {
     ensure => directory,
   }
 
+  file { '/home/vagrant/metadata.source':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/metadata.source',
+  }
+
   file { '/home/vagrant/update-metadata':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/update-metadata',
+  }
+
+  file { '/home/vagrant/enable-inet':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/enable-inet',
+  }
+
+  file { '/home/vagrant/disable-inet':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/disable-inet',
   }
 
 }
