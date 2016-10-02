@@ -30,7 +30,7 @@ Vagrant.configure('2') do |config|
       add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
 
       node_config.trigger.after :up do
-        run_remote '/home/vagrant/update-metadata.sh'
+        run_remote '/home/vagrant/update-metadata'
       end
 
       node_config.vm.provider 'virtualbox' do |vb|

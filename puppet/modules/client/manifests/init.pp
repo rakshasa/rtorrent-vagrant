@@ -12,20 +12,20 @@ class client {
   realize Group[rtorrent]
   realize User[rtorrent]
 
-  file { '/home/vagrant/install-rtorrent.sh':
+  file { '/home/vagrant/install-rtorrent':
     ensure => file,
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/client/install-rtorrent.sh',
+    source => 'puppet:///modules/client/install-rtorrent',
   }
 
-  file { '/home/vagrant/run-rtorrent.sh':
+  file { '/home/vagrant/run-rtorrent':
     ensure => file,
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/client/run-rtorrent.sh',
+    source => 'puppet:///modules/client/run-rtorrent',
   }
 
   file { '/etc/init.d/rtorrent':

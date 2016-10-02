@@ -28,7 +28,7 @@ case "$1" in
         start-stop-daemon --start --background --oknodo \
             --chuid $USER \
             --pidfile "$PIDFILE" --make-pidfile \
-            --exec /home/vagrant/run-rtorrent.sh
+            --exec /home/vagrant/run-rtorrent
 
         if [[ $? -ne 0 ]]; then
             echo "Error: rtorrent failed to start."

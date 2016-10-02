@@ -15,28 +15,28 @@ class builder {
   realize Group[opentracker]
   realize User[opentracker]
 
-  file { '/home/vagrant/build-rtorrent.sh':
+  file { '/home/vagrant/build-rtorrent':
     ensure => file,
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/builder/build-rtorrent.sh'
+    source => 'puppet:///modules/builder/build-rtorrent'
   }
 
-  file { '/home/vagrant/build-tracker.sh':
+  file { '/home/vagrant/build-tracker':
     ensure => file,
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/builder/build-tracker.sh'
+    source => 'puppet:///modules/builder/build-tracker'
   }
 
-  file { '/home/vagrant/run-tracker.sh':
+  file { '/home/vagrant/run-tracker':
     ensure => file,
     owner  => 'vagrant',
     group  => 'vagrant',
     mode   => '0755',
-    source => 'puppet:///modules/builder/run-tracker.sh'
+    source => 'puppet:///modules/builder/run-tracker'
   }
 
   file { '/etc/init.d/opentracker':

@@ -31,10 +31,10 @@ class baseconfig {
     ensure => directory,
   }
 
-  file { '/home/vagrant/update-metadata.sh':
+  file { '/home/vagrant/update-metadata':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/baseconfig/update-metadata.sh',
+    source => 'puppet:///modules/baseconfig/update-metadata',
   }
 
 }
