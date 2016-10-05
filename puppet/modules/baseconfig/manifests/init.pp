@@ -31,6 +31,10 @@ class baseconfig {
     ensure => directory,
   }
 
+  file { '/data/local/run':
+    ensure => directory,
+  }
+
   file { '/home/vagrant/metadata.source':
     ensure => file,
     mode   => '0755',

@@ -16,7 +16,7 @@
 # "update-rc.d rtorrent defaults 99"
 
 USER=vagrant
-PIDFILE=/data/session/rtorrent-init.pid
+PIDFILE=/data/local/run/rtorrent.pid
 
 RTORRENT="/usr/local/bin/rtorrent"
 RTORRENT_ARGS="-n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
@@ -27,7 +27,8 @@ case "$1" in
         start-stop-daemon --start --background --oknodo \
             --chuid $USER \
             --pidfile "$PIDFILE" --make-pidfile \
-            --exec /home/vagrant/run-rtorrent
+            --exec $RTORRENT -- $RTORRENT_ARGS
+#            --exec /home/vagrant/run-rtorrent
 
         if [[ $? -ne 0 ]]; then
             echo "Error: rtorrent failed to start."

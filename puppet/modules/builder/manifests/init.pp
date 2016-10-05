@@ -46,16 +46,7 @@ class builder {
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
-  file { '/etc/rcS.d/S90opentracker':
-    ensure => link,
-    target => '../init.d/opentracker'
-  }
-
   file { '/data/local/log/tracker':
-    ensure => directory,
-  }
-
-  file { '/data/local/run':
     ensure => directory,
   }
 
