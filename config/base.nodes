@@ -1,0 +1,9 @@
+nodes [
+  { hostname: 'builder',
+    primary: true,
+  },
+  { hostname: 'node1',
+  },
+  { hostname: 'node2',
+  },
+]

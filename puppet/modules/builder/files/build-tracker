@@ -1,4 +1,6 @@
 #!/bin/bash
 
+sudo mkdir /usr/local/bin
+
 cd /data/local/opentracker
 make && sudo PREFIX=/usr/local make install

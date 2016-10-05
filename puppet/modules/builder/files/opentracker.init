@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 ### BEGIN INIT INFO
 # Provides:          opentracker
@@ -10,50 +10,46 @@
 # Description:       This a init script for Opentracker (a bittorrent tracker).
 ### END INIT INFO
 
-CONF_FILE="/etc/opentracker.conf"
 BIN="/usr/local/bin/opentracker"
-
-PID_FILE="/var/run/opentracker.pid"
-LOG_FILE="/var/log/opentracker/opentracker.log"
-
+CONF_FILE="/etc/opentracker.conf"
+PID_FILE="/data/local/run/opentracker.pid"
+LOG_FILE="/data/local/log/tracker/opentracker.log"
 
 case "$1" in
-  start)
-    echo -n "Starting Open Bittorrent Tracker ..."
+    start)
+        echo -n "Starting Open Bittorrent Tracker ..."
 
-    if [ -f ${LOG_FILE} ]; then
-        mv ${LOG_FILE} ${LOG_FILE}.`date +%F_%R`
-    fi
+        if [ -f ${LOG_FILE} ]; then
+            mv ${LOG_FILE} ${LOG_FILE}.`date +%F_%R`
+        fi
 
-    #sudo -u opentracker sh -c "$BIN -f $CONF_FILE > /var/log/opentracker/opentracker.log" &
+        start-stop-daemon --start --background --oknodo \
+                          --chuid "vagrant" \
+                          --pidfile "${PID_FILE}" --make-pidfile \
+                          --exec /bin/bash -- -c "${BIN} -f ${CONF_FILE} > ${LOG_FILE}"
 
-    start-stop-daemon --start --background --oknodo \
-      --chuid "vagrant" \
-      --pidfile "${PID_FILE}" --make-pidfile \
-      --exec /bin/bash -- -c "${BIN} -f ${CONF_FILE} > ${LOG_FILE}"
+        if [ $? -ne 0 ]; then
+            echo "Error: opentracker failed to start."
+            exit 1
+        fi
 
-    if [ $? -ne 0 ]; then
-      echo "Error: opentracker failed to start."
-      exit 1
-    fi
+        sleep 1
 
-    echo -n " [ OK ]"
-    echo "."
-    ;;
+        echo -n " [ OK ]"
+        echo "."
+        ;;
 
-  stop)
-    echo -n "Stopping Open Bittorrent Tracker"
-    #sudo -u opentracker kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
-    #kill `ps auxw | grep "$BIN -f $CONF_FILE" | awk '{print $2}'` > /dev/null
+    stop)
+        echo -n "Stopping Open Bittorrent Tracker"
 
-    if [ -f ${PID_FILE} ]; then
-      kill `cat ${PID_FILE}`
-    fi
+        if [ -f ${PID_FILE} ]; then
+            kill `cat ${PID_FILE}`
+        fi
 
-    echo "."
-    ;;
+        echo "."
+        ;;
 
-  *)
-    echo "Usage: /etc/init.d/opentracker {start|stop}"
-    exit 1
+    *)
+        echo "Usage: /etc/init.d/opentracker {start|stop}"
+        exit 1
 esac

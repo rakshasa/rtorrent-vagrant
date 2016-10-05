@@ -1,19 +1,19 @@
 all: clean
 	make build
-	make nodes
-	make tracker
-	make clients
+#	make nodes
+#	make clients
 
 build:
 	vagrant up builder
 	vagrant ssh builder -c /home/vagrant/build-rtorrent
 	vagrant ssh builder -c /home/vagrant/build-tracker
+	make tracker
 
 nodes:
 	vagrant up node1
 	vagrant up node2
-	vagrant ssh node1 -c /home/vagrant/install-rtorrent
-	vagrant ssh node2 -c /home/vagrant/install-rtorrent
+#	vagrant ssh node1 -c /home/vagrant/install-rtorrent
+#	vagrant ssh node2 -c /home/vagrant/install-rtorrent
 
 setup:
 	vagrant plugin install vagrant-cachier
@@ -22,7 +22,7 @@ setup:
 	vagrant plugin install vagrant-vbguest
 
 tracker:
-	vagrant ssh builder -c "/home/vagrant/run-tracker"
+	vagrant ssh builder -c "sudo service opentracker start"
 
 clients:
 	vagrant ssh node1 -c "/home/vagrant/run-rtorrent"
@@ -50,8 +50,6 @@ disable_inet_node1:
 
 disable_inet_node2:
 	vagrant ssh node2 -c "/home/vagrant/disable-inet"
-
-# TODO: Add script to show all torrent states of all nodes using xmlrpc.
 
 clean:
 	-vagrant destroy -f

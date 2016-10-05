@@ -23,7 +23,7 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/environment',
   }
 
-  file { '/data/local/logs':
+  file { '/data/local/log':
     ensure => directory,
   }
 

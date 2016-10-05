@@ -1,9 +1,11 @@
 # -*- mode: ruby -*-
 
+require 'json'
 require './lib/helpers.rb'
 
 # TODO: Move to config file.
 DEFAULT_BOX = 'ubuntu/trusty64'
+#DEFAULT_BOX = 'ratfactor/slackware'
 
 # TODO: Move to dataset file.
 nodes = [
@@ -15,6 +17,9 @@ nodes = [
   { hostname: 'node2',
   },
 ]
+
+CONFIG_DIR = 'config/'
+#nodes = JSON.parse(File.read(File.join(CONFIG_DIR, 'base.nodes')))
 
 Vagrant.configure('2') do |config|
   nodes.each do |node|
@@ -28,6 +33,7 @@ Vagrant.configure('2') do |config|
 
       add_local_data(node_config, node_name: node_name)
       add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
+      add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
 
       node_config.trigger.after :up do
         run_remote '/home/vagrant/update-metadata'

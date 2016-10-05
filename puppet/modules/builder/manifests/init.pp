@@ -31,14 +31,6 @@ class builder {
     source => 'puppet:///modules/builder/build-tracker'
   }
 
-  file { '/home/vagrant/run-tracker':
-    ensure => file,
-    owner  => 'vagrant',
-    group  => 'vagrant',
-    mode   => '0755',
-    source => 'puppet:///modules/builder/run-tracker'
-  }
-
   file { '/etc/init.d/opentracker':
     ensure => file,
     owner  => 'root',
@@ -54,7 +46,16 @@ class builder {
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
-  file { '/data/local/logs/tracker':
+  file { '/etc/rcS.d/S90opentracker':
+    ensure => link,
+    target => '../init.d/opentracker'
+  }
+
+  file { '/data/local/log/tracker':
+    ensure => directory,
+  }
+
+  file { '/data/local/run':
     ensure => directory,
   }
 

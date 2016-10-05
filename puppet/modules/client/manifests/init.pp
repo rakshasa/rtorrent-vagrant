@@ -43,7 +43,7 @@ class client {
     source => 'puppet:///modules/client/rtorrent.rc'
   }
 
-  file { '/data/local/logs/rtorrent':
+  file { '/data/local/log/rtorrent':
     ensure => directory,
   }
 
@@ -57,9 +57,9 @@ class client {
     group  => 'vagrant',
   }
 
-  file { '/home/vagrant/logs-rtorrent':
+  file { '/home/vagrant/log-rtorrent':
     ensure => link,
-    target => '/data/local/logs/rtorrent'
+    target => '/data/local/log/rtorrent'
   }
 
 }
