@@ -1,11 +1,22 @@
-all: clean
-	make build
-	make nodes
+# Current OS X uses GNU Make 3.81 which seems to not properly handle
+# dependencies, so use the ugly hack of calling 'make foo' directly.
 
-build:
+all:
+	@echo "Call a proper make thing."
+
+init:
+	$(MAKE) clean
 	vagrant up builder
-	vagrant ssh builder -c /home/vagrant/build-rtorrent
-	vagrant ssh builder -c /home/vagrant/build-tracker
+	$(MAKE) tracker
+	$(MAKE) build_ipv6
+	$(MAKE) disable_inet_node2
+	$(MAKE) nodes
+
+build_ipv6:
+	./scripts/build-branch ipv6
+
+tracker:
+	vagrant ssh builder -c "/home/vagrant/build-tracker"
 	vagrant ssh builder -c "sudo service opentracker start"
 
 nodes:
