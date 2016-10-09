@@ -7,6 +7,8 @@ all:
 init:
 	$(MAKE) clean
 	vagrant up builder
+	vagrant up node1
+	vagrant up node2
 	$(MAKE) tracker
 	$(MAKE) build_ipv6
 	$(MAKE) disable_inet_node2
@@ -20,18 +22,13 @@ tracker:
 	vagrant ssh builder -c "sudo service opentracker start"
 
 nodes:
-	vagrant up node1
-	vagrant up node2
-	vagrant ssh node1 -c "sudo service rtorrent start"
-	vagrant ssh node2 -c "sudo service rtorrent start"
-
-activate_test1:
-	./scripts/make-torrent test1
-	./scripts/activate-torrent test1
+#	vagrant ssh node1 -c "sudo service rtorrent start"
+#	vagrant ssh node2 -c "sudo service rtorrent start"
+	vagrant ssh node1 -c "/home/vagrant/run-rtorrent"
+	vagrant ssh node2 -c "/home/vagrant/run-rtorrent"
 
 activate_test2:
-	./scripts/make-torrent test2
-	./scripts/activate-torrent test2
+	./scripts/new-torrent test2
 
 enable_inet_node1:
 	vagrant ssh node1 -c "/home/vagrant/enable-inet"

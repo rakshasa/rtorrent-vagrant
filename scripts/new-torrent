@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./scripts/make-torrent $@
+./scripts/activate-torrent $@

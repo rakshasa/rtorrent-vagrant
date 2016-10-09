@@ -59,4 +59,10 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/disable-inet',
   }
 
+  file { '/home/vagrant/change-inet6':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/change-inet6',
+  }
+
 }

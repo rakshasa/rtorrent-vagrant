@@ -17,18 +17,15 @@
 
 USER=vagrant
 PIDFILE=/data/local/run/rtorrent.pid
-
-RTORRENT="/usr/local/bin/rtorrent"
-RTORRENT_ARGS="-n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
+RTORRENT="/home/vagrant/run-rtorrent"
 
 case "$1" in
     start)
         echo "Starting rtorrent."
         start-stop-daemon --start --background --oknodo \
-            --chuid $USER \
-            --pidfile "$PIDFILE" --make-pidfile \
-            --exec $RTORRENT -- $RTORRENT_ARGS
-#            --exec /home/vagrant/run-rtorrent
+                          --chuid $USER \
+                          --pidfile "$PIDFILE" --make-pidfile \
+                          --exec $RTORRENT
 
         if [[ $? -ne 0 ]]; then
             echo "Error: rtorrent failed to start."
@@ -37,7 +34,7 @@ case "$1" in
 
         sleep 1
 
-        echo "rtorrent started successfully."
+        echo "RTorrent started successfully."
         ;;
 
     stop)
@@ -49,7 +46,7 @@ case "$1" in
             exit 1
         fi
 
-        echo "rtorrent stopped successfully."
+        echo "RTorrent stopped successfully."
         ;;
 
     restart|force-reload)

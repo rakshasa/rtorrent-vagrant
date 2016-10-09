@@ -1,0 +1,6 @@
+#!/bin/bash
+
+PRIVATE_DEV="eth1"
+
+sudo ip -6 addr flush dev ${PRIVATE_DEV} || exit 1
+sudo ip -6 addr add $1 dev ${PRIVATE_DEV} || exit 1

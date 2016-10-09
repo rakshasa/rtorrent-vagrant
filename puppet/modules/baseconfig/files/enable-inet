@@ -2,4 +2,4 @@
 
 source /home/vagrant/metadata.source
 
-sudo ip addr add ${METADATA_PRIVATE_INET} dev ${PRIVATE_DEV}
+sudo ip -4 addr add ${METADATA_PRIVATE_INET} dev ${PRIVATE_DEV}

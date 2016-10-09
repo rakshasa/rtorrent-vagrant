@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export RTORRENT="rtorrent -n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
+
+nohup $RTORRENT > /data/local/log/rtorrent/daemon.log &
+
+sleep 1
