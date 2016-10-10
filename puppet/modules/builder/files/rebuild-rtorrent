@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export CXX="g++-4.8"
+export CXXFLAGS="-Wno-error=strict-aliasing"
+export MAKEFLAGS="-j 8"
+
+RTORRENT_CONF="--with-xmlrpc-c"
+
+cd /data/local/libtorrent
+make && sudo make install || exit 1
+
+cd /data/local/rtorrent
+make && sudo make install || exit 1

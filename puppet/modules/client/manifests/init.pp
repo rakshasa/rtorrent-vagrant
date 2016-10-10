@@ -52,5 +52,10 @@ class client {
     source => 'puppet:///modules/client/run-rtorrent'
   }
 
+  file { '/home/vagrant/stop-rtorrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/client/stop-rtorrent'
+  }
 
 }

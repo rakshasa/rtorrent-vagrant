@@ -17,16 +17,18 @@ class builder {
 
   file { '/home/vagrant/build-rtorrent':
     ensure => file,
-    owner  => 'vagrant',
-    group  => 'vagrant',
     mode   => '0755',
     source => 'puppet:///modules/builder/build-rtorrent'
   }
 
+  file { '/home/vagrant/rebuild-rtorrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/builder/rebuild-rtorrent'
+  }
+
   file { '/home/vagrant/build-tracker':
     ensure => file,
-    owner  => 'vagrant',
-    group  => 'vagrant',
     mode   => '0755',
     source => 'puppet:///modules/builder/build-tracker'
   }

@@ -1,6 +1,8 @@
 #!/bin/bash
 
+export FEATURES="-DWANT_V6"
+
 sudo mkdir /usr/local/bin
 
 cd /data/local/opentracker
-make && sudo PREFIX=/usr/local make install
+make clean && make && sudo PREFIX=/usr/local make install

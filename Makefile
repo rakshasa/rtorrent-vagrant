@@ -12,7 +12,15 @@ init:
 	$(MAKE) tracker
 	$(MAKE) build_ipv6
 	$(MAKE) disable_inet_node2
-	$(MAKE) nodes
+	$(MAKE) start_nodes
+
+# TODO: This may have issues is the rtorrent clients don't shut down
+# fast enough. Consider adding a wait thing and do the stop_nodes
+# after build, or using a single script.
+rebuild:
+	$(MAKE) stop_nodes
+	vagrant ssh builder -c "/home/vagrant/rebuild-rtorrent"
+	$(MAKE) start_nodes
 
 build_ipv6:
 	./scripts/build-branch ipv6
@@ -21,11 +29,13 @@ tracker:
 	vagrant ssh builder -c "/home/vagrant/build-tracker"
 	vagrant ssh builder -c "sudo service opentracker start"
 
-nodes:
-#	vagrant ssh node1 -c "sudo service rtorrent start"
-#	vagrant ssh node2 -c "sudo service rtorrent start"
+start_nodes:
 	vagrant ssh node1 -c "/home/vagrant/run-rtorrent"
 	vagrant ssh node2 -c "/home/vagrant/run-rtorrent"
+
+stop_nodes:
+	vagrant ssh node1 -c "/home/vagrant/stop-rtorrent"
+	vagrant ssh node2 -c "/home/vagrant/stop-rtorrent"
 
 activate_test2:
 	./scripts/new-torrent test2
