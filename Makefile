@@ -1,6 +1,10 @@
 # Current OS X uses GNU Make 3.81 which seems to not properly handle
 # dependencies, so use the ugly hack of calling 'make foo' directly.
 
+BRANCH?=master
+LIBTORRENT_BRANCH?=$BRANCH
+RTORRENT_BRANCH?=$BRANCH
+
 all:
 	@echo "Call a proper make thing."
 
@@ -10,8 +14,9 @@ init:
 	vagrant up node1
 	vagrant up node2
 	$(MAKE) tracker
-	$(MAKE) build_ipv6
-	$(MAKE) disable_inet_node2
+	$(MAKE) build_branch
+	# $(MAKE) disable_inet_node1
+	# $(MAKE) disable_inet_node2
 	$(MAKE) start_nodes
 
 # TODO: This may have issues is the rtorrent clients don't shut down
@@ -22,8 +27,8 @@ rebuild:
 	vagrant ssh builder -c "/home/vagrant/rebuild-rtorrent"
 	$(MAKE) start_nodes
 
-build_ipv6:
-	./scripts/build-branch ipv6
+build_branch:
+	./scripts/build-branch $LIBTORRENT_BRANCH $RTORRENT_BRANCH
 
 tracker:
 	vagrant ssh builder -c "/home/vagrant/build-tracker"

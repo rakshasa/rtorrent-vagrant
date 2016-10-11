@@ -1,0 +1,6 @@
+#!/bin/bash
+
+LOCAL_PATH="/data/torrents"
+SHARED_PATH="/data/shared/torrents"
+
+diff -q "${TORRENT_PATH}/$1" "${SHARED_PATH}/$1"

@@ -5,12 +5,22 @@ DATA_PATH="./data/shared/torrents/${DATA_FILENAME}"
 
 DATA_COUNT=${DATA_COUNT:=5}
 
-dd bs=1m count=${DATA_COUNT} if=/dev/urandom of=${DATA_PATH}
+dd bs=1m count=$DATA_COUNT if=/dev/urandom of=$DATA_PATH
 
 IPV4_TRACKER=`cat ./data/builder/metadata/ipv4.address`
 IPV6_TRACKER=`cat ./data/builder/metadata/ipv6.address`
 
-#ANNOUNCE_URLS="http://${IPV4_TRACKER}:6969/announce"
-ANNOUNCE_URLS="http://[${IPV6_TRACKER}]:6969/announce"
+USE_HTTP_TRACKER=${USE_HTTP_TRACKER:=yes}
+USE_UDP_TRACKER=${USE_UDP_TRACKER:=no}
 
-mktorrent -v -a ${ANNOUNCE_URLS} -o ${DATA_PATH}.torrent ${DATA_PATH}
+if [ "$USE_HTTP_TRACKER" == "yes" ]; then
+    ANNOUNCE_URLS+=",http://[${IPV6_TRACKER}]:6969/announce"
+fi
+
+if [ "$USE_UDP_TRACKER" == "yes" ]; then
+    ANNOUNCE_URLS+=",udp://[${IPV6_TRACKER}]:6969"
+fi
+
+ANNOUNCE_URLS=`echo $ANNOUNCE_URLS | sed -n 's/^,//p'`
+
+mktorrent -v -a $ANNOUNCE_URLS -o $DATA_PATH.torrent $DATA_PATH
