@@ -6,7 +6,7 @@ def node_define_params(node)
   }
 end
 
-def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@github.com:rakshasa')
+def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@github.com:rakshasa', auto_cleanup: false)
   config.git.add_repo { |rc|
     rc.target = "#{repo_root}/#{repo_name}.git"
     rc.path = "./data/builder/#{repo_name}"
@@ -14,7 +14,7 @@ def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@
   }
 
   config.trigger.after :destroy, vm: ['builder'], force: true do
-    run "rm -rf ./data/builder/#{repo_name}"
+    run "rm -rf ./data/builder/#{repo_name}" if auto_cleanup
   end
 end
 

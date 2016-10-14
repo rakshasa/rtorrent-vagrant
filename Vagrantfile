@@ -70,7 +70,9 @@ Vagrant.configure('2') do |config|
     config.cache.scope = :box
   end
 
+  # TODO: Add option to make the repository be linked to './<repo>/'.
+
   add_builder_repo(config, repo_name: 'libtorrent')
   add_builder_repo(config, repo_name: 'rtorrent')
-  add_builder_repo(config, repo_name: 'opentracker')
+  add_builder_repo(config, repo_name: 'opentracker', auto_cleanup: true)
 end

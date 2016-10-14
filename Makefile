@@ -2,21 +2,23 @@
 # dependencies, so use the ugly hack of calling 'make foo' directly.
 
 BRANCH?=master
-LIBTORRENT_BRANCH?=$BRANCH
-RTORRENT_BRANCH?=$BRANCH
+LIBTORRENT_BRANCH?=$(BRANCH)
+RTORRENT_BRANCH?=$(BRANCH)
 
 all:
 	@echo "Call a proper make thing."
 
 init:
+	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
+
 	$(MAKE) clean
 	vagrant up builder
 	vagrant up node1
 	vagrant up node2
 	$(MAKE) tracker
 	$(MAKE) build_branch
-	# $(MAKE) disable_inet_node1
-	# $(MAKE) disable_inet_node2
+#	$(MAKE) disable_inet_node1
+#	$(MAKE) disable_inet_node2
 	$(MAKE) start_nodes
 
 # TODO: This may have issues is the rtorrent clients don't shut down
@@ -28,7 +30,8 @@ rebuild:
 	$(MAKE) start_nodes
 
 build_branch:
-	./scripts/build-branch $LIBTORRENT_BRANCH $RTORRENT_BRANCH
+	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
+	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin
 
 tracker:
 	vagrant ssh builder -c "/home/vagrant/build-tracker"
@@ -42,8 +45,8 @@ stop_nodes:
 	vagrant ssh node1 -c "/home/vagrant/stop-rtorrent"
 	vagrant ssh node2 -c "/home/vagrant/stop-rtorrent"
 
-activate_test2:
-	./scripts/new-torrent test2
+# activate_test2:
+# 	./scripts/new-torrent test2
 
 enable_inet_node1:
 	vagrant ssh node1 -c "/home/vagrant/enable-inet"

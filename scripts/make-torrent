@@ -13,12 +13,27 @@ IPV6_TRACKER=`cat ./data/builder/metadata/ipv6.address`
 USE_HTTP_TRACKER=${USE_HTTP_TRACKER:=yes}
 USE_UDP_TRACKER=${USE_UDP_TRACKER:=no}
 
+USE_IPV4=${USE_IPV4:=yes}
+USE_IPV6=${USE_IPV6:=no}
+
 if [ "$USE_HTTP_TRACKER" == "yes" ]; then
-    ANNOUNCE_URLS+=",http://[${IPV6_TRACKER}]:6969/announce"
+    if [ "$USE_IPV4" == "yes" ]; then
+        ANNOUNCE_URLS+=",http://${IPV4_TRACKER}:6969/announce"
+    fi
+
+    if [ "$USE_IPV6" == "yes" ]; then
+        ANNOUNCE_URLS+=",http://[${IPV6_TRACKER}]:6969/announce"
+    fi
 fi
 
 if [ "$USE_UDP_TRACKER" == "yes" ]; then
-    ANNOUNCE_URLS+=",udp://[${IPV6_TRACKER}]:6969"
+    if [ "$USE_IPV4" == "yes" ]; then
+        ANNOUNCE_URLS+=",udp://${IPV4_TRACKER}:6969"
+    fi
+
+    if [ "$USE_IPV6" == "yes" ]; then
+        ANNOUNCE_URLS+=",udp://[${IPV6_TRACKER}]:6969"
+    fi
 fi
 
 ANNOUNCE_URLS=`echo $ANNOUNCE_URLS | sed -n 's/^,//p'`

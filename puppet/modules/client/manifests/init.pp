@@ -31,6 +31,10 @@ class client {
     ensure => directory,
   }
 
+  file { '/data/local/log/rtorrent/old':
+    ensure => directory,
+  }
+
   file { '/data/local/session':
     ensure => directory,
   }
