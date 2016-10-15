@@ -68,3 +68,7 @@ setup:
 
 clean:
 	-vagrant destroy -f
+
+distclean:
+	-vagrant destroy -f
+	-rm -rf ./data/*

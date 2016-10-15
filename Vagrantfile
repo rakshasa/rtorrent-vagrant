@@ -11,6 +11,7 @@ DEFAULT_BOX = 'ubuntu/trusty64'
 nodes = [
   { hostname: 'builder',
     primary: true,
+    builder: true,
     cpus: 8,
     memory: 2048,
     ipv6: '10',
@@ -38,7 +39,7 @@ Vagrant.configure('2') do |config|
       # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
       node_config.vm.network 'private_network', type: 'dhcp'
 
-      add_local_data(node_config, node_name: node_name)
+      add_local_data(node_config, node_name: node_name, auto_cleanup: !node[:builder])
       add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
       add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
 
@@ -70,9 +71,12 @@ Vagrant.configure('2') do |config|
     config.cache.scope = :box
   end
 
-  # TODO: Add option to make the repository be linked to './<repo>/'.
-
   add_builder_repo(config, repo_name: 'libtorrent')
   add_builder_repo(config, repo_name: 'rtorrent')
-  add_builder_repo(config, repo_name: 'opentracker', auto_cleanup: true)
+  add_builder_repo(config, repo_name: 'opentracker')
+
+  config.trigger.after :destroy, vm: ['builder'], force: true do
+    run './scripts/clean-builder'
+  end
+
 end

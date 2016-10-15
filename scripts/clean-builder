@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DELETE_FILES=($(ls ./data/builder/))
+
+for i in ${!DELETE_FILES[@]}; do
+    if [ "${DELETE_FILES[$i]}" == "libtorrent" ] || [ "${DELETE_FILES[$i]}" == "rtorrent" ] || [ "${DELETE_FILES[$i]}" == "opentracker" ]; then
+        unset DELETE_FILES[$i]
+    fi 
+done
+
+for i in ${DELETE_FILES[@]}; do
+    echo rm -rf "./data/builder/$i"
+    rm -rf "./data/builder/$i"
+done

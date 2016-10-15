@@ -18,7 +18,7 @@ def add_builder_repo(config, repo_name:, repo_branch: 'master', repo_root: 'git@
   end
 end
 
-def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_create: true)
+def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_create: true, auto_cleanup:)
   if node_name.nil?
     raise Vagrant::Errors::VagrantError.new, "add_local_data called with no valid 'node_name'"
   end
@@ -26,7 +26,7 @@ def add_local_data(config, node_name:, data_user: nil, data_group: nil, should_c
   config.vm.synced_folder "./data/#{node_name}", '/data/local', owner: data_user, group: data_group, create: should_create
 
   config.trigger.after :destroy, vm: [node_name], force: true do
-    run "rm -rf ./data/#{node_name}"
+    run "rm -rf ./data/#{node_name}" if auto_cleanup
   end
 end
 
@@ -40,10 +40,8 @@ def add_shared_data(config, node_name:, shared_name:, shared_path: nil, should_c
   end
 
   config.vm.synced_folder "./data/#{shared_name}", shared_path || "/data/#{shared_name}", create: should_create
-
-  if should_create
-    config.trigger.after :destroy, vm: [node_name], force: true do
-      run "rm -rf ./data/#{shared_name}"
-    end
+  
+  config.trigger.after :destroy, vm: [node_name], force: true do
+    run "rm -rf ./data/#{shared_name}" if should_create
   end
 end
