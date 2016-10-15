@@ -17,7 +17,7 @@ fi
 
 if [ ! -s "${LOCAL_PATH}/$1" ]; then
     echo "truncated"
-    exit -1
+    exit
 fi
 
 if cmp -s "${LOCAL_PATH}/$1" "${SHARED_PATH}/$1"; then

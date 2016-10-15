@@ -31,7 +31,7 @@ ssh_config:
 # after build, or using a single script.
 rebuild:
 	$(MAKE) stop_nodes
-	vagrant ssh builder -c "/home/vagrant/rebuild-rtorrent"
+	./scripts/ssh builder -- "/home/vagrant/rebuild-rtorrent"
 	$(MAKE) start_nodes
 
 build_branch:
@@ -39,31 +39,31 @@ build_branch:
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin
 
 tracker:
-	vagrant ssh builder -c "/home/vagrant/build-tracker"
-	vagrant ssh builder -c "sudo service opentracker start"
+	./scripts/ssh builder -- "/home/vagrant/build-tracker"
+	./scripts/ssh builder -- "sudo service opentracker start"
 
 start_nodes:
-	vagrant ssh node1 -c "/home/vagrant/run-rtorrent"
-	vagrant ssh node2 -c "/home/vagrant/run-rtorrent"
+	./scripts/ssh node1 -- "/home/vagrant/run-rtorrent"
+	./scripts/ssh node2 -- "/home/vagrant/run-rtorrent"
 
 stop_nodes:
-	vagrant ssh node1 -c "/home/vagrant/stop-rtorrent"
-	vagrant ssh node2 -c "/home/vagrant/stop-rtorrent"
+	./scripts/ssh node1 -- "/home/vagrant/stop-rtorrent"
+	./scripts/ssh node2 -- "/home/vagrant/stop-rtorrent"
 
 # activate_test2:
 # 	./scripts/new-torrent test2
 
 enable_inet_node1:
-	vagrant ssh node1 -c "/home/vagrant/enable-inet"
+	./scripts/ssh node1 -- "/home/vagrant/enable-inet"
 
 enable_inet_node2:
-	vagrant ssh node2 -c "/home/vagrant/enable-inet"
+	./scripts/ssh node2 -- "/home/vagrant/enable-inet"
 
 disable_inet_node1:
-	vagrant ssh node1 -c "/home/vagrant/disable-inet"
+	./scripts/ssh node1 -- "/home/vagrant/disable-inet"
 
 disable_inet_node2:
-	vagrant ssh node2 -c "/home/vagrant/disable-inet"
+	./scripts/ssh node2 -- "/home/vagrant/disable-inet"
 
 setup:
 	vagrant plugin install vagrant-cachier

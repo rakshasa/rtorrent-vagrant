@@ -11,7 +11,7 @@ call_rpc() {
 
     echo $CALL_CMD
 
-    $CALL_CMD | awk -f ./scripts/sources/${AWK_FILE}.awk
+    $CALL_CMD | awk -f ./scripts/include/${AWK_FILE}.awk
 }
 
 call_nodes() {
