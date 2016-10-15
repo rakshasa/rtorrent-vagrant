@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./scripts/sources/git
+source ./scripts/include/git
 
 REPO_NAME=${3:?origin}
 LIBTORRENT_GIT_BRANCH=${1:?no libtorrent git branch provided}

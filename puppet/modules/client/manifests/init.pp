@@ -62,10 +62,10 @@ class client {
     source => 'puppet:///modules/client/stop-rtorrent'
   }
 
-  file { '/home/vagrant/torrent-completed':
+  file { '/home/vagrant/torrent-status':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/client/torrent-completed'
+    source => 'puppet:///modules/client/torrent-status'
   }
 
 }

@@ -15,11 +15,16 @@ init:
 	vagrant up builder
 	vagrant up node1
 	vagrant up node2
+	$(MAKE) ssh_config
+
 	$(MAKE) tracker
 	$(MAKE) build_branch
 #	$(MAKE) disable_inet_node1
 #	$(MAKE) disable_inet_node2
 	$(MAKE) start_nodes
+
+ssh_config:
+	vagrant ssh-config > ./data/ssh-config
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes

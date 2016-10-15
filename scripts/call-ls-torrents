@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./scripts/sources/call
+source ./scripts/include/call
 
 AWK_FILE='ls-torrents'
 

@@ -39,6 +39,8 @@ Vagrant.configure('2') do |config|
       # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
       node_config.vm.network 'private_network', type: 'dhcp'
 
+      disable_default_folder(node_config)
+
       add_local_data(node_config, node_name: node_name, auto_cleanup: !node[:builder])
       add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
       add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
