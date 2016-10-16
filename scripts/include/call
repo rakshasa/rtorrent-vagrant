@@ -7,6 +7,8 @@ CLIENT="./scripts/xmlrpc2scgi.py"
 
 call_rpc() {
     NODE_URL="scgi://`cat ./data/${NODE}/metadata/ipv4.address`:5001"
+    #NODE_URL="scgi://[`cat ./data/${NODE}/metadata/ipv6.address`]:5001"
+
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 
     echo $CALL_CMD

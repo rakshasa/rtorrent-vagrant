@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys, cStringIO as StringIO
-import xmlrpclib, urllib, urlparse, socket
+import xmlrpclib, urllib, urlparse, socket, re
 
 from urlparse import uses_netloc
 uses_netloc.append('scgi')
@@ -26,13 +26,25 @@ class SCGIRequest(object):
 		host, port = urllib.splitport(netloc)
 
 		if netloc:
-			addrinfo = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
-			assert len(addrinfo) == 1, "There's more than one? %r"%addrinfo
+                        #sys.stderr.write("host:%s port:%s\n" % (host, port))
+
+                        inet6_host = '' #re.search( r'^\[(.*)\]$', host, re.M).group(1)
+
+                        if len(inet6_host) > 0:
+                                #sys.stderr.write("inet6_host:%s\n" % (inet6_host))
+			        addrinfo = socket.getaddrinfo(inet6_host, port, socket.AF_INET6, socket.SOCK_STREAM)
+                        else:
+                                #sys.stderr.write("inet_host:%s\n" % (host))
+			        addrinfo = socket.getaddrinfo(host, port, socket.AF_INET, socket.SOCK_STREAM)
+
+			assert len(addrinfo) == 1, "There's more than one? %r" % addrinfo
+
 			sock = socket.socket(*addrinfo[0][:3])
 			sock.connect(addrinfo[0][4])
 		else:
 			sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 			sock.connect(path)
+
 		sock.send(scgireq)
 		recvdata = resp = sock.recv(1024)
 
