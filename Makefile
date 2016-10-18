@@ -50,8 +50,11 @@ stop_nodes:
 	./scripts/ssh node1 -- "/home/vagrant/stop-rtorrent"
 	./scripts/ssh node2 -- "/home/vagrant/stop-rtorrent"
 
-# activate_test2:
-# 	./scripts/new-torrent test2
+test_udp4_tracker:
+	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_udp4_1
+
+test_udp6_tracker:
+	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_udp6_1
 
 enable_inet_node1:
 	./scripts/ssh node1 -- "/home/vagrant/enable-inet"
