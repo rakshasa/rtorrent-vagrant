@@ -1,0 +1,17 @@
+#!/bin/bash
+
+NODES=("node1" "node2")
+
+call_rpc_nodes() {
+    for NODE in ${NODES[@]}; do
+        echo "${NODE}:"
+        call_rpc $@
+    done
+}
+
+call_remote_nodes() {
+    for NODE in ${NODES[@]}; do
+        echo "$NODE:"
+        ./scripts/ssh $NODE $@
+    done
+}

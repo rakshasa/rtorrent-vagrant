@@ -1,8 +1,9 @@
 #!/bin/bash
 
+source ./scripts/include/nodes
+
 DEBUG=1
 
-NODES=${1:-node1 node2}
 CLIENT="./scripts/xmlrpc2scgi.py"
 
 call_rpc() {
@@ -14,11 +15,4 @@ call_rpc() {
     echo $CALL_CMD
 
     $CALL_CMD | awk -f ./scripts/include/${AWK_FILE}.awk
-}
-
-call_nodes() {
-    for NODE in ${NODES}; do
-        echo "${NODE}:"
-        call_rpc $@
-    done
 }

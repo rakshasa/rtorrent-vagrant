@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./scripts/include/nodes
+
+# TODO: Add script to ssh to all client nodes.
+
+call_remote_nodes ./torrent-status $@

@@ -4,6 +4,11 @@ RTORRENT_EXEC="rtorrent -n -o try_import=/etc/rtorrent.rc,system.daemon.set=true
 RTORRENT_LOG="/data/local/log/rtorrent"
 
 mv $RTORRENT_LOG/*.log.* $RTORRENT_LOG/old
-nohup $RTORRENT_EXEC > $RTORRENT_LOG/daemon.log &
+
+if [ "$DEBUG" == "yes" ]; then
+    gdb --args $RTORRENT_EXEC
+else
+    nohup $RTORRENT_EXEC > $RTORRENT_LOG/daemon.log &
+fi
 
 sleep 1

@@ -10,7 +10,7 @@ class baseconfig {
 
   package {
     ['libncurses5', 'libxmlrpc-core-c3',
-     'screen'
+     'screen', 'gdb'
      ]:
       ensure => installed,
       require => Exec['update-apt']
