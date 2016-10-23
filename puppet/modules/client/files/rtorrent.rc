@@ -2,14 +2,15 @@
 # Logging
 #
 
-# TODO: Move log files to /data/local/log/rtorrent.
-
 # TODO: Rename 'critical' to something more descriptive.
 log.open_file = "crash.log", (cat,/data/local/log/rtorrent/crash.log.,(system.pid))
 log.add_output = "critical", "crash.log"
 
 log.open_file = "tracker.log", (cat,/data/local/log/rtorrent/tracker.log.,(system.pid))
 log.add_output = "tracker_debug", "tracker.log"
+
+log.open_file = "dht_all.log", (cat,/data/local/log/rtorrent/dht_all.log.,(system.pid))
+log.add_output = "dht_all", "dht_all.log"
 
 
 # TODO: Refactor:
@@ -26,6 +27,9 @@ log.add_output = "connection_debug", "connection.log"
 log.add_output = "socket_debug", "socket.log"
 log.add_output = "storage_debug", "storage.log"
 log.add_output = "thread_debug", "thread.log"
+
+log.open_file = "old_dht.log", (cat,/data/local/log/rtorrent/old_dht.log.,(system.pid))
+log.add_output = "dht_debug", "old_dht.log"
 
 
 #
@@ -45,3 +49,10 @@ schedule = watch_directory,5,5,load.start=/data/shared/watch/*.torrent
 #
 
 network.scgi.open_port = ":5001"
+
+#
+# DHT:
+#
+
+dht=on
+schedule = dht_add_node,2,0,((dht.add_node,router.utorrent.com:6881))
