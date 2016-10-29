@@ -1,0 +1,14 @@
+nodes:
+
+  - hostname: builder
+    primary: true
+    builder: true
+    cpus: 8
+    memory: 2048
+    ipv6: 10
+
+  - hostname: node1
+    ipv6: 11
+
+  - hostname: node2
+    ipv6: 12

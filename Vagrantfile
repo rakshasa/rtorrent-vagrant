@@ -1,31 +1,17 @@
 # -*- mode: ruby -*-
 
-require 'json'
+require './lib/config.rb'
 require './lib/helpers.rb'
 
 Vagrant.require_version ">= 1.8.0"
 
 # TODO: Move to config file.
 DEFAULT_BOX = 'ubuntu/trusty64'
-
-nodes = [
-  { hostname: 'builder',
-    primary: true,
-    builder: true,
-    cpus: 8,
-    memory: 2048,
-    ipv6: '10',
-  },
-  { hostname: 'node1',
-    ipv6: '11',
-  },
-  { hostname: 'node2',
-    ipv6: '12',
-  },
-]
-
 CONFIG_DIR = 'config/'
-#nodes = JSON.parse(File.read(File.join(CONFIG_DIR, 'base.nodes')))
+
+global_config = parse_config_file('default')
+
+nodes = global_config[:nodes]
 
 Vagrant.configure('2') do |config|
   nodes.each do |node|

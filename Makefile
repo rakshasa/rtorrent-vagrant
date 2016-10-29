@@ -23,6 +23,13 @@ init:
 #	$(MAKE) disable_inet_node2
 	$(MAKE) start_nodes
 
+init_builder:
+	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
+
+	$(MAKE) clean
+	vagrant up builder
+	$(MAKE) ssh_config
+
 ssh_config:
 	vagrant ssh-config > ./data/ssh-config
 

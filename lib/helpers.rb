@@ -1,5 +1,20 @@
 # -*- mode: ruby -*-
 
+def deep_symbolize_keys(object)
+  case object
+  when Array
+    object.map { |value|
+      deep_symbolize_keys(value)
+    }
+  when Hash
+    object.map { |key, value|
+      [key.to_sym, deep_symbolize_keys(value)]
+    }.to_h  
+  else
+    object
+  end
+end
+
 def node_define_params(node)
   { primary: node[:primary],
     autostart: node[:autostart]
