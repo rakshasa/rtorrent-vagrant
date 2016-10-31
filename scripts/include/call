@@ -16,3 +16,10 @@ call_rpc() {
 
     $CALL_CMD | awk -f ./scripts/include/${AWK_FILE}.awk
 }
+
+call_rpc_nodes() {
+    for NODE in ${NODES[@]}; do
+        echo "${NODE}:"
+        call_rpc $@
+    done
+}

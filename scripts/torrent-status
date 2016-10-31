@@ -2,6 +2,9 @@
 
 source ./scripts/include/nodes
 
-# TODO: Add script to ssh to all client nodes.
+if [ -z "$1" ]; then
+    echo "No torrent name specified."
+    exit -1
+fi
 
 call_remote_nodes ./torrent-status $@

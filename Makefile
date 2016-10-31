@@ -19,8 +19,6 @@ init:
 
 	$(MAKE) tracker
 	$(MAKE) build_branch
-#	$(MAKE) disable_inet_node1
-#	$(MAKE) disable_inet_node2
 	$(MAKE) start_nodes
 
 init_builder:
