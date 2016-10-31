@@ -24,6 +24,7 @@ Vagrant.configure('2') do |config|
       # The VirtualBox host-only network should have a private IPv6
       # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
       node_config.vm.network 'private_network', type: 'dhcp'
+      node_config.vm.network 'private_network', type: 'static', ip: "fddd::#{node[:ipv6]}/16"
 
       disable_default_folder(node_config)
 
