@@ -1,5 +1,4 @@
 #!/bin/bash
-# -*- mode: sh -*-
 
 source ./scripts/include/call
 

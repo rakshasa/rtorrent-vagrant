@@ -1,5 +1,4 @@
 #!/bin/bash
-# -*- mode: sh -*-
 
 NODES=("node1" "node2")
 
