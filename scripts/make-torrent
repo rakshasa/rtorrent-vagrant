@@ -38,4 +38,9 @@ fi
 
 ANNOUNCE_URLS=`echo $ANNOUNCE_URLS | sed -n 's/^,//p'`
 
+if ! type mktorrent; then
+    echo "Could not find 'mktorrent'."
+    exit -1
+fi
+
 mktorrent -v -a $ANNOUNCE_URLS -o $DATA_PATH.torrent $DATA_PATH

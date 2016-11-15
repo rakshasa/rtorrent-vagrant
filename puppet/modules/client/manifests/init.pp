@@ -12,6 +12,18 @@ class client {
   realize Group[rtorrent]
   realize User[rtorrent]
 
+  $data_dirs = ['/data/local/config',
+                '/data/local/log/rtorrent',
+                '/data/local/log/rtorrent/old',
+                '/data/local/session',
+                '/data/torrents']
+
+  file { $data_dirs:
+    ensure => directory,
+    owner  => 'vagrant',
+    group  => 'vagrant'
+  }
+
   file { '/etc/init.d/rtorrent':
     ensure => file,
     owner  => 'root',
@@ -27,26 +39,10 @@ class client {
     source => 'puppet:///modules/client/rtorrent.rc'
   }
 
-  file { '/data/local/log/rtorrent':
-    ensure => directory,
-  }
-
-  file { '/data/local/log/rtorrent/old':
-    ensure => directory,
-  }
-
-  file { '/data/local/session':
-    ensure => directory,
-  }
-
-  file { '/data/torrents':
-    ensure => directory,
-    owner  => 'vagrant',
-    group  => 'vagrant',
-  }
-
   file { '/home/vagrant/log-rtorrent':
     ensure => link,
+    owner  => 'vagrant',
+    group  => 'vagrant',
     target => '/data/local/log/rtorrent'
   }
 

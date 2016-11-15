@@ -16,23 +16,19 @@ class baseconfig {
       require => Exec['update-apt']
   }
 
+  $data_dirs = ['/data/local/log',
+                '/data/local/metadata',
+                '/data/local/run']
+
+  file { $data_dirs:
+    ensure => directory,
+  }
+
   file { '/etc/environment':
     ensure => file,
     owner  => 'root',
     group  => 'root',
     source => 'puppet:///modules/baseconfig/environment',
-  }
-
-  file { '/data/local/log':
-    ensure => directory,
-  }
-
-  file { '/data/local/metadata':
-    ensure => directory,
-  }
-
-  file { '/data/local/run':
-    ensure => directory,
   }
 
   file { '/home/vagrant/metadata.source':

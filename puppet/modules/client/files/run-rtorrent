@@ -3,12 +3,16 @@
 RTORRENT_EXEC="rtorrent -n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
 RTORRENT_LOG="/data/local/log/rtorrent"
 
-mv $RTORRENT_LOG/*.log.* $RTORRENT_LOG/old
+LOG_DATE=`date -u '+%F_%T'`
+
+for i in ${RTORRENT_LOG}/*.log; do
+    mv ${i} ${i/\/rtorrent\//\/rtorrent\/old\/}.${LOG_DATE}
+done
 
 if [ "$DEBUG" == "yes" ]; then
-    gdb --args $RTORRENT_EXEC
+    gdb --args ${RTORRENT_EXEC}
 else
-    nohup $RTORRENT_EXEC > $RTORRENT_LOG/daemon.log &
+    nohup ${RTORRENT_EXEC} > ${RTORRENT_LOG}/daemon.log &
 fi
 
 sleep 1
