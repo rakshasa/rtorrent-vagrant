@@ -7,8 +7,14 @@ DEBUG=1
 CLIENT="./scripts/xmlrpc2scgi.py"
 
 call_rpc() {
-    NODE_URL="scgi://`cat ./data/${NODE}/metadata/ipv4.address`:5001"
-    #NODE_URL="scgi://[`cat ./data/${NODE}/metadata/ipv6.address`]:5001"
+    FORWARD_PORT=`cat ./data/${NODE}/metadata/forward.5001`
+
+    if [ -z ${FORWARD_PORT} ]; then
+        echo "Could not find forward port for ${NODE}"
+        exit -1
+    fi
+
+    NODE_URL="scgi://localhost:${FORWARD_PORT}"
 
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 

@@ -2,6 +2,7 @@
 
 require './lib/config.rb'
 require './lib/helpers.rb'
+require './lib/network.rb'
 
 Vagrant.require_version ">= 1.8.0"
 
@@ -11,20 +12,15 @@ CONFIG_DIR = 'config/'
 
 global_config = parse_config_file('default')
 
-nodes = global_config[:nodes]
-
 Vagrant.configure('2') do |config|
-  nodes.each do |node|
+  global_config[:nodes].each do |node|
     node_name = node[:hostname]
 
     config.vm.define node_name, node_define_params(node) do |node_config|
       node_config.vm.box = (node[:box] || DEFAULT_BOX)
       node_config.vm.hostname = node_name + '.example.com'
 
-      # The VirtualBox host-only network should have a private IPv6
-      # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
-      node_config.vm.network 'private_network', type: 'dhcp'
-      #node_config.vm.network 'private_network', type: 'static', ip: "fddd::#{node[:ipv6]}/16"
+      configure_networks(node_config, node)
 
       disable_default_folder(node_config)
 
@@ -33,12 +29,6 @@ Vagrant.configure('2') do |config|
       add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
 
       node_config.trigger.after :up do
-        if node[:ipv6]
-          run_remote "/home/vagrant/change-inet6 fdcc::#{node[:ipv6]}/16"
-        else
-          run_remote "/home/vagrant/disable-inet6"
-        end
-
         run_remote '/home/vagrant/update-metadata'
       end
 
