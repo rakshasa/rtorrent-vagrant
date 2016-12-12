@@ -22,6 +22,12 @@ class builder {
     source => 'puppet:///modules/builder/build-rtorrent'
   }
 
+  file { '/home/vagrant/check-rtorrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/builder/check-rtorrent'
+  }
+
   file { '/home/vagrant/rebuild-rtorrent':
     ensure => file,
     mode   => '0755',

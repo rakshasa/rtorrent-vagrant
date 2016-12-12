@@ -39,6 +39,15 @@ rebuild:
 	./scripts/ssh builder -- "/home/vagrant/rebuild-rtorrent"
 	$(MAKE) start_nodes
 
+check:
+	$(MAKE) stop_nodes
+	./scripts/ssh builder -- "/home/vagrant/check-rtorrent"
+	$(MAKE) start_nodes
+
+restart:
+	$(MAKE) stop_nodes
+	$(MAKE) start_nodes
+
 build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin

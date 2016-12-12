@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./scripts/include/call
+
+AWK_FILE='local-id'
+
+call_rpc_nodes d.multicall2 s/ main d.local_id= d.name=
