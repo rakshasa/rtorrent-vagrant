@@ -6,7 +6,17 @@ LIBTORRENT_BRANCH?=$(BRANCH)
 RTORRENT_BRANCH?=$(BRANCH)
 
 all:
-	@echo "Call a proper make thing."
+	@echo "RTorrent Vagrant environment"
+	@echo
+	@echo "make setup      - install required vagrant plugins"
+	@echo "make init       - initialize vms and build rtorrent (support BRANCH, or LIBTORRENT_BRANCH and RTORRENT_BRANCH variables)"
+	@echo "make rebuild    - rebuild rtorrent"
+	@echo "make test_http4 - creates torrent and attempts to seed it"
+	@echo
+	@echo "Example:"
+	@echo
+	@echo "make setup && RTORRENT_BRANCH=feature-foo make init && make test_http4"
+	@echo
 
 init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
