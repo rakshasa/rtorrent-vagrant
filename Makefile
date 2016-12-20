@@ -10,7 +10,8 @@ all:
 	@echo
 	@echo "make setup      - install required vagrant plugins"
 	@echo "make init       - initialize vms and build rtorrent (support BRANCH, or LIBTORRENT_BRANCH and RTORRENT_BRANCH variables)"
-	@echo "make rebuild    - rebuild rtorrent"
+	@echo "make rebuild    - rebuild libtorrent and rtorrent"
+	@echo "make check      - rebuild libtorrent and rtorrent with unittests"
 	@echo "make test_http4 - creates torrent and attempts to seed it"
 	@echo
 	@echo "Example:"

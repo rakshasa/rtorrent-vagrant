@@ -11,7 +11,8 @@ While this environment primarily serves the needs of the main developer of rtorr
 ```
 make setup      - install required vagrant plugins
 make init       - initialize vms and build rtorrent (support BRANCH, or LIBTORRENT_BRANCH and RTORRENT_BRANCH variables)
-make rebuild    - rebuild rtorrent
+make rebuild    - rebuild libtorrent and rtorrent
+make check      - rebuild libtorrent and rtorrent with unittests
 make test_http4 - creates torrent and attempts to seed it
 ```
 
