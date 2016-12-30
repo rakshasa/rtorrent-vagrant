@@ -24,8 +24,7 @@ init:
 
 	$(MAKE) clean
 	vagrant up builder
-	vagrant up node1
-	vagrant up node2
+	vagrant up node1 node2 node3
 	$(MAKE) ssh_config
 
 	$(MAKE) tracker
@@ -70,10 +69,12 @@ tracker:
 start_nodes:
 	./scripts/ssh node1 -- "/home/vagrant/run-rtorrent"
 	./scripts/ssh node2 -- "/home/vagrant/run-rtorrent"
+	./scripts/ssh node3 -- "/home/vagrant/run-rtorrent"
 
 stop_nodes:
 	./scripts/ssh node1 -- "/home/vagrant/stop-rtorrent"
 	./scripts/ssh node2 -- "/home/vagrant/stop-rtorrent"
+	./scripts/ssh node3 -- "/home/vagrant/stop-rtorrent"
 
 test_udp4_tracker:
 	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_udp4_1
@@ -83,18 +84,6 @@ test_udp6_tracker:
 
 test_http4:
 	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_http4
-
-enable_inet_node1:
-	./scripts/ssh node1 -- "/home/vagrant/enable-inet"
-
-enable_inet_node2:
-	./scripts/ssh node2 -- "/home/vagrant/enable-inet"
-
-disable_inet_node1:
-	./scripts/ssh node1 -- "/home/vagrant/disable-inet"
-
-disable_inet_node2:
-	./scripts/ssh node2 -- "/home/vagrant/disable-inet"
 
 setup:
 	vagrant plugin install vagrant-cachier

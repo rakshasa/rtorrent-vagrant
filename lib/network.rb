@@ -19,7 +19,7 @@ def configure_networks(node, config)
   }
   
   node.trigger.after :up do
-    if config[:enable_ipv4].has_key? && config[:enable_ipv4] == false
+    if config.has_key?(:enable_ipv4) && config[:enable_ipv4] == false
       run_remote "/home/vagrant/disable-inet"
     end
 

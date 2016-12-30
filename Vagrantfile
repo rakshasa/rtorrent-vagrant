@@ -28,6 +28,7 @@ Vagrant.configure('2') do |config|
       add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
       add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
 
+      # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do
         run_remote '/home/vagrant/update-metadata'
       end
