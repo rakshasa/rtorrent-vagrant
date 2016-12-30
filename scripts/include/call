@@ -1,10 +1,16 @@
 #!/bin/bash
 
-source ./scripts/include/nodes
-
 DEBUG=1
 
+NODES=(`ls data/ | grep "^node"`)
 CLIENT="./scripts/xmlrpc2scgi.py"
+
+call_remote_nodes() {
+    for NODE in ${NODES[@]}; do
+        echo "$NODE:"
+        ./scripts/ssh $NODE $@
+    done
+}
 
 call_rpc() {
     FORWARD_PORT=`cat ./data/${NODE}/metadata/forward.5001`

@@ -8,12 +8,16 @@ class baseconfig {
     command => 'sudo apt-get update --fix-missing',
   }
 
+  exec { 'add-ubuntu-toolchain-r-test':
+    command => 'sudo add-apt-repository ppa:ubuntu-toolchain-r/test',
+  }
+
   package {
     ['libncurses5', 'libxmlrpc-core-c3',
      'screen', 'gdb'
      ]:
       ensure => installed,
-      require => Exec['update-apt']
+      require => Exec['add-ubuntu-toolchain-r-test', 'update-apt']
   }
 
   $data_dirs = ['/data/local/log',

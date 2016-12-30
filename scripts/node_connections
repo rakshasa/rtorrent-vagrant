@@ -3,6 +3,6 @@
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
 
-source ${SCRIPT_DIR}/include/nodes
+source ${SCRIPT_DIR}/include/call
 
 call_remote_nodes "sudo netstat -lpn | grep rtorrent"
