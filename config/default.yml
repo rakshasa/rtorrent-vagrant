@@ -20,7 +20,7 @@ nodes:
       host: 18602
 
   - hostname: node3
-    enable_ipv4: false
+#    enable_ipv4: false
     ipv6: 13
     forward:
     - guest: 5001

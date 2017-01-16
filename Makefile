@@ -23,40 +23,29 @@ init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 
 	$(MAKE) clean
-	vagrant up builder
-	vagrant up node1 node2 node3
-	$(MAKE) ssh_config
+	vagrant up
+	./scripts/update-ssh-config
 
 	$(MAKE) tracker
 	$(MAKE) build_branch
-	$(MAKE) start_nodes
-
-init_builder:
-	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
-
-	$(MAKE) clean
-	vagrant up builder
-	$(MAKE) ssh_config
-
-ssh_config:
-	vagrant ssh-config > ./data/ssh-config
+	./scripts/start-rtorrent
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.
 rebuild:
-	$(MAKE) stop_nodes
+	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "/home/vagrant/rebuild-rtorrent"
-	$(MAKE) start_nodes
+	./scripts/start-rtorrent
 
 check:
-	$(MAKE) stop_nodes
+	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "/home/vagrant/check-rtorrent"
-	$(MAKE) start_nodes
+	./scripts/start-rtorrent
 
 restart:
-	$(MAKE) stop_nodes
-	$(MAKE) start_nodes
+	./scripts/stop-rtorrent
+	./scripts/start-rtorrent
 
 build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
@@ -65,16 +54,6 @@ build_branch:
 tracker:
 	./scripts/ssh builder -- "/home/vagrant/build-tracker"
 	./scripts/ssh builder -- "sudo service opentracker start"
-
-start_nodes:
-	./scripts/ssh node1 -- "/home/vagrant/run-rtorrent"
-	./scripts/ssh node2 -- "/home/vagrant/run-rtorrent"
-	./scripts/ssh node3 -- "/home/vagrant/run-rtorrent"
-
-stop_nodes:
-	./scripts/ssh node1 -- "/home/vagrant/stop-rtorrent"
-	./scripts/ssh node2 -- "/home/vagrant/stop-rtorrent"
-	./scripts/ssh node3 -- "/home/vagrant/stop-rtorrent"
 
 test_udp4_tracker:
 	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_udp4_1

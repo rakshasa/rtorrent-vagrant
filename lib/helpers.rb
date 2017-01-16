@@ -17,7 +17,7 @@ end
 
 def node_define_params(node)
   { primary: node[:primary],
-    autostart: node[:autostart]
+    autostart: node.has_key?(:autostart) ? node[:autostart] : true,
   }
 end
 
