@@ -46,10 +46,10 @@ class client {
     target => '/data/local/log/rtorrent'
   }
 
-  file { '/home/vagrant/run-rtorrent':
+  file { '/home/vagrant/start-rtorrent':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/client/run-rtorrent'
+    source => 'puppet:///modules/client/start-rtorrent'
   }
 
   file { '/home/vagrant/stop-rtorrent':

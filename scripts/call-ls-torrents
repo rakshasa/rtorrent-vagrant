@@ -5,4 +5,4 @@ source ./scripts/include/call
 AWK_FILE='ls-torrents'
 
 # Why d.complete and not d.is_complete.
-call_rpc_nodes d.multicall2 s/ main d.hash= d.is_open= d.is_active= d.complete= d.name= d.completed_chunks= d.size_chunks=
+call_rpc_nodes d.multicall2 s/ main d.hash= d.is_open= d.is_active= d.complete= d.completed_chunks= d.size_chunks= d.name=

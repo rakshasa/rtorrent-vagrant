@@ -17,7 +17,7 @@
 
 USER=vagrant
 PIDFILE=/data/local/run/rtorrent.pid
-RTORRENT="/home/vagrant/run-rtorrent"
+RTORRENT="/home/vagrant/start-rtorrent"
 
 case "$1" in
     start)

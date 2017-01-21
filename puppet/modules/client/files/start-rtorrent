@@ -3,7 +3,7 @@
 RTORRENT_EXEC="rtorrent -n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
 RTORRENT_LOG="/data/local/log/rtorrent"
 
-LOG_DATE=`date -u '+%F_%T'`
+LOG_DATE=`date -u '+%F_%H-%M-%S'`
 
 for i in ${RTORRENT_LOG}/*.log; do
     mv ${i} ${i/\/rtorrent\//\/rtorrent\/old\/}.${LOG_DATE}

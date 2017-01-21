@@ -16,3 +16,4 @@ TAGS
 # VM files #
 ############
 data/*
+.vagrant/
