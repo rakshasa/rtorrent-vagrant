@@ -5,4 +5,4 @@ SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
 
 source ${SCRIPT_DIR}/include/call
 
-call_remote_nodes "/home/vagrant/start-rtorrent"
+call_remote_nodes "start-rtorrent"

@@ -24,7 +24,10 @@ class baseconfig {
                 '/data/local/metadata',
                 '/data/local/run']
 
-  file { $data_dirs:
+  file {
+    [$data_dirs,
+     '/usr/local/bin/'
+     ]:
     ensure => directory,
   }
 
@@ -35,31 +38,31 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/environment',
   }
 
-  file { '/home/vagrant/metadata.source':
+  file { '/usr/local/bin/metadata.source':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/metadata.source',
   }
 
-  file { '/home/vagrant/update-metadata':
+  file { '/usr/local/bin/update-metadata':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/update-metadata',
   }
 
-  file { '/home/vagrant/enable-inet':
+  file { '/usr/local/bin/enable-inet':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/enable-inet',
   }
 
-  file { '/home/vagrant/disable-inet':
+  file { '/usr/local/bin/disable-inet':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/disable-inet',
   }
 
-  file { '/home/vagrant/change-inet6':
+  file { '/usr/local/bin/change-inet6':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/baseconfig/change-inet6',

@@ -35,12 +35,12 @@ init:
 # after build, or using a single script.
 rebuild:
 	./scripts/stop-rtorrent
-	./scripts/ssh builder -- "/home/vagrant/rebuild-rtorrent"
+	./scripts/ssh builder -- "rebuild-rtorrent"
 	./scripts/start-rtorrent
 
 check:
 	./scripts/stop-rtorrent
-	./scripts/ssh builder -- "/home/vagrant/check-rtorrent"
+	./scripts/ssh builder -- "check-rtorrent"
 	./scripts/start-rtorrent
 
 restart:
@@ -52,7 +52,7 @@ build_branch:
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin
 
 tracker:
-	./scripts/ssh builder -- "/home/vagrant/build-tracker"
+	./scripts/ssh builder -- "build-tracker"
 	./scripts/ssh builder -- "sudo service opentracker start"
 
 test_udp4_tracker:

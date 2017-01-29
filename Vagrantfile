@@ -30,7 +30,7 @@ Vagrant.configure('2') do |config|
 
       # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do
-        run_remote '/home/vagrant/update-metadata'
+        run_remote 'update-metadata'
       end
 
       node_config.vm.provider 'virtualbox' do |vb|
@@ -61,7 +61,7 @@ Vagrant.configure('2') do |config|
   add_builder_repo(config, repo_name: 'opentracker')
 
   config.trigger.after :destroy, vm: ['builder'], force: true do
-    run './scripts/clean-builder'
+    run 'bash ./scripts/clean-builder'
   end
 
 end

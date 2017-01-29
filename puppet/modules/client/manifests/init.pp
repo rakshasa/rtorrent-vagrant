@@ -39,26 +39,19 @@ class client {
     source => 'puppet:///modules/client/rtorrent.rc'
   }
 
-  file { '/home/vagrant/log-rtorrent':
-    ensure => link,
-    owner  => 'vagrant',
-    group  => 'vagrant',
-    target => '/data/local/log/rtorrent'
-  }
-
-  file { '/home/vagrant/start-rtorrent':
+  file { '/usr/local/bin/start-rtorrent':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/client/start-rtorrent'
   }
 
-  file { '/home/vagrant/stop-rtorrent':
+  file { '/usr/local/bin/stop-rtorrent':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/client/stop-rtorrent'
   }
 
-  file { '/home/vagrant/torrent-status':
+  file { '/usr/local/bin/torrent-status':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/client/torrent-status'

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./scripts/make-torrent $@ || exit -1
+./scripts/ssh builder make-torrent $@ || exit -1
 ./scripts/activate-torrent $@

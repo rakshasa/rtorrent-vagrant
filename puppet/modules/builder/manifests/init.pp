@@ -5,7 +5,9 @@ class builder {
      'automake', 'libtool', 'make', 'pkg-config', 'git-core',
      'libcppunit-dev',
      'libcurl4-openssl-dev', 'libncurses5-dev', 'libxmlrpc-core-c3-dev',
-     'libowfat-dev'
+     'libowfat-dev',
+
+     'mktorrent'
      ]:
       ensure => installed,
       require => Exec['update-apt']
@@ -17,28 +19,34 @@ class builder {
   realize Group[opentracker]
   realize User[opentracker]
 
-  file { '/home/vagrant/build-rtorrent':
+  file { '/usr/local/bin/build-rtorrent':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/builder/build-rtorrent'
   }
 
-  file { '/home/vagrant/check-rtorrent':
+  file { '/usr/local/bin/check-rtorrent':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/builder/check-rtorrent'
   }
 
-  file { '/home/vagrant/rebuild-rtorrent':
+  file { '/usr/local/bin/rebuild-rtorrent':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/builder/rebuild-rtorrent'
   }
 
-  file { '/home/vagrant/build-tracker':
+  file { '/usr/local/bin/build-tracker':
     ensure => file,
     mode   => '0755',
     source => 'puppet:///modules/builder/build-tracker'
+  }
+
+  file { '/usr/local/bin/make-torrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/builder/make-torrent'
   }
 
   file { '/etc/init.d/opentracker':

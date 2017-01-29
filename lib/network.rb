@@ -20,13 +20,13 @@ def configure_networks(node, config)
   
   node.trigger.after :up do
     if config.has_key?(:enable_ipv4) && config[:enable_ipv4] == false
-      run_remote "/home/vagrant/disable-inet"
+      run_remote 'disable-inet'
     end
 
     if config[:ipv6]
-      run_remote "/home/vagrant/change-inet6 fdcc::#{config[:ipv6]}/16"
+      run_remote "change-inet6 fdcc::#{config[:ipv6]}/16"
     else
-      run_remote "/home/vagrant/disable-inet6"
+      run_remote 'disable-inet6'
     end
   end
 end
