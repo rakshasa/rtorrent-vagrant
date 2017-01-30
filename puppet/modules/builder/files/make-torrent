@@ -7,8 +7,8 @@ DATA_COUNT=${DATA_COUNT:=5}
 
 dd bs=1m count=$DATA_COUNT if=/dev/urandom of=$DATA_PATH
 
-IPV4_TRACKER=`cat /data/builder/metadata/ipv4.address`
-IPV6_TRACKER=`cat /data/builder/metadata/ipv6.address`
+IPV4_TRACKER=`cat /data/local/metadata/ipv4.address`
+IPV6_TRACKER=`cat /data/local/metadata/ipv6.address`
 
 USE_HTTP_TRACKER=${USE_HTTP_TRACKER:=yes}
 USE_UDP_TRACKER=${USE_UDP_TRACKER:=no}
