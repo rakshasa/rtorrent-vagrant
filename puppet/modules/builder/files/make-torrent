@@ -5,7 +5,7 @@ DATA_PATH="/data/shared/torrents/${DATA_FILENAME}"
 
 DATA_COUNT=${DATA_COUNT:=5}
 
-dd bs=1m count=$DATA_COUNT if=/dev/urandom of=$DATA_PATH
+dd bs=1M count=${DATA_COUNT} if=/dev/urandom of=${DATA_PATH}
 
 IPV4_TRACKER=`cat /data/local/metadata/ipv4.address`
 IPV6_TRACKER=`cat /data/local/metadata/ipv6.address`
@@ -16,8 +16,8 @@ USE_UDP_TRACKER=${USE_UDP_TRACKER:=no}
 USE_IPV4=${USE_IPV4:=yes}
 USE_IPV6=${USE_IPV6:=no}
 
-if [ "$USE_HTTP_TRACKER" == "yes" ]; then
-    if [ "$USE_IPV4" == "yes" ]; then
+if [ "${USE_HTTP_TRACKER}" == "yes" ]; then
+    if [ "${USE_IPV4}" == "yes" ]; then
         ANNOUNCE_URLS+=",http://${IPV4_TRACKER}:6969/announce"
     fi
 
@@ -26,21 +26,21 @@ if [ "$USE_HTTP_TRACKER" == "yes" ]; then
     fi
 fi
 
-if [ "$USE_UDP_TRACKER" == "yes" ]; then
-    if [ "$USE_IPV4" == "yes" ]; then
+if [ "${USE_UDP_TRACKER}" == "yes" ]; then
+    if [ "${USE_IPV4}" == "yes" ]; then
         ANNOUNCE_URLS+=",udp://${IPV4_TRACKER}:6969"
     fi
 
-    if [ "$USE_IPV6" == "yes" ]; then
+    if [ "${USE_IPV6}" == "yes" ]; then
         ANNOUNCE_URLS+=",udp://[${IPV6_TRACKER}]:6969"
     fi
 fi
 
-ANNOUNCE_URLS=`echo $ANNOUNCE_URLS | sed -n 's/^,//p'`
+ANNOUNCE_URLS=`echo ${ANNOUNCE_URLS} | sed -n 's/^,//p'`
 
 if ! type mktorrent; then
     echo "Could not find 'mktorrent'."
     exit -1
 fi
 
-mktorrent -v -a $ANNOUNCE_URLS -o $DATA_PATH.torrent $DATA_PATH
+mktorrent -v -a ${ANNOUNCE_URLS} -o ${DATA_PATH}.torrent ${DATA_PATH}
