@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export DATA_FILENAME=$1
+
+source ./scripts/include/torrent
+
+rm ${DATA_HOST_WATCH_TORRENT}

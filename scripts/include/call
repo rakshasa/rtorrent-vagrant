@@ -24,7 +24,7 @@ call_rpc() {
 
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 
-    echo $CALL_CMD
+    #echo $CALL_CMD
 
     $CALL_CMD | awk -f ./scripts/include/${AWK_FILE}.awk
 }

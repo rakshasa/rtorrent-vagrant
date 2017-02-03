@@ -1,0 +1,13 @@
+#!/bin/bash
+
+SEED_NODE=${SEED_NODE:-node1}
+
+DATA_FILENAME=${DATA_FILENAME:?no filename provided}
+
+DATA_VM_PATH="/data/shared/torrents/${DATA_FILENAME}"
+DATA_VM_TORRENTS="/data/torrents/"
+
+DATA_HOST_PATH="./data/shared/torrents/${DATA_FILENAME}"
+DATA_HOST_WATCH="./data/shared/watch/"
+
+DATA_HOST_WATCH_TORRENT="${DATA_HOST_WATCH}/${DATA_FILENAME}.torrent"
