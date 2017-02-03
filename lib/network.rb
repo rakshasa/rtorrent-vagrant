@@ -12,13 +12,13 @@ def configure_networks(node, config)
   
   node.trigger.after :up do
     if enable_ipv4?(config)
-      run_remote 'disable-inet'
+      run_remote 'disable-ipv4'
     end
 
     if enable_ipv6?(config)
-      run_remote "change-inet6 fdcc::#{config[:ipv6]}/16"
+      run_remote "change-ipv6 fdcc::#{config[:ipv6]}/16"
     else
-      run_remote 'disable-inet6'
+      run_remote 'disable-ipv6'
     end
   end
 end

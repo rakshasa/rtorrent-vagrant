@@ -50,22 +50,28 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/update-metadata',
   }
 
-  file { '/usr/local/bin/enable-inet':
+  file { '/usr/local/bin/enable-ipv4':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/baseconfig/enable-inet',
+    source => 'puppet:///modules/baseconfig/enable-ipv4',
   }
 
-  file { '/usr/local/bin/disable-inet':
+  file { '/usr/local/bin/disable-ipv4':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/baseconfig/disable-inet',
+    source => 'puppet:///modules/baseconfig/disable-ipv4',
   }
 
-  file { '/usr/local/bin/change-inet6':
+  file { '/usr/local/bin/disable-ipv6':
     ensure => file,
     mode   => '0755',
-    source => 'puppet:///modules/baseconfig/change-inet6',
+    source => 'puppet:///modules/baseconfig/disable-ipv6',
+  }
+
+  file { '/usr/local/bin/change-ipv6':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/change-ipv6',
   }
 
 }

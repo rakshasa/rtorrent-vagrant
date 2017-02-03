@@ -1,4 +1,10 @@
 METADATA="/data/local/metadata"
 PRIVATE_DEV="eth1"
 
-METADATA_PRIVATE_INET="`cat $METADATA/ipv4.address`/`cat $METADATA/ipv4.prefix`"
+if [ -f "${METADATA}/ipv4.address" ]; then
+   METADATA_PRIVATE_IPV4="`cat ${METADATA}/ipv4.address`/`cat ${METADATA}/ipv4.prefix`"
+fi
+
+if [ -f "${METADATA}/ipv6.address" ]; then
+   METADATA_PRIVATE_IPV6="`cat ${METADATA}/ipv6.address`/`cat ${METADATA}/ipv6.prefix`"
+fi

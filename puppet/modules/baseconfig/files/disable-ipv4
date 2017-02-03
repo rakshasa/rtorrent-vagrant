@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source /usr/local/bin/metadata.source
+
+sudo ip -4 addr flush dev ${PRIVATE_DEV}

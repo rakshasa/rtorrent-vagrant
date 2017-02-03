@@ -21,7 +21,7 @@
     if (is_complete == 1)
         progress = "complete";
     else
-        progress = "partial";
+        progress = " partial";
 
     print info_hash, state, progress, "chunks:" completed_chunks "/" size_chunks, name
 }
