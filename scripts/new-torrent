@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./scripts/ssh builder make-torrent $@ || exit -1
+./scripts/ssh builder "USE_HTTP_TRACKER=${USE_HTTP_TRACKER} USE_UDP_TRACKER=${USE_UDP_TRACKER} USE_IPV4=${USE_IPV4} USE_IPV6=${USE_IPV6} make-torrent" $@ || exit -1
 ./scripts/activate-torrent $@
