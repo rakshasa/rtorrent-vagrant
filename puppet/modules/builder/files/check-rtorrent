@@ -3,7 +3,7 @@
 export MAKEFLAGS="-j 8"
 
 cd /data/local/libtorrent
-make clean && make && sudo make install && make check || exit 1
+make && sudo make install && make check || exit 1
 
 cd /data/local/rtorrent
-make clean && make && sudo make install && make check || exit 1
+make && sudo make install && make check || exit 1
