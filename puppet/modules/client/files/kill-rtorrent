@@ -8,4 +8,5 @@ fi
 
 RTORRENT_PID=`sed -n 's/^[^:]*:+\([0-9].*\)$/\1/p' $RTORRENT_LOCKFILE`
 
-kill -9 $RTORRENT_PID || true
+kill -9 "${RTORRENT_PID}" || true
+rm "${RTORRENT_PID}" || true
