@@ -51,6 +51,12 @@ class client {
     source => 'puppet:///modules/client/stop-rtorrent'
   }
 
+  file { '/usr/local/bin/kill-rtorrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/client/kill-rtorrent'
+  }
+
   file { '/usr/local/bin/torrent-status':
     ensure => file,
     mode   => '0755',

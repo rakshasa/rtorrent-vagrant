@@ -43,4 +43,4 @@ if ! type mktorrent; then
     exit -1
 fi
 
-mktorrent -v -a ${ANNOUNCE_URLS} -o ${DATA_PATH}.torrent ${DATA_PATH}
+mktorrent -v -p -a ${ANNOUNCE_URLS} -o ${DATA_PATH}.torrent ${DATA_PATH}
