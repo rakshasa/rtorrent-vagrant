@@ -55,14 +55,11 @@ tracker:
 	./scripts/ssh builder -- "build-tracker"
 	./scripts/ssh builder -- "sudo service opentracker start"
 
-test_udp4_tracker:
-	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_udp4_1
-
-test_udp6_tracker:
-	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_udp6_1
-
-test_http4:
-	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_http4
+test_all:
+	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_h4
+	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_h6
+	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_u4
+	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_u6
 
 setup:
 	vagrant plugin install vagrant-cachier
