@@ -61,6 +61,16 @@ test_all:
 	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_u4
 	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_u6
 
+delete_test_all:
+	 -./scripts/deactivate-torrent test_h4
+	 -./scripts/deactivate-torrent test_h6
+	 -./scripts/deactivate-torrent test_u4
+	 -./scripts/deactivate-torrent test_u6
+	 -./scripts/rm-torrent test_h4
+	 -./scripts/rm-torrent test_h6
+	 -./scripts/rm-torrent test_u4
+	 -./scripts/rm-torrent test_u6
+
 setup:
 	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-git
