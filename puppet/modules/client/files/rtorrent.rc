@@ -62,5 +62,5 @@ network.scgi.open_port = ":5001"
 # DHT:
 #
 
-dht=on
-schedule = dht_add_node,2,0,((dht.add_node,router.utorrent.com:6881))
+#dht=on
+#schedule = dht_add_node,2,0,((dht.add_node,router.utorrent.com:6881))
