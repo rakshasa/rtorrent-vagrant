@@ -7,4 +7,4 @@ if [ -z "$1" ]; then
     exit -1
 fi
 
-call_remote_nodes torrent-status $@
+call_ssh_nodes torrent-status $@

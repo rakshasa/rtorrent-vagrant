@@ -5,4 +5,4 @@ SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
 
 source ${SCRIPT_DIR}/include/call
 
-call_remote_nodes "kill-rtorrent"
+call_ssh_nodes_p "kill-rtorrent"

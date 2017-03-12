@@ -11,7 +11,7 @@ def configure_networks(node, config)
   }
   
   node.trigger.after :up do
-    if enable_ipv4?(config)
+    if !enable_ipv4?(config)
       run_remote 'disable-ipv4'
     end
 
@@ -24,7 +24,7 @@ def configure_networks(node, config)
 end
 
 def enable_ipv4?(config)
-  config.has_key?(:enable_ipv4) && config[:enable_ipv4] == false
+  !config.has_key?(:enable_ipv4) || config[:enable_ipv4]
 end
 
 def enable_ipv6?(config)

@@ -5,11 +5,15 @@ DEBUG=1
 NODES=(`ls data/ | grep "^node"`)
 CLIENT="./scripts/xmlrpc2scgi.py"
 
-call_remote_nodes() {
+call_ssh_nodes() {
     for NODE in ${NODES[@]}; do
         echo "$NODE:"
         ./scripts/ssh $NODE $@
     done
+}
+
+call_ssh_nodes_p() {
+    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -i ./scripts/ssh {} $@
 }
 
 call_rpc() {

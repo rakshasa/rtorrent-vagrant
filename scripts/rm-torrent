@@ -7,7 +7,7 @@ TORRENT_DIR="/data/torrents"
 
 source ${SCRIPT_DIR}/include/call
 
-call_remote_nodes "rm ${TORRENT_DIR}/${1}"
+call_ssh_nodes_p "rm ${TORRENT_DIR}/${1}"
 
 rm "./data/shared/torrents/${1}"
 rm "./data/shared/torrents/${1}.torrent"
