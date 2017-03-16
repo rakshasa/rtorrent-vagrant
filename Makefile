@@ -52,7 +52,8 @@ build_branch:
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin
 
 tracker:
-	./scripts/ssh builder -- "build-tracker"
+	./scripts/ssh builder -- "sudo service opentracker stop"
+	./scripts/ssh builder -- "IPV4_ONLY=${IPV4_ONLY} build-tracker"
 	./scripts/ssh builder -- "sudo service opentracker start"
 
 test_all:

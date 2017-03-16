@@ -19,9 +19,9 @@ case "$1" in
     start)
         echo -n "Starting Open Bittorrent Tracker ..."
 
-        if [ -f ${LOG_FILE} ]; then
-            mv ${LOG_FILE} ${LOG_FILE}.`date +%F_%R`
-        fi
+        # if [ -f ${LOG_FILE} ]; then
+        #     mv ${LOG_FILE} ${LOG_FILE}.`date +%F_%R`
+        # fi
 
         start-stop-daemon --start --background --oknodo \
                           --chuid "vagrant" \
@@ -42,9 +42,11 @@ case "$1" in
     stop)
         echo -n "Stopping Open Bittorrent Tracker"
 
-        if [ -f ${PID_FILE} ]; then
-            kill `cat ${PID_FILE}`
-        fi
+        # if [ -f ${PID_FILE} ]; then
+        #     kill `cat ${PID_FILE}`
+        # fi
+
+        killall opentracker || true
 
         echo "."
         ;;

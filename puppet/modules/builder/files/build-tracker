@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export FEATURES="-DWANT_V6"
+if [ "${IPV4_ONLY}" != "yes" ]; then
+    export FEATURES="-DWANT_V6"
+fi
 
 sudo mkdir /usr/local/bin
 
