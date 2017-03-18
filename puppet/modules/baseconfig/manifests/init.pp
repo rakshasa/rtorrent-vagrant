@@ -68,6 +68,12 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/disable-ipv6',
   }
 
+  file { '/usr/local/bin/change-ipv4':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/baseconfig/change-ipv4',
+  }
+
   file { '/usr/local/bin/change-ipv6':
     ensure => file,
     mode   => '0755',

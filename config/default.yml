@@ -5,21 +5,23 @@ nodes:
     builder: true
     cpus: 8
     memory: 2048
+    ipv4: 10
     ipv6: 10
 
   - hostname: node1
+    ipv4: 11
     ipv6: 11
     forward:
     - guest: 5001
       host: 18601
 
   - hostname: node2
+    ipv4: 12
     forward:
     - guest: 5001
       host: 18602
 
   - hostname: node3
-    enable_ipv4: false
     ipv6: 13
     forward:
     - guest: 5001

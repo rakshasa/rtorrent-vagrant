@@ -3,15 +3,18 @@
 def configure_networks(node, config)
   # The VirtualBox host-only network should have a private IPv6
   # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
-  node.vm.network 'private_network', type: 'dhcp'
   #node.vm.network 'private_network', type: 'static', ip: "fddd::#{config[:ipv6]}/16"
+
+  node.vm.network 'private_network', type: 'dhcp', virtualbox__intnet: true
 
   config[:forward] && config[:forward].each { |params| # Replace with named args.
     forward_port(node, params)
   }
   
   node.trigger.after :up do
-    if !enable_ipv4?(config)
+    if enable_ipv4?(config)
+      run_remote "change-ipv4 10.0.3.#{config[:ipv4]}/24"
+    else
       run_remote 'disable-ipv4'
     end
 
@@ -24,7 +27,8 @@ def configure_networks(node, config)
 end
 
 def enable_ipv4?(config)
-  !config.has_key?(:enable_ipv4) || config[:enable_ipv4]
+  # !config.has_key?(:enable_ipv4) || config[:enable_ipv4]
+  config[:ipv4]
 end
 
 def enable_ipv6?(config)
