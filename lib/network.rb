@@ -5,7 +5,7 @@ def configure_networks(node, config)
   # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
   #node.vm.network 'private_network', type: 'static', ip: "fddd::#{config[:ipv6]}/16"
 
-  node.vm.network 'private_network', type: 'dhcp', virtualbox__intnet: true
+  node.vm.network 'private_network', type: 'static', ip: private_network_ip(config), virtualbox__intnet: true
 
   config[:forward] && config[:forward].each { |params| # Replace with named args.
     forward_port(node, params)
@@ -33,6 +33,17 @@ end
 
 def enable_ipv6?(config)
   config[:ipv6]
+end
+
+def private_network_ip(config)
+  case
+  when enable_ipv4?(config)
+    return "10.0.3.#{config[:ipv4]}"
+  when enable_ipv6?(config)
+    return "fdcc::#{config[:ipv6]}"
+  else
+    raise Vagrant::Errors::ConfigInvalid.new
+  end
 end
 
 def valid_port?(port, allow_nil: false)

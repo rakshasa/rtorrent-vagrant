@@ -2,6 +2,7 @@
 
 export DATA_FILENAME=$1
 
-source ./scripts/include/torrent
+source `dirname ${BASH_SOURCE[0]}`/include/call
+source `dirname ${BASH_SOURCE[0]}`/include/torrent
 
 rm ${DATA_HOST_WATCH_TORRENT}

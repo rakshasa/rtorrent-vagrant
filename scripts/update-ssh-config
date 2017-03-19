@@ -1,3 +1,5 @@
 #!/bin/bash
 
-vagrant ssh-config > ./data/ssh-config
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+vagrant ssh-config > "${DATA_DIR}/ssh-config"

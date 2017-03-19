@@ -28,6 +28,7 @@ init:
 
 	$(MAKE) tracker
 	$(MAKE) build_branch
+	./scripts/rc-init
 	./scripts/start-rtorrent
 
 # TODO: This may have issues is the rtorrent clients don't shut down

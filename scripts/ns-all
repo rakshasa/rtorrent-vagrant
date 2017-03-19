@@ -1,8 +1,5 @@
 #!/bin/bash
 
-SCRIPT_PATH="${BASH_SOURCE[0]}"
-SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
-
-source ${SCRIPT_DIR}/include/call
+source `dirname ${BASH_SOURCE[0]}`/include/call
 
 call_ssh_nodes "sudo netstat -pn | grep rtorrent"

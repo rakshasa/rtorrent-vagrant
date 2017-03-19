@@ -1,3 +1,5 @@
 #!/bin/bash
 
-ssh -F ./data/ssh-config $@
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+ssh -F "${DATA_DIR}/ssh-config" $@

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-GIT_RTORRENT="./data/builder/rtorrent/"
-GIT_LIBTORRENT="./data/builder/libtorrent/"

@@ -2,22 +2,31 @@
 
 DEBUG=1
 
-NODES=(`ls data/ | grep "^node"`)
-CLIENT="./scripts/xmlrpc2scgi.py"
+SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
+DATA_DIR="${SCRIPT_DIR}/../data/"
+
+TORRENT_VM_DIR="/data/torrents/"
+TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents/"
+
+NODES=(`ls ${DATA_DIR} | grep "^node"`)
+CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
+
+GIT_RTORRENT="${DATA_DIR}/builder/rtorrent/"
+GIT_LIBTORRENT="${DATA_DIR}/builder/libtorrent/"
 
 call_ssh_nodes() {
     for NODE in ${NODES[@]}; do
-        echo "$NODE:"
-        ./scripts/ssh $NODE $@
+        echo "${NODE}:"
+        ${SCRIPT_DIR}/ssh $NODE $@
     done
 }
 
 call_ssh_nodes_p() {
-    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -i ./scripts/ssh {} $@
+    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -i ${SCRIPT_DIR}/ssh {} $@
 }
 
 call_rpc() {
-    FORWARD_PORT=`cat ./data/${NODE}/metadata/forward.5001`
+    FORWARD_PORT=`cat ${DATA_DIR}/${NODE}/metadata/forward.5001`
 
     if [ -z ${FORWARD_PORT} ]; then
         echo "Could not find forward port for ${NODE}"
@@ -28,7 +37,7 @@ call_rpc() {
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 
     #echo $CALL_CMD
-    $CALL_CMD | awk -f ./scripts/include/${AWK_FILE}.awk
+    $CALL_CMD | awk -f ${SCRIPT_DIR}/include/${AWK_FILE}.awk
 }
 
 call_rpc_nodes() {

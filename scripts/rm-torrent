@@ -1,13 +1,8 @@
 #!/bin/bash
 
-SCRIPT_PATH="${BASH_SOURCE[0]}"
-SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
+source `dirname ${BASH_SOURCE[0]}`/include/call
 
-TORRENT_DIR="/data/torrents"
+call_ssh_nodes_p "rm ${TORRENT_VM_DIR}/${1}"
 
-source ${SCRIPT_DIR}/include/call
-
-call_ssh_nodes_p "rm ${TORRENT_DIR}/${1}"
-
-rm "./data/shared/torrents/${1}"
-rm "./data/shared/torrents/${1}.torrent"
+rm "${TORRENT_SHARED_DIR}/${1}"
+rm "${TORRENT_SHARED_DIR}/${1}.torrent"
