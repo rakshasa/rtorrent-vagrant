@@ -13,8 +13,8 @@ class client {
   realize User[rtorrent]
 
   $data_dirs = ['/data/local/config',
-                '/data/local/log/rtorrent',
-                '/data/local/log/rtorrent/old',
+                '/data/local/log',
+                '/data/local/log/old',
                 '/data/local/session',
                 '/data/torrents']
 
