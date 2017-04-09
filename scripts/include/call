@@ -22,7 +22,7 @@ call_ssh_nodes() {
 }
 
 call_ssh_nodes_p() {
-    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -i ${SCRIPT_DIR}/ssh {} $@
+    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -I{} ${SCRIPT_DIR}/ssh {} $@
 }
 
 call_rpc() {
