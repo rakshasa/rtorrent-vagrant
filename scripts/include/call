@@ -25,6 +25,19 @@ call_ssh_nodes_p() {
     printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -I{} ${SCRIPT_DIR}/ssh {} $@
 }
 
+call_ssh_nodes_s() {
+    SLEEP_TIMER="0"
+
+    for NODE in ${NODES[@]}; do
+        sleep ${SLEEP_TIMER}
+
+        echo "${NODE}:"
+        ${SCRIPT_DIR}/ssh $NODE $@
+
+        SLEEP_TIMER="2"
+    done
+}
+
 call_rpc() {
     FORWARD_PORT=`cat ${DATA_DIR}/${NODE}/metadata/forward.5001`
 

@@ -2,4 +2,8 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-call_ssh_nodes_p "start-rtorrent"
+if getopts "s" opt; then
+    call_ssh_nodes_s "start-rtorrent"
+else
+    call_ssh_nodes_p "start-rtorrent"
+fi

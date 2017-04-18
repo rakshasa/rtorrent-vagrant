@@ -37,16 +37,16 @@ init:
 rebuild:
 	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "rebuild-rtorrent"
-	./scripts/start-rtorrent
+	./scripts/start-rtorrent -s
 
 check:
 	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "check-rtorrent"
-	./scripts/start-rtorrent
+	./scripts/start-rtorrent -s
 
 restart:
 	./scripts/stop-rtorrent
-	./scripts/start-rtorrent
+	./scripts/start-rtorrent -s
 
 build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
