@@ -12,6 +12,9 @@ log.add_output = "dht_all", "dht_all.log"
 log.open_file = "connection.log", /data/local/log/connection.log
 log.add_output = "connection", "connection.log"
 
+log.open_file = "system.log", /data/local/log/system.log
+log.add_output = "system", "system.log"
+
 
 # TODO: Refactor:
 log.open_file = "rtorrent.log", /data/local/log/rtorrent.log
