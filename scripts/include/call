@@ -1,9 +1,13 @@
 #!/bin/bash
 
+# TODO: Fix this to allow calling with DEBUG set.
 DEBUG=1
 
 SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
+
 DATA_DIR="${SCRIPT_DIR}/../data/"
+DATA_VM_TORRENTS="/data/torrents/"
+DATA_HOST_WATCH="${DATA_DIR}/shared/watch/"
 
 TORRENT_VM_DIR="/data/torrents/"
 TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents/"
@@ -39,10 +43,10 @@ call_ssh_nodes_s() {
 }
 
 call_rpc() {
-    FORWARD_PORT=`cat ${DATA_DIR}/${NODE}/metadata/forward.5001`
+    FORWARD_PORT=`cat ${DATA_DIR}/${CALL_NODE}/metadata/forward.5001`
 
     if [ -z ${FORWARD_PORT} ]; then
-        echo "Could not find forward port for ${NODE}"
+        echo "Could not find forward port for ${CALL_NODE}"
         exit -1
     fi
 
@@ -50,12 +54,22 @@ call_rpc() {
     CALL_CMD="$CLIENT -s $NODE_URL $@"
 
     #echo $CALL_CMD
-    $CALL_CMD | awk -f ${SCRIPT_DIR}/include/${AWK_FILE}.awk
+    $CALL_CMD
 }
 
 call_rpc_nodes() {
-    for NODE in ${NODES[@]}; do
-        echo "${NODE}:"
+    for CALL_NODE in ${NODES[@]}; do
+        echo "${CALL_NODE}:"
         call_rpc $@
     done
 }
+
+call_rpc_awk_nodes() {
+    for CALL_NODE in ${NODES[@]}; do
+        echo "${CALL_NODE}:"
+        call_rpc $@ | awk -f ${SCRIPT_DIR}/include/${AWK_FILE}.awk
+    done
+}
+
+#name_to_info_hash() {
+#}

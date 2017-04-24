@@ -31,6 +31,9 @@ init:
 	./scripts/rc-init
 	./scripts/start-rtorrent
 
+init_v4:
+	BRANCH=feature-bind IPV4_ONLY=yes $(MAKE) init
+
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.

@@ -2,9 +2,6 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-if [ -z "$1" ]; then
-    echo "No torrent name specified."
-    exit -1
-fi
+TORRENT_NAME=${1:?No torrent name specified.}
 
-call_ssh_nodes torrent-status $@
+call_ssh_nodes torrent-status ${TORRENT_NAME}

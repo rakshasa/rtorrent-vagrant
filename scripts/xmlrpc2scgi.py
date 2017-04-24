@@ -144,8 +144,13 @@ def convert_params_to_native(params):
 	return tuple(cparams)
 
 def print_script(response):
-        for line in response:
-                print " ".join(map(str, line))
+        if type(response) is int:
+                print response
+        elif type(response) is str:
+                print response
+        else:
+                for line in response:
+                        print " ".join(map(unicode, line)).encode('utf-8')
 
 def main(argv):
         if len(argv) < 1:
