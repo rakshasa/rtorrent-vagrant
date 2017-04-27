@@ -28,7 +28,7 @@ init:
 
 	$(MAKE) tracker
 	$(MAKE) build_branch
-	./scripts/rc-init
+	./scripts/config-clear
 	./scripts/start-rtorrent
 
 init_v4:

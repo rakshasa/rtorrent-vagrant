@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+NODE=${1:?Target node not given.}
+NODE_IP=${2:?Node ip address not given.}
+
+echo "${NODE}: ${NODE_IP}"
+
+echo "network.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"

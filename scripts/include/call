@@ -5,6 +5,8 @@ DEBUG=1
 
 SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
 
+RPC_CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
+
 DATA_DIR="${SCRIPT_DIR}/../data/"
 DATA_VM_TORRENTS="/data/torrents/"
 DATA_HOST_WATCH="${DATA_DIR}/shared/watch/"
@@ -12,11 +14,12 @@ DATA_HOST_WATCH="${DATA_DIR}/shared/watch/"
 TORRENT_VM_DIR="/data/torrents/"
 TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents/"
 
-NODES=(`ls ${DATA_DIR} | grep "^node"`)
-CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
-
 GIT_RTORRENT="${DATA_DIR}/builder/rtorrent/"
 GIT_LIBTORRENT="${DATA_DIR}/builder/libtorrent/"
+
+if [[ -z ${NODES} ]]; then
+    NODES=(`ls ${DATA_DIR} | grep "^node"`)
+fi
 
 call_ssh_nodes() {
     for NODE in ${NODES[@]}; do
@@ -51,7 +54,7 @@ call_rpc() {
     fi
 
     NODE_URL="scgi://localhost:${FORWARD_PORT}"
-    CALL_CMD="$CLIENT -s $NODE_URL $@"
+    CALL_CMD="$RPC_CLIENT -s $NODE_URL $@"
 
     #echo $CALL_CMD
     $CALL_CMD

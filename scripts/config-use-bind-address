@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+for NODE in ${NODES[@]}; do
+    NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/ipv4.address`
+
+    echo "${NODE}: ${NODE_IP}"
+
+    [ -z ${NODE_IP} ] || echo "network.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
+done
