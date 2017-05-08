@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no ${SCRIPT_DIR}/new-torrent test_h4
+USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no USE_IPV6=yes ${SCRIPT_DIR}/new-torrent test_h6
+USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ${SCRIPT_DIR}/new-torrent test_u4
+USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ${SCRIPT_DIR}/new-torrent test_u6

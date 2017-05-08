@@ -8,3 +8,6 @@ DATA_VM_PATH="/data/shared/torrents/${DATA_FILENAME}"
 DATA_HOST_PATH="${DATA_DIR}/shared/torrents/${DATA_FILENAME}"
 
 DATA_HOST_WATCH_TORRENT="${DATA_HOST_WATCH}/${DATA_FILENAME}.torrent"
+
+TEST_TORRENTS="test_h4 test_u4 test_h6 test_u6"
+TEST_IPV4_TORRENTS="test_h4 test_u4"

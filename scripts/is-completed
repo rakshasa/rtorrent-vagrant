@@ -2,9 +2,10 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-[ -z ${CALL_NODE} ] && CALL_NODE=${2:?Target node not given.}
+CALL_NODE=${1:?Target node not given.}
+TORRENT_NAME=${2:?Torrent name not given.}
 
-INFO_HASH_RET=`${SCRIPT_DIR}/torrent-info-hash "$1"`
+INFO_HASH_RET=`${SCRIPT_DIR}/torrent-info-hash "${CALL_NODE}" "${TORRENT_NAME}"`
 INFO_HASH=${INFO_HASH_RET:?Info hash not found.}
 
 call_rpc d.complete "s/${INFO_HASH}"

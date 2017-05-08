@@ -60,21 +60,35 @@ tracker:
 	./scripts/ssh builder -- "IPV4_ONLY=${IPV4_ONLY} build-tracker"
 	./scripts/ssh builder -- "sudo service opentracker start"
 
-test_all:
-	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_h4
-	USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_h6
-	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no ./scripts/new-torrent test_u4
-	USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes ./scripts/new-torrent test_u6
+# TODO: Make a single script to clear everything.
+test_default:
+	-./scripts/test-delete-all
+	-./scripts/stop-rtorrent
+	./scripts/config-clear
+	./scripts/start-rtorrent
+	./scripts/test-create-all
 
-delete_test_all:
-	 -./scripts/deactivate-torrent test_h4
-	 -./scripts/deactivate-torrent test_h6
-	 -./scripts/deactivate-torrent test_u4
-	 -./scripts/deactivate-torrent test_u6
-	 -./scripts/rm-torrent test_h4
-	 -./scripts/rm-torrent test_h6
-	 -./scripts/rm-torrent test_u4
-	 -./scripts/rm-torrent test_u6
+test_empty:
+	-./scripts/test-delete-all
+	-./scripts/stop-rtorrent
+	./scripts/config-clear
+	./scripts/start-rtorrent
+
+test_bind:
+	-./scripts/test-delete-all
+	-./scripts/stop-rtorrent
+	./scripts/config-clear
+	./scripts/config-use-bind-address
+	./scripts/start-rtorrent
+	./scripts/test-create-all
+
+test_bind_invalid:
+	-./scripts/test-delete-all
+	-./scripts/stop-rtorrent
+	./scripts/config-clear
+	./scripts/config-set-bind-address node2 10.0.1.100
+	./scripts/start-rtorrent
+	./scripts/test-create-all
 
 setup:
 	vagrant plugin install vagrant-cachier

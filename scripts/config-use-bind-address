@@ -7,5 +7,5 @@ for NODE in ${NODES[@]}; do
 
     echo "${NODE}: ${NODE_IP}"
 
-    [ -z ${NODE_IP} ] || echo "network.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
+    [ -z ${NODE_IP} ] || echo -e "\nnetwork.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
 done

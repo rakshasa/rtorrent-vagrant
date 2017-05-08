@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+# TODO: Auto-detect node with torrent, and verify that it is finished.
+
+CALL_NODE=${1:?Target node not given.}
+TORRENT_NAME=${2:?Torrent name not given.}
+
+TORRENT_STATUS=`${SCRIPT_DIR}/is-completed "${CALL_NODE}" "${TORRENT_NAME}"`
+
+if [ "${TORRENT_STATUS}" != "1" ]; then
+    echo foo
+fi
+
