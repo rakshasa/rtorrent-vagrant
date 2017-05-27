@@ -44,6 +44,12 @@ rebuild:
 
 check:
 	./scripts/stop-rtorrent
+	./scripts/ssh builder -- "check-libtorrent"
+	./scripts/ssh builder -- "check-rtorrent"
+	./scripts/start-rtorrent -s
+
+check_rtorrent:
+	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "check-rtorrent"
 	./scripts/start-rtorrent -s
 

@@ -2,5 +2,5 @@
 
 export MAKEFLAGS="-j 8"
 
-cd /data/local/rtorrent
+cd /data/local/libtorrent
 make && make check && sudo make install

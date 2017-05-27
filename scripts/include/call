@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# TODO: Fix this to allow calling with DEBUG set.
-DEBUG=1
+DEBUG=${DEBUG:-0}
 
 SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
 
@@ -56,7 +55,8 @@ call_rpc() {
     NODE_URL="scgi://localhost:${FORWARD_PORT}"
     CALL_CMD="$RPC_CLIENT -s $NODE_URL $@"
 
-    #echo $CALL_CMD
+    [ "${DEBUG}" == "1" ] && >&2 echo "${CALL_CMD}"
+
     $CALL_CMD
 }
 

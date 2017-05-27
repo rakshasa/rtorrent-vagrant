@@ -25,6 +25,12 @@ class builder {
     source => 'puppet:///modules/builder/build-rtorrent'
   }
 
+  file { '/usr/local/bin/check-libtorrent':
+    ensure => file,
+    mode   => '0755',
+    source => 'puppet:///modules/builder/check-libtorrent'
+  }
+
   file { '/usr/local/bin/check-rtorrent':
     ensure => file,
     mode   => '0755',
