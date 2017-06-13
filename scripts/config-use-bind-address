@@ -4,6 +4,7 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 for NODE in ${NODES[@]}; do
     NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/ipv4.address`
+    [ -z ${NODE_IP} ] && NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/ipv6.address`
 
     echo "${NODE}: ${NODE_IP}"
 

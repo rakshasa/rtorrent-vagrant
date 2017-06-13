@@ -1,0 +1,19 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+
+# Check if we have the right init.
+
+"${SCRIPT_DIR}/test-delete-all"; sleep 1
+"${SCRIPT_DIR}/stop-rtorrent"; sleep 1
+
+"${SCRIPT_DIR}/config-clear"
+NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address"
+
+"${SCRIPT_DIR}/start-rtorrent"
+
+# Move the above into a function.
+
+"${SCRIPT_DIR}/test-create-all"
+
+# Wait-for-loaded and completed with a timer.

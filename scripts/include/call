@@ -3,6 +3,7 @@
 DEBUG=${DEBUG:-0}
 
 SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
+ROOT_DIR="${SCRIPT_DIR}/../"
 
 RPC_CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
 
@@ -28,7 +29,7 @@ call_ssh_nodes() {
 }
 
 call_ssh_nodes_p() {
-    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -I{} ${SCRIPT_DIR}/ssh {} $@
+    printf '%s\n' ${NODES[@]} | xargs -n 1 -P 8 -I{} "${SCRIPT_DIR}/ssh" {} $@
 }
 
 call_ssh_nodes_s() {
@@ -70,7 +71,7 @@ call_rpc_nodes() {
 call_rpc_awk_nodes() {
     for CALL_NODE in ${NODES[@]}; do
         echo "${CALL_NODE}:"
-        call_rpc $@ | awk -f ${SCRIPT_DIR}/include/${AWK_FILE}.awk
+        call_rpc $@ | awk -f "${SCRIPT_DIR}/include/${AWK_FILE}.awk"
     done
 }
 
