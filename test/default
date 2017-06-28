@@ -1,0 +1,58 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+
+# Check if we have the right init.
+
+clean_all() {
+    "${SCRIPT_DIR}/test-delete-all" &> /dev/null; sleep 1
+    "${SCRIPT_DIR}/stop-rtorrent"; sleep 1
+
+    "${SCRIPT_DIR}/config-clear"
+}
+
+start_nodes() {
+    echo "starting nodes"
+
+    "${SCRIPT_DIR}/start-rtorrent"
+
+    wait_client_active
+}
+
+wait_client_active() {
+    SECONDS=0
+    local remaining="${NODES[@]}"
+
+    while (( SECONDS <= 5 )) && [[ -n "${remaining}" ]]; do
+        #local check=("${remaining[@]}")
+        local check="${remaining[@]}"
+        remaining=()
+
+        for i in ${check}; do
+            if "${SCRIPT_DIR}/is-client-active" $i; then
+                echo "$i: client active"
+            else
+                remaining+=$i
+            fi
+        done
+
+        sleep 0.5
+    done
+
+    if [ -n "${remaining}" ]; then
+        >&2 echo "could not start nodes: ${remaining}"
+        return ${#remaining}
+    fi
+
+    return 0
+}
+
+echo "starting 'default'"
+
+clean_all
+
+start_nodes || exit 1
+
+"${SCRIPT_DIR}/test-create-all"
+
+# Wait-for-loaded and completed with a timer.

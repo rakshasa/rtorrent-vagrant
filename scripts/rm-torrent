@@ -4,5 +4,5 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 call_ssh_nodes_p "rm ${TORRENT_VM_DIR}/${1}"
 
-rm "${TORRENT_SHARED_DIR}/${1}"
-rm "${TORRENT_SHARED_DIR}/${1}.torrent"
+rm "${TORRENT_SHARED_DIR}/${1}" &> /dev/null
+rm "${TORRENT_SHARED_DIR}/${1}.torrent" &> /dev/null
