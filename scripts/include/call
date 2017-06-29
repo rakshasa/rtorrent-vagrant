@@ -75,5 +75,34 @@ call_rpc_awk_nodes() {
     done
 }
 
-#name_to_info_hash() {
-#}
+wait_for_nodes() {
+    SECONDS=0
+
+    local method="$1"
+    local failed="invalid"
+    shift
+
+    echo "wait_for_node: ${remaining} calling '${method}' $i $@"
+
+    while (( SECONDS <= 5 )) && [[ -n "${failed}" ]]; do
+        local check="${NODES[@]}"
+        failed=
+
+        for node in ${check[@]}; do
+            if "${SCRIPT_DIR}/${method}" ${node} $@; then
+                : #echo "${node}: ${method} $@ done"
+            else
+                failed+="${node} "
+            fi
+        done
+
+        sleep 0.5
+    done
+
+    if [ -n "${failed[@]}" ]; then
+        >&2 echo "could not ${method} for nodes: ${failed[@]}"
+        return 1
+    fi
+
+    return 0
+}

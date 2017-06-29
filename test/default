@@ -2,57 +2,43 @@
 
 source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
 
+set -e
+
 # Check if we have the right init.
 
 clean_all() {
-    "${SCRIPT_DIR}/test-delete-all" &> /dev/null; sleep 1
+    echo "clean all"
+
+    #"${SCRIPT_DIR}/test-delete-all" &> /dev/null; sleep 1
+    "${SCRIPT_DIR}/test-delete-all"; sleep 1
     "${SCRIPT_DIR}/stop-rtorrent"; sleep 1
 
     "${SCRIPT_DIR}/config-clear"
 }
 
 start_nodes() {
-    echo "starting nodes"
-
+    echo "starting clients"
     "${SCRIPT_DIR}/start-rtorrent"
 
-    wait_client_active
+    echo "waiting for clients"
+    wait_for_nodes "is-client-active"
 }
 
-wait_client_active() {
-    SECONDS=0
-    local remaining="${NODES[@]}"
+create_torrents() {
+    "${SCRIPT_DIR}/test-create-all"
 
-    while (( SECONDS <= 5 )) && [[ -n "${remaining}" ]]; do
-        #local check=("${remaining[@]}")
-        local check="${remaining[@]}"
-        remaining=()
+    local torrent=
 
-        for i in ${check}; do
-            if "${SCRIPT_DIR}/is-client-active" $i; then
-                echo "$i: client active"
-            else
-                remaining+=$i
-            fi
-        done
-
-        sleep 0.5
+    for torrent in test_h4 test_h6 test_u4 test_u6; do
+        wait_for_nodes is-loaded ${torrent}
+        echo "${torrent}: loaded"
     done
-
-    if [ -n "${remaining}" ]; then
-        >&2 echo "could not start nodes: ${remaining}"
-        return ${#remaining}
-    fi
-
-    return 0
 }
 
 echo "starting 'default'"
 
 clean_all
+start_nodes
+create_torrents
 
-start_nodes || exit 1
-
-"${SCRIPT_DIR}/test-create-all"
-
-# Wait-for-loaded and completed with a timer.
+echo "done"
