@@ -1,0 +1,79 @@
+#!/bin/bash
+
+clean_all() {
+    echo "clean all"
+
+    "${SCRIPT_DIR}/test-delete-all"
+    WAIT_TIMEOUT=20 wait_for_nodes is-empty
+
+    "${SCRIPT_DIR}/stop-rtorrent"; sleep 1
+    "${SCRIPT_DIR}/config-clear"
+}
+
+start_nodes() {
+    echo "starting clients"
+    "${SCRIPT_DIR}/start-rtorrent"
+
+    echo "waiting for clients"
+    wait_for_nodes "is-client-active"
+}
+
+create_torrents() {
+    "${SCRIPT_DIR}/test-create-all"
+
+    local torrent=
+
+    # TODO: Use variable.
+    for torrent in test_h4 test_h6 test_u4 test_u6; do
+        wait_for_nodes is-loaded ${torrent}
+        echo "${torrent}: loaded"
+    done
+}
+
+verify_seeds() {
+    local torrent=
+
+    # TODO: Use variable.
+    for torrent in test_h4 test_h6 test_u4 test_u6; do
+        WAIT_NODES=node1 WAIT_TIMEOUT=30 wait_for_nodes is-completed ${torrent}
+        echo "${torrent}: seed ready"
+    done
+}
+
+verify_completed() {
+    local node="${1:?Missing node.}"
+    local torrent="${2:?Missing torrent.}"
+    local message="${3:?Missing message.}"
+
+    #&>2 echo "verify_completed: '${node}' '${torrent}'"
+
+    echo -n "${message}... "
+
+    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+        echo "succeeded"
+    else
+        echo "failed"
+        (( FAILED++ ))
+    fi
+
+    return 0
+}
+
+verify_incompleted() {
+    local node="${1:?Missing node.}"
+    local torrent="${2:?Missing torrent.}"
+    local message="${3:?Missing message.}"
+
+    #&>2 echo "verify_incompleted: '${node}' '${torrent}'"
+
+    echo -n "${message}... "
+
+    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+        echo "failed"
+        (( FAILED++ ))
+    else
+        echo "succeeded"
+    fi
+
+    return 0
+}

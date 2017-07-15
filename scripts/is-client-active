@@ -4,4 +4,4 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 CALL_NODE=${1:?Target node not given.}
 
-call_rpc system.client_version &> /dev/null
+call_rpc system.client_version 1> /dev/null

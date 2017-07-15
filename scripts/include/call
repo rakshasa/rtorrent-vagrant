@@ -22,6 +22,8 @@ if [[ -z ${NODES} ]]; then
 fi
 
 call_ssh_nodes() {
+    local NODE=
+
     for NODE in ${NODES[@]}; do
         echo "${NODE}:"
         ${SCRIPT_DIR}/ssh $NODE $@
@@ -34,6 +36,7 @@ call_ssh_nodes_p() {
 
 call_ssh_nodes_s() {
     SLEEP_TIMER="0"
+    local NODE=
 
     for NODE in ${NODES[@]}; do
         sleep ${SLEEP_TIMER}
@@ -49,16 +52,16 @@ call_rpc() {
     FORWARD_PORT=`cat ${DATA_DIR}/${CALL_NODE}/metadata/forward.5001`
 
     if [ -z ${FORWARD_PORT} ]; then
-        echo "Could not find forward port for ${CALL_NODE}"
+        >&2 echo "Could not find forward port for ${CALL_NODE}"
         exit -1
     fi
 
     NODE_URL="scgi://localhost:${FORWARD_PORT}"
-    CALL_CMD="$RPC_CLIENT -s $NODE_URL $@"
+    CALL_CMD="${RPC_CLIENT} -s ${NODE_URL} $@"
 
     [ "${DEBUG}" == "1" ] && >&2 echo "${CALL_CMD}"
 
-    $CALL_CMD
+    ${CALL_CMD}
 }
 
 call_rpc_nodes() {
@@ -78,14 +81,17 @@ call_rpc_awk_nodes() {
 wait_for_nodes() {
     SECONDS=0
 
-    local method="$1"
+    local timeout="${WAIT_TIMEOUT:-10}"
+    local nodes="${WAIT_NODES:-${NODES}}"
+
     local failed="invalid"
+    local method="$1"
     shift
 
-    echo "wait_for_node: ${remaining} calling '${method}' $i $@"
+    #echo "wait_for_node: ${remaining} calling '${method}' $i $@"
 
-    while (( SECONDS <= 5 )) && [[ -n "${failed}" ]]; do
-        local check="${NODES[@]}"
+    while (( SECONDS <= timeout )) && [[ -n "${failed}" ]]; do
+        local check="${nodes[@]}"
         failed=
 
         for node in ${check[@]}; do
