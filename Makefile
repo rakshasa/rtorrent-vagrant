@@ -26,7 +26,7 @@ init:
 	vagrant up
 	./scripts/update-ssh-config
 
-	$(MAKE) tracker
+	./scripts/build-tracker
 	$(MAKE) build_branch
 	./scripts/config-clear
 	./scripts/start-rtorrent
@@ -60,12 +60,7 @@ restart:
 
 build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
-	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH) origin
-
-tracker:
-	-./scripts/ssh builder -- "sudo service opentracker stop"
-	./scripts/ssh builder -- "IPV4_ONLY=${IPV4_ONLY} build-tracker"
-	./scripts/ssh builder -- "sudo service opentracker start"
+	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH)
 
 # TODO: Make a single script to clear everything.
 test_default:

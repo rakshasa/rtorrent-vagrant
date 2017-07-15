@@ -1,12 +1,12 @@
 #!/bin/bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
-REPO_NAME=${3:?origin}
+REPO_NAME=${3:-origin}
 LIBTORRENT_GIT_BRANCH=${1:?no libtorrent git branch provided}
 RTORRENT_GIT_BRANCH=${2:?no rtorrent git branch provided}
 
 (cd $GIT_LIBTORRENT && (git pull $REPO_NAME || true) && git checkout $LIBTORRENT_GIT_BRANCH && (git pull || true)) || exit 1
 (cd $GIT_RTORRENT   && (git pull $REPO_NAME || true) && git checkout $RTORRENT_GIT_BRANCH   && (git pull || true)) || exit 1
 
-vagrant ssh builder -c "build-rtorrent"
+"${SCRIPT_DIR}/ssh" builder build-rtorrent
