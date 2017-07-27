@@ -1,10 +1,38 @@
 #!/bin/bash
 
-if [ "${IPV4_ONLY}" != "yes" ]; then
+cleanup() {
+    rc=$?
+
+    if [ ${rc} -eq 0 ]; then
+        echo "Done building OpenTracker."
+    else
+        echo "Failed building OpenTracker."
+    fi
+
+    exit ${rc}
+}; trap cleanup EXIT; set -e
+
+WANTED="default"
+
+if [ "${IPV4_ONLY}" != yes ]; then
     export FEATURES="-DWANT_V6"
+else
+    WANTED="${WANTED}_v4"
 fi
 
-sudo mkdir /usr/local/bin
+if [ ${WANTED} = "$(cat /data/local/metadata/tracker.info)" ]; then
+    echo "Skipping building OpenTracker, already built: ${WANTED}"
+    exit 0
+fi
+
+echo "Building OpenTracker: ${WANTED}"
+
+sudo mkdir /usr/local/bin || true &> /dev/null
 
 cd /data/local/opentracker
-make clean && make && sudo PREFIX=/usr/local make install
+
+make clean
+make
+sudo PREFIX=/usr/local make install
+
+echo ${WANTED} > /data/local/metadata/tracker.info

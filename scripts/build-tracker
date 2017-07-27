@@ -2,6 +2,6 @@
 
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
-"${SCRIPT_DIR}/ssh" builder "sudo service opentracker stop"
+"${SCRIPT_DIR}/ssh" builder "sudo service opentracker stop"; sleep 0.2; echo
 "${SCRIPT_DIR}/ssh" builder "IPV4_ONLY=${IPV4_ONLY} build-tracker"
 "${SCRIPT_DIR}/ssh" builder "sudo service opentracker start"
