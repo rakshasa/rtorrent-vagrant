@@ -37,6 +37,10 @@ verify_incompleted node2 test_u6 "verifying it does not work with udp6 tracker o
 verify_incompleted node3 test_h4 "verifying it does not work with http4 tracker over ipv6"
 verify_incompleted node3 test_u4 "verifying it does not work with udp4 tracker over ipv6"
 
-echo "done: ${FAILED}"
+if [[ ${FAILED} -eq 0 ]]; then
+    echo "done: success"
+else
+    echo "done: failed:${FAILED}"
+fi
 
 exit ${FAILED}

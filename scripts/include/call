@@ -95,7 +95,9 @@ wait_for_nodes() {
         failed=
 
         for node in ${check[@]}; do
-            if "${SCRIPT_DIR}/${method}" ${node} $@; then
+            [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes: ${SCRIPT_DIR}/${method} ${node} $@"
+
+            if "${SCRIPT_DIR}/${method}" ${node} $@ &> /dev/null; then
                 : #echo "${node}: ${method} $@ done"
             else
                 failed+="${node} "
