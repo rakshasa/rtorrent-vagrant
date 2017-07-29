@@ -11,7 +11,7 @@ echo "starting 'default'"
 
 clean_all
 
-# TODO: Set up correct network settings.
+setup_default
 
 start_nodes
 create_torrents

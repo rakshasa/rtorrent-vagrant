@@ -1,9 +1,18 @@
 #!/bin/bash
 
-METADATA="/data/local/metadata"
-PRIVATE_DEV="eth1"
+source /usr/local/bin/metadata.source
 
-ip addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv4.address
-ip addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv4.prefix
-ip addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv6.address
-ip addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv6.prefix
+ip -4 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv4.address
+ip -4 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv4.prefix
+ip -6 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv6.address
+ip -6 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv6.prefix
+
+rm ${METADATA}/ipv{4,6}.{up,down} &> /dev/null
+
+for prefix in ${METADATA}/ipv{4,6}; do
+    if [ -n "$(cat ${prefix}.address)" ]; then
+        touch ${prefix}.up
+    else
+        touch ${prefix}.down
+    fi
+done

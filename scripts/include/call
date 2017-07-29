@@ -17,8 +17,8 @@ TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents/"
 GIT_RTORRENT="${DATA_DIR}/builder/rtorrent/"
 GIT_LIBTORRENT="${DATA_DIR}/builder/libtorrent/"
 
-if [[ -z ${NODES} ]]; then
-    NODES=(`ls ${DATA_DIR} | grep "^node"`)
+if [ -z "${NODES}" ]; then
+    NODES="$(cd ${DATA_DIR} && ls -d node*)"
 fi
 
 call_ssh_nodes() {

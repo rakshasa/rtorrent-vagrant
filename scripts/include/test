@@ -10,6 +10,13 @@ clean_all() {
     "${SCRIPT_DIR}/config-clear"
 }
 
+setup_default() {
+    "${SCRIPT_DIR}/build-tracker"
+
+    # Set default network config.
+    #"${SCRIPT_DIR}/build-tracker"
+}
+
 start_nodes() {
     echo "starting clients"
     "${SCRIPT_DIR}/start-rtorrent"

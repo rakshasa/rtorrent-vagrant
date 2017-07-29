@@ -17,11 +17,13 @@ nodes:
 
   - hostname: node2
     ipv4: 12
+    ipv6: 12
     forward:
     - guest: 5001
       host: 18602
 
   - hostname: node3
+    ipv4: 13
     ipv6: 13
     forward:
     - guest: 5001
