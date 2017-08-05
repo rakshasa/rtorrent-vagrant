@@ -6,7 +6,7 @@ source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
 echo "running default"
 
 clean_all
-setup default
+setup default_v4
 
 # TODO: Add new test that verifies downloading on machines with both
 # ipv4 and ipv6. Need to add another machine.
