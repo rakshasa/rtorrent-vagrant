@@ -12,8 +12,7 @@ ACTIVE_NODES="node1 node2" setup default
 
 # Verify crash log of node3.
 
-# TODO: Add new test that verifies downloading on machines with both
-# ipv4 and ipv6. Need to add another machine.
+# Add test to use separate tracker and bt interfaces.
 
 verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
 verify_completed node2 test_u4 "verifying it works with udp4 tracker over ipv4"

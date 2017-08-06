@@ -96,6 +96,15 @@ setup_default() {
     ${SCRIPT_DIR}/ip-down-6 "node1 node2"
 }
 
+setup_default_v4() {
+    IPV4_ONLY=yes "${SCRIPT_DIR}/build-tracker"
+
+    ${SCRIPT_DIR}/ip-up-4 "node1 node2"
+    ${SCRIPT_DIR}/ip-up-6 "node3"
+    ${SCRIPT_DIR}/ip-down-4 "node3"
+    ${SCRIPT_DIR}/ip-down-6 "node1 node2"
+}
+
 setup() {
     local config=${1:?Missing config setup.}
 
@@ -104,6 +113,10 @@ setup() {
     case ${config} in
         "default")
             setup_default &> /dev/null
+            ;;
+        "default_v4")
+            setup_default_v4 &> /dev/null
+            ;;
     esac
 
     start_nodes

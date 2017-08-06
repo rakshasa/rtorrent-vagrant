@@ -6,6 +6,8 @@ source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
 echo "running bind_v4"
 
 clean_all
+
+# Add v6 bind.
 NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address"
 
 ACTIVE_NODES="node1 node2" setup default
