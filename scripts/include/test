@@ -91,9 +91,9 @@ setup_default() {
     "${SCRIPT_DIR}/build-tracker"
 
     ${SCRIPT_DIR}/ip-up-4 "node1 node2"
-    ${SCRIPT_DIR}/ip-up-6 "node3"
+    ${SCRIPT_DIR}/ip-up-6 "node1 node3"
     ${SCRIPT_DIR}/ip-down-4 "node3"
-    ${SCRIPT_DIR}/ip-down-6 "node1 node2"
+    ${SCRIPT_DIR}/ip-down-6 "node2"
 }
 
 setup_default_v4() {
