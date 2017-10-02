@@ -1,12 +1,17 @@
-# rtorrent-vagrant
+rtorrent-vagrant
+================
 
 Test environment for rtorrent using Vagrant.
 
-# Stuff
+
+Stuff
+-----
 
 While this environment primarily serves the needs of the main developer of rtorrent (me), that does not preclude contributions.
 
-# Getting Started
+
+Getting Started
+---------------
 
 ```
 make setup      - install required vagrant plugins
@@ -21,3 +26,14 @@ Example:
 ```
 make setup && RTORRENT_BRANCH=feature-foo make init && make test_http4
 ```
+
+
+Testing
+-------
+
+Test all:
+
+```
+./scripts/test-all
+```
+

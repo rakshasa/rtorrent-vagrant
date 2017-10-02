@@ -4,10 +4,11 @@ DEBUG=${DEBUG:-0}
 
 SCRIPT_DIR=`dirname $( dirname ${BASH_SOURCE[0]} )`
 ROOT_DIR="${SCRIPT_DIR}/../"
+DATA_DIR="${ROOT_DIR}/data/"
+TEST_DIR="${ROOT_DIR}/test/"
 
 RPC_CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
 
-DATA_DIR="${SCRIPT_DIR}/../data/"
 DATA_VM_TORRENTS="/data/torrents/"
 DATA_HOST_WATCH="${DATA_DIR}/shared/watch/"
 
@@ -16,6 +17,10 @@ TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents/"
 
 GIT_RTORRENT="${DATA_DIR}/builder/rtorrent/"
 GIT_LIBTORRENT="${DATA_DIR}/builder/libtorrent/"
+
+NC='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
 
 if [ -z "${NODES}" ]; then
     NODES="$(cd ${DATA_DIR} && ls -d node*)"

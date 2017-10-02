@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+ls "${TEST_DIR}" | grep -e '^[a-z0-9_]*$'

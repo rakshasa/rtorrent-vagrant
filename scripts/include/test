@@ -1,6 +1,7 @@
 #!/bin/bash
 
 FAILED=0
+LAST_VERIFY=
 
 start_nodes() {
     echo "starting clients"
@@ -42,7 +43,8 @@ verify_completed() {
     local torrent="${2:?Missing torrent.}"
     local message="${3:?Missing message.}"
 
-    #&>2 echo "verify_completed: '${node}' '${torrent}'"
+    [ -z "${LAST_VERIFY}" ] && echo
+    LAST_VERIFY="${message}"
 
     echo -n "${message}... "
 
@@ -61,7 +63,8 @@ verify_incompleted() {
     local torrent="${2:?Missing torrent.}"
     local message="${3:?Missing message.}"
 
-    #&>2 echo "verify_incompleted: '${node}' '${torrent}'"
+    [ -z "${LAST_VERIFY}" ] && echo
+    LAST_VERIFY="${message}"
 
     echo -n "${message}... "
 
@@ -129,6 +132,8 @@ setup() {
 }
 
 exit_test() {
+    echo
+
     if [[ ${FAILED} -eq 0 ]]; then
         echo "done: success"
     else

@@ -1,0 +1,38 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+# TODO: If TESTS is defined, check that all tests are available.
+
+TESTS=(${TESTS:-$(${SCRIPT_DIR}/test-list)})
+
+RESULTS=()
+
+for (( i = 0; i < ${#TESTS[@]}; i++ )); do
+    echo
+    echo "===================="
+    echo "${TESTS[i]}"
+    echo "===================="
+
+    "${TEST_DIR}/${TESTS[i]}"
+
+    RESULTS+=("$?")
+done
+
+echo
+echo "===================="
+echo "Test results:"
+echo "===================="
+echo
+
+for (( i = 0; i < ${#RESULTS[@]}; i++ )); do
+    if [[ "${RESULTS[i]}" == 0 ]]; then
+        color="${GREEN}"
+    else
+        color="${RED}"
+    fi
+
+    echo -e "${color}${TESTS[i]}:\t ${RESULTS[i]}${NC}"
+done
+
+echo
