@@ -46,12 +46,10 @@ verify_completed() {
     [ -z "${LAST_VERIFY}" ] && echo
     LAST_VERIFY="${message}"
 
-    echo -n "${message}... "
-
     if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo "succeeded"
+        echo -e "${GREEN}${message}... succeeded${NC}"
     else
-        echo "failed"
+        echo -e "${RED}${message}... failed${NC}"
         (( FAILED++ ))
     fi
 
@@ -66,13 +64,11 @@ verify_incompleted() {
     [ -z "${LAST_VERIFY}" ] && echo
     LAST_VERIFY="${message}"
 
-    echo -n "${message}... "
-
     if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo "failed"
+        echo -e "${RED}${message}... failed${NC}"
         (( FAILED++ ))
     else
-        echo "succeeded"
+        echo -e "${GREEN}${message}... succeeded${NC}"
     fi
 
     return 0
