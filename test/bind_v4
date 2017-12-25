@@ -10,9 +10,9 @@ NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address-4"
 
 ACTIVE_NODES="node1 node2" setup default
 
-# Verify crash log of node3.
-
 # Add test to use separate tracker and bt interfaces.
+
+verify_bind_failed node3 "verifying bind4 fails when no ipv4 is available"
 
 verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
 verify_completed node2 test_u4 "verifying it works with udp4 tracker over ipv4"

@@ -28,52 +28,6 @@ create_torrents() {
     done
 }
 
-verify_seeds() {
-    local torrent=
-
-    # TODO: Use variable.
-    for torrent in test_h4 test_h6 test_u4 test_u6; do
-        WAIT_NODES=node1 WAIT_TIMEOUT=30 wait_for_nodes is-completed ${torrent}
-        echo "${torrent}: seed ready"
-    done
-}
-
-verify_completed() {
-    local node="${1:?Missing node.}"
-    local torrent="${2:?Missing torrent.}"
-    local message="${3:?Missing message.}"
-
-    [ -z "${LAST_VERIFY}" ] && echo
-    LAST_VERIFY="${message}"
-
-    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo -e "${GREEN}${message}... succeeded${NC}"
-    else
-        echo -e "${RED}${message}... failed${NC}"
-        (( FAILED++ ))
-    fi
-
-    return 0
-}
-
-verify_incompleted() {
-    local node="${1:?Missing node.}"
-    local torrent="${2:?Missing torrent.}"
-    local message="${3:?Missing message.}"
-
-    [ -z "${LAST_VERIFY}" ] && echo
-    LAST_VERIFY="${message}"
-
-    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo -e "${RED}${message}... failed${NC}"
-        (( FAILED++ ))
-    else
-        echo -e "${GREEN}${message}... succeeded${NC}"
-    fi
-
-    return 0
-}
-
 clean_all() {
     set -e
 
@@ -105,7 +59,7 @@ setup_default_v4() {
 }
 
 setup() {
-    local config=${1:?Missing config setup.}
+    local config="${1:?Missing config setup argument.}"
 
     echo "setting up config '${config}'"
 
@@ -137,4 +91,76 @@ exit_test() {
     fi
 
     exit ${FAILED}
+}
+
+verify_seeds() {
+    local torrent=
+
+    # TODO: Use variable.
+    for torrent in test_h4 test_h6 test_u4 test_u6; do
+        WAIT_NODES=node1 WAIT_TIMEOUT=30 wait_for_nodes is-completed ${torrent}
+        echo "${torrent}: seed ready"
+    done
+}
+
+verify_completed() {
+    local node="${1:?Missing node argument.}"
+    local torrent="${2:?Missing torrent argument.}"
+    local message="${3:?Missing message argument.}"
+
+    [ -z "${LAST_VERIFY}" ] && echo
+    LAST_VERIFY="${message}"
+
+    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+        echo -e "${GREEN}${message}... succeeded${NC}"
+    else
+        echo -e "${RED}${message}... failed${NC}"
+        (( FAILED++ ))
+    fi
+
+    return 0
+}
+
+verify_incompleted() {
+    local node="${1:?Missing node argument.}"
+    local torrent="${2:?Missing torrent argument.}"
+    local message="${3:?Missing message argument.}"
+
+    [ -z "${LAST_VERIFY}" ] && echo
+    LAST_VERIFY="${message}"
+
+    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+        echo -e "${RED}${message}... failed${NC}"
+        (( FAILED++ ))
+    else
+        echo -e "${GREEN}${message}... succeeded${NC}"
+    fi
+
+    return 0
+}
+
+verify_has_log_message() {
+    local node="${1:?Missing node argument.}"
+    local log_name="${2:?Missing log name argument.}"
+    local message="${3:?Missing message argument.}"
+    local log_message="${4:?Missing message argument.}"
+
+    [ -z "${LAST_VERIFY}" ] && echo
+    LAST_VERIFY="${message}"
+
+    if grep "${log_message}" "${DATA_DIR}/${node}/log/${log_name}.log"; then
+        echo -e "${GREEN}${message}... succeeded${NC}"
+    else
+        echo -e "${RED}${message}... failed${NC}"
+        (( FAILED++ ))
+    fi
+
+    return 0
+}
+
+verify_bind_failed() {
+    local node="${1:?Missing node argument.}"
+    local message="${2:?Missing message argument.}"
+
+    verify_has_log_message ${node} crash "${message}" "C Caught exception: 'Could not open/bind port for listening: Cannot assign requested address'."
 }
