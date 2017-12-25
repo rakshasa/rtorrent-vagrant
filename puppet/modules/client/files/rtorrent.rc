@@ -16,6 +16,7 @@ log.open_file = "system", /data/local/log/system.log
 log.add_output = "system", "system"
 
 log.open_file = "peer_list", /data/local/log/peer_list.log
+log.add_output = "peer_list_address", "peer_list"
 log.add_output = "peer_list_events", "peer_list"
 
 

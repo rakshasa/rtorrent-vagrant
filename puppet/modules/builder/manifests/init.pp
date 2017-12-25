@@ -7,7 +7,8 @@ class builder {
      'libcurl4-openssl-dev', 'libncurses5-dev', 'libxmlrpc-core-c3-dev',
      'libowfat-dev',
 
-     'mktorrent', 'emacs24-nox'
+     'mktorrent', 'emacs24-nox',
+     'swapspace'
      ]:
       ensure => installed,
       require => Exec['update-apt']
