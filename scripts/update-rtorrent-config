@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+set -e
+
+for CALL_NODE in ${NODES[@]}; do
+    "${SCRIPT_DIR}/scp" -F "${DATA_DIR}/ssh-config" "${ROOT_DIR}/puppet/modules/client/files/rtorrent.rc" "${CALL_NODE}:"
+done
+
+call_ssh_nodes sudo mv ./rtorrent.rc /etc/rtorrent.rc

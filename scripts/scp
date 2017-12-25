@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+scp -F "${DATA_DIR}/ssh-config" $@

@@ -27,11 +27,9 @@ if [ -z "${NODES}" ]; then
 fi
 
 call_ssh_nodes() {
-    local NODE=
-
-    for NODE in ${NODES[@]}; do
-        echo "${NODE}:"
-        ${SCRIPT_DIR}/ssh $NODE $@
+    for node in ${NODES[@]}; do
+        echo "${node}: $@"
+        ${SCRIPT_DIR}/ssh "${node}" $@
     done
 }
 
@@ -41,13 +39,12 @@ call_ssh_nodes_p() {
 
 call_ssh_nodes_s() {
     SLEEP_TIMER="0"
-    local NODE=
 
-    for NODE in ${NODES[@]}; do
+    for node in ${NODES[@]}; do
         sleep ${SLEEP_TIMER}
 
-        echo "${NODE}:"
-        ${SCRIPT_DIR}/ssh $NODE $@
+        echo "${node}: $@"
+        ${SCRIPT_DIR}/ssh "${node}" $@
 
         SLEEP_TIMER="2"
     done
