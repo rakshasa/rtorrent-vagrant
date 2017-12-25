@@ -58,6 +58,15 @@ setup_default_v4() {
     ${SCRIPT_DIR}/ip-down-6 "node1 node2"
 }
 
+setup_default_v6() {
+    "${SCRIPT_DIR}/build-tracker"
+
+    ${SCRIPT_DIR}/ip-up-4 "node2"
+    ${SCRIPT_DIR}/ip-up-6 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-4 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-6 "node2"
+}
+
 setup() {
     local config="${1:?Missing config setup argument.}"
 
@@ -69,6 +78,9 @@ setup() {
             ;;
         "default_v4")
             setup_default_v4 &> /dev/null
+            ;;
+        "default_v6")
+            setup_default_v6 &> /dev/null
             ;;
     esac
 
@@ -148,7 +160,7 @@ verify_has_log_message() {
     [ -z "${LAST_VERIFY}" ] && echo
     LAST_VERIFY="${message}"
 
-    if grep "${log_message}" "${DATA_DIR}/${node}/log/${log_name}.log"; then
+    if grep "${log_message}" "${DATA_DIR}/${node}/log/${log_name}.log" &> /dev/null; then
         echo -e "${GREEN}${message}... succeeded${NC}"
     else
         echo -e "${RED}${message}... failed${NC}"
