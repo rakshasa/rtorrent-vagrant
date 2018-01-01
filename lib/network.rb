@@ -2,45 +2,49 @@
 
 def configure_networks(node, config)
   # The VirtualBox host-only network should have a private IPv6
-  # subnet in 'fc00::/7', e.g. 'fdcc::/16'.
-  #node.vm.network 'private_network', type: 'static', ip: "fddd::#{config[:ipv6]}/16"
+  # subnet in 'fd00::/7', e.g. 'fdcc::/16'.
 
-  node.vm.network 'private_network', type: 'static', ip: private_network_ip(config), virtualbox__intnet: true
+  config[:interfaces] && config[:interfaces].each_with_index { |interface, nw_index|
+    interface[:network].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
+    interface[:ipv4].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
+    interface[:ipv6].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
+
+    node.vm.network 'private_network', type: 'static', ip: private_network_ip(interface), virtualbox__intnet: interface[:network]
+
+    node.trigger.after :up do
+      if enable_ipv4?(interface)
+        run_remote "change-ipv4-#{nw_index + 1} #{interface[:ipv4]}/24"
+      else
+        run_remote "disable-ipv4-#{nw_index + 1}"
+      end
+
+      if enable_ipv6?(interface)
+        run_remote "change-ipv6-#{nw_index + 1} #{interface[:ipv6]}/16"
+      else
+        run_remote "disable-ipv6-#{nw_index + 1}"
+      end
+    end
+  }
 
   config[:forward] && config[:forward].each { |params| # Replace with named args.
     forward_port(node, params)
   }
-  
-  node.trigger.after :up do
-    if enable_ipv4?(config)
-      run_remote "change-ipv4 10.0.3.#{config[:ipv4]}/24"
-    else
-      run_remote 'disable-ipv4'
-    end
-
-    if enable_ipv6?(config)
-      run_remote "change-ipv6 fdcc::#{config[:ipv6]}/16"
-    else
-      run_remote 'disable-ipv6'
-    end
-  end
 end
 
-def enable_ipv4?(config)
-  # !config.has_key?(:enable_ipv4) || config[:enable_ipv4]
-  config[:ipv4]
+def enable_ipv4?(interface)
+  interface[:ipv4]
 end
 
-def enable_ipv6?(config)
-  config[:ipv6]
+def enable_ipv6?(interface)
+  interface[:ipv6]
 end
 
-def private_network_ip(config)
+def private_network_ip(interface)
   case
-  when enable_ipv4?(config)
-    return "10.0.3.#{config[:ipv4]}"
-  when enable_ipv6?(config)
-    return "fdcc::#{config[:ipv6]}"
+  when enable_ipv4?(interface)
+    return interface[:ipv4]
+  when enable_ipv6?(interface)
+    return interface[:ipv6]
   else
     raise Vagrant::Errors::ConfigInvalid.new
   end

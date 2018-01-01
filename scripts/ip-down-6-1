@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+NODES="${1:-${NODES}}" call_ssh_nodes disable-ipv6-1

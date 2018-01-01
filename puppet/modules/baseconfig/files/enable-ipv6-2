@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source /usr/local/bin/metadata.source
+set -e
+
+sudo ip -6 addr flush dev ${PRIVATE_DEV_2}
+sudo ip -6 addr add ${METADATA_PRIVATE_IPV6_2} dev ${PRIVATE_DEV_2}
+
+touch "${METADATA}/ipv6.2.up"
+rm "${METADATA}/ipv6.2.down" &> /dev/null || true

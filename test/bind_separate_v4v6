@@ -1,0 +1,27 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+echo "running bind_separate_v4v6"
+
+clean_all
+#NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address-4"
+
+setup default
+
+# Add universal torrents... or not?
+
+# Need a separate interface/network on node1.
+
+verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
+verify_completed node2 test_u4 "verifying it works with udp4  tracker over ipv4"
+verify_completed node3 test_h6 "verifying it works with http6 tracker over ipv6"
+verify_completed node3 test_u6 "verifying it works with udp6  tracker over ipv6"
+
+verify_incompleted node2 test_h6 "verifying it does not work with http6 tracker over ipv4"
+verify_incompleted node2 test_u6 "verifying it does not work with udp6  tracker over ipv4"
+verify_incompleted node3 test_h4 "verifying it does not work with http4 tracker over ipv6"
+verify_incompleted node3 test_u4 "verifying it does not work with udp4  tracker over ipv6"
+
+exit_test

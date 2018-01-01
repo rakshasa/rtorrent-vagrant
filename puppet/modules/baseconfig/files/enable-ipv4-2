@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source /usr/local/bin/metadata.source
+set -e
+
+sudo ip -4 addr flush dev ${PRIVATE_DEV_2}
+sudo ip -4 addr add ${METADATA_PRIVATE_IPV4_2} dev ${PRIVATE_DEV_2}
+
+touch "${METADATA}/ipv4.2.up"
+rm "${METADATA}/ipv4.2.down" &> /dev/null || true

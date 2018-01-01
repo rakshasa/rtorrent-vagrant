@@ -3,7 +3,7 @@
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
 for NODE in ${NODES[@]}; do
-    NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/ipv4.address`
+    NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/ipv4.1.address`
 
     echo "${NODE}: ${NODE_IP}"
 

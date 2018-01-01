@@ -38,52 +38,64 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/environment',
   }
 
-  file { '/usr/local/bin/metadata.source':
-    ensure => file,
+  File {
     mode   => '0755',
+  }
+
+  file { '/usr/local/bin/metadata.source':
     source => 'puppet:///modules/baseconfig/metadata.source',
   }
 
   file { '/usr/local/bin/update-metadata':
-    ensure => file,
-    mode   => '0755',
     source => 'puppet:///modules/baseconfig/update-metadata',
   }
 
-  file { '/usr/local/bin/enable-ipv4':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/enable-ipv4',
+  file { '/usr/local/bin/enable-ipv4-1':
+    source => 'puppet:///modules/baseconfig/enable-ipv4-1',
   }
 
-  file { '/usr/local/bin/enable-ipv6':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/enable-ipv6',
+  file { '/usr/local/bin/enable-ipv4-2':
+    source => 'puppet:///modules/baseconfig/enable-ipv4-2',
   }
 
-  file { '/usr/local/bin/disable-ipv4':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/disable-ipv4',
+  file { '/usr/local/bin/enable-ipv6-1':
+    source => 'puppet:///modules/baseconfig/enable-ipv6-1',
   }
 
-  file { '/usr/local/bin/disable-ipv6':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/disable-ipv6',
+  file { '/usr/local/bin/enable-ipv6-2':
+    source => 'puppet:///modules/baseconfig/enable-ipv6-2',
   }
 
-  file { '/usr/local/bin/change-ipv4':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/change-ipv4',
+  file { '/usr/local/bin/disable-ipv4-1':
+    source => 'puppet:///modules/baseconfig/disable-ipv4-1',
   }
 
-  file { '/usr/local/bin/change-ipv6':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/baseconfig/change-ipv6',
+  file { '/usr/local/bin/disable-ipv4-2':
+    source => 'puppet:///modules/baseconfig/disable-ipv4-2',
+  }
+
+  file { '/usr/local/bin/disable-ipv6-1':
+    source => 'puppet:///modules/baseconfig/disable-ipv6-1',
+  }
+
+  file { '/usr/local/bin/disable-ipv6-2':
+    source => 'puppet:///modules/baseconfig/disable-ipv6-2',
+  }
+
+  file { '/usr/local/bin/change-ipv4-1':
+    source => 'puppet:///modules/baseconfig/change-ipv4-1',
+  }
+
+  file { '/usr/local/bin/change-ipv4-2':
+    source => 'puppet:///modules/baseconfig/change-ipv4-2',
+  }
+
+  file { '/usr/local/bin/change-ipv6-1':
+    source => 'puppet:///modules/baseconfig/change-ipv6-1',
+  }
+
+  file { '/usr/local/bin/change-ipv6-2':
+    source => 'puppet:///modules/baseconfig/change-ipv6-2',
   }
 
 }

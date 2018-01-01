@@ -43,28 +43,34 @@ clean_all() {
 setup_default() {
     "${SCRIPT_DIR}/build-tracker"
 
-    ${SCRIPT_DIR}/ip-up-4 "node1 node2"
-    ${SCRIPT_DIR}/ip-up-6 "node1 node3"
-    ${SCRIPT_DIR}/ip-down-4 "node3"
-    ${SCRIPT_DIR}/ip-down-6 "node2"
+    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-4-1 "node3"
+    ${SCRIPT_DIR}/ip-down-6-1 "node2"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
 }
 
 setup_default_v4() {
     IPV4_ONLY=yes "${SCRIPT_DIR}/build-tracker"
 
-    ${SCRIPT_DIR}/ip-up-4 "node1 node2"
-    ${SCRIPT_DIR}/ip-up-6 "node3"
-    ${SCRIPT_DIR}/ip-down-4 "node3"
-    ${SCRIPT_DIR}/ip-down-6 "node1 node2"
+    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2"
+    ${SCRIPT_DIR}/ip-up-6-1 "node3"
+    ${SCRIPT_DIR}/ip-down-4-1 "node3"
+    ${SCRIPT_DIR}/ip-down-6-1 "node1 node2"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
 }
 
 setup_default_v6() {
     "${SCRIPT_DIR}/build-tracker"
 
-    ${SCRIPT_DIR}/ip-up-4 "node2"
-    ${SCRIPT_DIR}/ip-up-6 "node1 node3"
-    ${SCRIPT_DIR}/ip-down-4 "node1 node3"
-    ${SCRIPT_DIR}/ip-down-6 "node2"
+    ${SCRIPT_DIR}/ip-up-4-1 "node2"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-4-1 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-6-1 "node2"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
 }
 
 setup() {
@@ -84,6 +90,7 @@ setup() {
             ;;
     esac
 
+    echo "starting nodes"
     start_nodes
     create_torrents
     verify_seeds

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source /usr/local/bin/metadata.source
+set -e
+
+sudo ip -6 addr flush dev ${PRIVATE_DEV_2}
+sudo ip -6 addr add $1 dev ${PRIVATE_DEV_2}
+
+ip -6 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > "${METADATA}/ipv6.2.address"
+ip -6 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > "${METADATA}/ipv6.2.prefix"
+
+touch "${METADATA}/ipv6.2.up"
+rm "${METADATA}/ipv6.2.down" &> /dev/null || true

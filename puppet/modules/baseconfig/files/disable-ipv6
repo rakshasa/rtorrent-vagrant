@@ -1,9 +1,0 @@
-#!/bin/bash
-
-source /usr/local/bin/metadata.source
-set -e
-
-sudo ip -6 addr flush dev ${PRIVATE_DEV}
-
-touch ${METADATA}/ipv6.down
-rm ${METADATA}/ipv6.up &> /dev/null || true

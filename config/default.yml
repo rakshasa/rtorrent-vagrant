@@ -5,26 +5,46 @@ nodes:
     builder: true
     cpus: 8
     memory: 2048
-    ipv4: 10
-    ipv6: 10
+    interfaces:
+    - network: rnet1
+      ipv4: 10.0.3.10
+      ipv6: fdcc::10
+    - network: rnet2
+      ipv4: 10.0.4.10
+      ipv6: fddd::10
 
   - hostname: node1
-    ipv4: 11
-    ipv6: 11
     forward:
     - guest: 5001
       host: 18601
+    interfaces:
+    - network: rnet1
+      ipv4: 10.0.3.11
+      ipv6: fdcc::11
+    - network: rnet2
+      ipv4: 10.0.4.11
+      ipv6: fddd::11
 
   - hostname: node2
-    ipv4: 12
-    ipv6: 12
     forward:
     - guest: 5001
       host: 18602
+    interfaces:
+    - network: rnet1
+      ipv4: 10.0.3.12
+      ipv6: fdcc::12
+    - network: rnet2
+      ipv4: 10.0.4.12
+      ipv6: fddd::12
 
   - hostname: node3
-    ipv4: 13
-    ipv6: 13
     forward:
     - guest: 5001
       host: 18603
+    interfaces:
+    - network: rnet1
+      ipv4: 10.0.3.13
+      ipv6: fdcc::13
+    - network: rnet2
+      ipv4: 10.0.4.13
+      ipv6: fddd::13

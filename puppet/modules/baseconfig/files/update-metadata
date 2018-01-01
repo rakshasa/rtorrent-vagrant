@@ -2,17 +2,22 @@
 
 source /usr/local/bin/metadata.source
 
-ip -4 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv4.address
-ip -4 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv4.prefix
-ip -6 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv6.address
-ip -6 addr show dev ${PRIVATE_DEV} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv6.prefix
+ip -4 addr show dev ${PRIVATE_DEV_1} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv4.1.address
+ip -4 addr show dev ${PRIVATE_DEV_1} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv4.1.prefix
+ip -6 addr show dev ${PRIVATE_DEV_1} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv6.1.address
+ip -6 addr show dev ${PRIVATE_DEV_1} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv6.1.prefix
 
-rm ${METADATA}/ipv{4,6}.{up,down} &> /dev/null
+ip -4 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv4.2.address
+ip -4 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet \([0-9.]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv4.2.prefix
+ip -6 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\1_p' > ${METADATA}/ipv6.2.address
+ip -6 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet6 \([0-9a-f:]*\)/\([0-9]*\).*$_\2_p' > ${METADATA}/ipv6.2.prefix
 
-for prefix in ${METADATA}/ipv{4,6}; do
+rm "${METADATA}"/ipv{4,6}.{1,2}.{up,down} &> /dev/null
+
+for prefix in "${METADATA}"/ipv{4,6}.{1,2}; do
     if [ -n "$(cat ${prefix}.address)" ]; then
-        touch ${prefix}.up
+        touch "${prefix}.up"
     else
-        touch ${prefix}.down
+        touch "${prefix}.down"
     fi
 done

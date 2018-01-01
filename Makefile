@@ -62,51 +62,6 @@ build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH)
 
-# TODO: Make a single script to clear everything.
-test_default:
-	-./scripts/test-delete-all
-	sleep 1
-	-./scripts/stop-rtorrent
-	sleep 1
-	./scripts/config-clear
-	./scripts/start-rtorrent
-	./scripts/test-create-all
-
-test_empty:
-	-./scripts/test-delete-all
-	sleep 1
-	-./scripts/stop-rtorrent
-	sleep 1
-	./scripts/config-clear
-	./scripts/start-rtorrent
-
-test_bind:
-	-./scripts/test-delete-all
-	sleep 1
-	-./scripts/stop-rtorrent
-	sleep 1
-	./scripts/config-clear
-	./scripts/config-use-bind-address
-	./scripts/start-rtorrent
-
-test_bind_dl:
-	-./scripts/test-delete-all
-	sleep 1
-	-./scripts/stop-rtorrent
-	sleep 1
-	./scripts/config-clear
-	NODES="node2 node3" ./scripts/config-use-bind-address
-	./scripts/start-rtorrent
-
-test_bind_invalid:
-	-./scripts/test-delete-all
-	sleep 1
-	-./scripts/stop-rtorrent
-	sleep 1
-	./scripts/config-clear
-	./scripts/config-set-bind-address node2 10.0.1.100
-	./scripts/start-rtorrent
-
 setup:
 	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-git
