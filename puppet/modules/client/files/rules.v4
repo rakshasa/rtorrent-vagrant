@@ -1,0 +1,7 @@
+*filter
+:INPUT ACCEPT
+:FORWARD ACCEPT
+:OUTPUT ACCEPT
+-A INPUT -i eth1 -p tcp -m tcp --dport 15000:15499 -m state --state NEW,ESTABLISHED -j REJECT --reject-with tcp-reset
+-A INPUT -i eth2 -p tcp -m tcp --dport 15500:15999 -m state --state NEW,ESTABLISHED -j REJECT --reject-with tcp-reset
+COMMIT
