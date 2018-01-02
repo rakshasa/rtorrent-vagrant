@@ -2,18 +2,14 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-create_torrent() {
-    echo "creating torrent: $1"
-
-    ${SCRIPT_DIR}/new-torrent "$1" &> /dev/null
-
-    if [ $? -ne 0 ]; then
-        echo "failed to create torrent"
-        exit 1
-    fi
-}
-
 USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no create_torrent test_h4
 USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no USE_IPV6=yes create_torrent test_h6
 USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no create_torrent test_u4
 USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no USE_IPV6=yes create_torrent test_u6
+
+if [ "${CREATE_IF2}" = "yes" ]; then
+    USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no  USE_IF1=no USE_IF2=yes create_torrent test_h4_if2
+    USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=yes create_torrent test_h6_if2
+    USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no  USE_IF1=no USE_IF2=yes create_torrent test_u4_if2
+    USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=yes create_torrent test_u6_if2
+fi

@@ -17,12 +17,17 @@ start_nodes() {
 }
 
 create_torrents() {
-    "${SCRIPT_DIR}/test-create-all"
+    CREATE_IF2="${CREATE_IF2}" "${SCRIPT_DIR}/test-create-all"
 
     local torrent=
+    local torrent_list="test_h4 test_h6 test_u4 test_u6"
+
+    if [ "${CREATE_IF2}" = "yes" ]; then
+        torrent_list+=" test_h4_if2 test_h6_if2 test_u4_if2 test_u6_if2"
+    fi
 
     # TODO: Use variable.
-    for torrent in test_h4 test_h6 test_u4 test_u6; do
+    for torrent in ${torrent_list}; do
         WAIT_NODES="${ACTIVE_NODES}" wait_for_nodes is-loaded ${torrent}
         echo "${torrent}: loaded"
     done
@@ -47,8 +52,8 @@ setup_default() {
     ${SCRIPT_DIR}/ip-up-6-1 "node1 node3"
     ${SCRIPT_DIR}/ip-down-4-1 "node3"
     ${SCRIPT_DIR}/ip-down-6-1 "node2"
-    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
-    ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
 }
 
 setup_default_v4() {
@@ -92,7 +97,7 @@ setup() {
 
     echo "starting nodes"
     start_nodes
-    create_torrents
+    CREATE_IF2="${CREATE_IF2}" create_torrents
     verify_seeds
 
     # TODO: Replace with check to see if we have in-progess.
