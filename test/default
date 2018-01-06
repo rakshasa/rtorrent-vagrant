@@ -8,9 +8,6 @@ echo "running default"
 clean_all
 CREATE_IF2=yes setup default
 
-# TODO: Add new test that verifies downloading on machines with both
-# ipv4 and ipv6. Need to add another machine, or use extra interface?
-
 verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
 verify_completed node2 test_u4 "verifying it works with udp4  tracker over ipv4"
 verify_completed node3 test_h6 "verifying it works with http6 tracker over ipv6"

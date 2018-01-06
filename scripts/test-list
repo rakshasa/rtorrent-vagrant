@@ -9,3 +9,4 @@ echo default_v4
 echo default_v6
 echo bind_v4
 echo bind_v6
+echo bind_port_basic
