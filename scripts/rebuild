@@ -2,4 +2,5 @@
 
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
+"${SCRIPT_DIR}/stop-rtorrent"
 "${SCRIPT_DIR}/ssh" builder rebuild-rtorrent

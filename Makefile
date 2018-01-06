@@ -38,8 +38,7 @@ init_v4:
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.
 rebuild:
-	./scripts/stop-rtorrent
-	./scripts/ssh builder -- "rebuild-rtorrent"
+	./scripts/rebuild
 	./scripts/start-rtorrent -s
 
 check:
