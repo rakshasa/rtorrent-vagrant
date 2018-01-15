@@ -22,17 +22,26 @@ all:
 init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 
-	$(MAKE) clean
-	vagrant up
-	./scripts/update-ssh-config
+	"$(MAKE)" clean
+	USE_CONFIG="${USE_CONFIG}" vagrant up
+	USE_CONFIG="${USE_CONFIG}" ./scripts/update-ssh-config
 
 	./scripts/build-tracker
-	$(MAKE) build_branch
+	"$(MAKE)" build_branch
 	./scripts/config-clear
 	./scripts/start-rtorrent
 
 init_v4:
-	BRANCH=feature-bind IPV4_ONLY=yes $(MAKE) init
+	BRANCH=feature-bind "$(MAKE)" init
+
+rtorrent-dl:
+	USE_CONFIG=rtorrent-dl "$(MAKE)" clean
+	USE_CONFIG=rtorrent-dl vagrant up
+	USE_CONFIG=rtorrent-dl ./scripts/update-ssh-config
+
+	BRANCH=feature-bind "$(MAKE)" build_branch
+	./scripts/config-clear
+	./scripts/start-rtorrent
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
@@ -63,12 +72,13 @@ build_branch:
 
 setup:
 	vagrant plugin install vagrant-cachier
+	vagrant plugin install vagrant-disksize
 	vagrant plugin install vagrant-git
 	vagrant plugin install vagrant-triggers
 	vagrant plugin install vagrant-vbguest
 
 clean:
-	-vagrant destroy -f
+	-USE_CONFIG="${USE_CONFIG}" vagrant destroy -f
 
 distclean:
 	-vagrant destroy -f

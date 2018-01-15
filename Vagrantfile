@@ -10,7 +10,7 @@ Vagrant.require_version ">= 1.8.0"
 DEFAULT_BOX = 'ubuntu/trusty64'
 CONFIG_DIR = 'config/'
 
-global_config = parse_config_file('default')
+global_config = parse_config_file(ENV['USE_CONFIG'] || 'default')
 
 Vagrant.configure('2') do |config|
   global_config[:nodes].each do |node|
@@ -39,6 +39,7 @@ Vagrant.configure('2') do |config|
 
         vb.cpus = node[:cpus] if node[:cpus]
         vb.memory = node[:memory] if node[:memory]
+        vb.disksize.size = node[:disk_size] if node[:disk_size]
       end
 
       node_config.vm.provision 'puppet' do |puppet|

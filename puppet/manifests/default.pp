@@ -17,3 +17,7 @@ node /^builder\./ {
 node /^node\d+\./ {
   include client
 }
+
+node /^node-dl\./ {
+  include client
+}
