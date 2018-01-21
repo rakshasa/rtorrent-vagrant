@@ -3,8 +3,7 @@
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
 COMMAND="${1:?Missing command argument.}"
-VIEW="main"
 TARGET="s/"
 ARGS=($@)
 
-call_rpc_nodes "$1" "${TARGET}" "${VIEW}" ${ARGS[@]:1}
+call_rpc_nodes "$1" "${TARGET}" ${ARGS[@]:1}

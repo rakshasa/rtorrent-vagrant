@@ -24,24 +24,24 @@ CREATE_IF2=yes setup default_pair
 
 # Rename tests.
 
-verify_completed node2 test_h4_if2 "verifying it works with http4 tracker over ipv4"
-verify_completed node2 test_u4_if2 "verifying it works with udp4  tracker over ipv4"
-verify_completed node3 test_h6_if2 "verifying it works with http6 tracker over ipv6"
-verify_completed node3 test_u6_if2 "verifying it works with udp6  tracker over ipv6"
+verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
+verify_completed node2 test_u4 "verifying it works with udp4  tracker over ipv4"
+verify_completed node3 test_h6 "verifying it works with http6 tracker over ipv6"
+verify_completed node3 test_u6 "verifying it works with udp6  tracker over ipv6"
 
-verify_incompleted node2 test_h4 "verifying it does not work with http4 tracker over ipv4 when ports are blocked"
-verify_incompleted node2 test_u4 "verifying it does not work with udp4  tracker over ipv4 when ports are blocked"
-verify_incompleted node3 test_h6 "verifying it does not work with http6 tracker over ipv6 when ports are blocked"
-verify_incompleted node3 test_u6 "verifying it does not work with udp6  tracker over ipv6 when ports are blocked"
+verify_incompleted node2 test_h4_if2 "verifying it does not work with http4 tracker over ipv4 when ports are blocked"
+verify_incompleted node2 test_u4_if2 "verifying it does not work with udp4  tracker over ipv4 when ports are blocked"
+verify_incompleted node3 test_h6_if2 "verifying it does not work with http6 tracker over ipv6 when ports are blocked"
+verify_incompleted node3 test_u6_if2 "verifying it does not work with udp6  tracker over ipv6 when ports are blocked"
 
-verify_incompleted node2 test_h6_if2 "verifying it does not work with http6 tracker when ipv6 is not available"
-verify_incompleted node2 test_u6_if2 "verifying it does not work with udp6  tracker when ipv6 is not available"
-verify_incompleted node3 test_h4_if2 "verifying it does not work with http4 tracker when ipv4 is not available"
-verify_incompleted node3 test_u4_if2 "verifying it does not work with udp4  tracker when ipv4 is not available"
+verify_incompleted node2 test_h6 "verifying it does not work with http6 tracker when ipv6 is not available"
+verify_incompleted node2 test_u6 "verifying it does not work with udp6  tracker when ipv6 is not available"
+verify_incompleted node3 test_h4 "verifying it does not work with http4 tracker when ipv4 is not available"
+verify_incompleted node3 test_u4 "verifying it does not work with udp4  tracker when ipv4 is not available"
 
-verify_incompleted node2 test_h6 "verifying it does not work with http6 tracker when ipv6 is not available, etc"
-verify_incompleted node2 test_u6 "verifying it does not work with udp6  tracker when ipv6 is not available, etc"
-verify_incompleted node3 test_h4 "verifying it does not work with http4 tracker when ipv4 is not available, etc"
-verify_incompleted node3 test_u4 "verifying it does not work with udp4  tracker when ipv4 is not available, etc"
+verify_incompleted node2 test_h6_if2 "verifying it does not work with http6 tracker when ipv6 is not available, blocked"
+verify_incompleted node2 test_u6_if2 "verifying it does not work with udp6  tracker when ipv6 is not available, blocked"
+verify_incompleted node3 test_h4_if2 "verifying it does not work with http4 tracker when ipv4 is not available, blocked"
+verify_incompleted node3 test_u4_if2 "verifying it does not work with udp4  tracker when ipv4 is not available, blocked"
 
 exit_test
