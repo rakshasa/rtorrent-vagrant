@@ -16,12 +16,15 @@ clean_all
 "${SCRIPT_DIR}/config-set-block-connect" node2
 "${SCRIPT_DIR}/config-set-block-connect" node3
 
+# TODO: Make randomize the default.
+"${SCRIPT_DIR}/config-enable-port-randomize" node3
+
 CREATE_IF2=yes CREATE_IPV6=no POKE_SEED=yes setup default_pair_v4
 
-verify_incompleted node2 test_h4   "verifying sequential works with http4 tracker over ipv4"
-verify_incompleted node2 test_u4   "verifying sequential works with udp4  tracker over ipv4"
-verify_completed node2 test_h4_if2 "verifying sequential works with http4 tracker over ipv4"
-verify_completed node2 test_u4_if2 "verifying sequential works with udp4  tracker over ipv4"
+verify_incompleted node2 test_h4     "verifying sequential works with http4 tracker over ipv4"
+verify_incompleted node2 test_u4     "verifying sequential works with udp4  tracker over ipv4"
+verify_completed node2 test_h4_if2   "verifying sequential works with http4 tracker over ipv4"
+verify_completed node2 test_u4_if2   "verifying sequential works with udp4  tracker over ipv4"
 
 verify_completed node3 test_h4       "verifying randomized works with http4 tracker over ipv4"
 verify_completed node3 test_u4       "verifying randomized works with udp4  tracker over ipv4"

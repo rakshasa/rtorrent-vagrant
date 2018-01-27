@@ -27,6 +27,7 @@ create_torrents() {
 
     if [ "${POKE_SEED}" == "yes" ]; then
         echo "poking seeder"
+        sleep 5
         NODES="node1" "${SCRIPT_DIR}/call-d-multicall" d.tracker_announce.force= > /dev/null
     fi
 }
