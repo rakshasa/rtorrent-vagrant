@@ -13,14 +13,15 @@ clean_all
 "${SCRIPT_DIR}/config-set-port-range" node2 15500 15600
 "${SCRIPT_DIR}/config-set-port-range" node3 16500 16600
 
-CREATE_IF2=yes setup default_pair
+"${SCRIPT_DIR}/config-set-block-connect" node2
+"${SCRIPT_DIR}/config-set-block-connect" node3
+
+CREATE_IF2=yes POKE_SEED=yes setup default_pair
 
 # Test:
 # - with port bind ipv4+6 works
 # - ipv4in6 an issue
 # - add torrents over the other interface later
-
-# Need to block outgoing on node1, restart after setup.
 
 # Rename tests.
 
