@@ -24,9 +24,17 @@ Vagrant.configure('2') do |config|
 
       disable_default_folder(node_config)
 
-      add_local_data(node_config, node_name: node_name, auto_cleanup: !node[:builder])
-      add_shared_data(node_config, node_name: node_name, shared_name: 'shared', should_create: node[:primary])
-      add_shared_data(node_config, node_name: node_name, shared_name: 'usr_local', shared_path: '/usr/local', should_create: node[:primary])
+      add_local_data(node_config, node_name: node_name,
+                     auto_cleanup: !node[:builder])
+      add_shared_data(node_config, node_name: node_name,
+                      shared_name: 'shared',
+                      should_create: node[:primary],
+                      should_destroy: !node[:no_destroy])
+      add_shared_data(node_config, node_name: node_name,
+                      shared_name: 'usr_local',
+                      shared_path: '/usr/local',
+                      should_create: node[:primary],
+                      should_destroy: !node[:no_destroy])
 
       # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do

@@ -49,7 +49,7 @@ def add_local_data(node_config, node_name:, data_user: nil, data_group: nil, sho
   end
 end
 
-def add_shared_data(node_config, node_name:, shared_name:, shared_path: nil, should_create:)
+def add_shared_data(node_config, node_name:, shared_name:, shared_path: nil, should_create:, should_destroy:)
   if node_name.nil?
     raise Vagrant::Errors::VagrantError.new, "add_local_data called with no valid 'node_name'"
   end
@@ -61,6 +61,6 @@ def add_shared_data(node_config, node_name:, shared_name:, shared_path: nil, sho
   node_config.vm.synced_folder "./data/#{shared_name}", shared_path || "/data/#{shared_name}", create: should_create
   
   node_config.trigger.after :destroy, vm: [node_name], force: true do
-    run "rm -rf ./data/#{shared_name}" if should_create
+    run "rm -rf ./data/#{shared_name}" if should_create && should_destroy
   end
 end

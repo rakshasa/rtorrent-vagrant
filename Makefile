@@ -43,6 +43,8 @@ rtorrent-dl:
 	./scripts/config-clear
 	./scripts/start-rtorrent
 
+	USE_CONFIG=rtorrent-dl vagrant destroy -f builder
+
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.
@@ -77,6 +79,7 @@ setup:
 	vagrant plugin install vagrant-triggers
 	vagrant plugin install vagrant-vbguest
 
+# Change to also destroy all found nodes.
 clean:
 	-USE_CONFIG="${USE_CONFIG}" vagrant destroy -f
 
