@@ -16,8 +16,7 @@ clean_all
 "${SCRIPT_DIR}/config-set-block-connect" node2
 "${SCRIPT_DIR}/config-set-block-connect" node3
 
-# TODO: Make randomize the default.
-"${SCRIPT_DIR}/config-enable-port-randomize" node3
+"${SCRIPT_DIR}/config-disable-port-randomize" node2
 
 CREATE_IF2=yes CREATE_IPV6=no POKE_SEED=yes setup default_pair_v4
 
