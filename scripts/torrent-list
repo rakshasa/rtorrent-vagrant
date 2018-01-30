@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+find "${TORRENT_SHARED_DIR}" -name \*.torrent -printf '%f\n' | sed -e 's/\.torrent$//'

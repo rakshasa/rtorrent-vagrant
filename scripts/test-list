@@ -2,11 +2,10 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-#ls "${TEST_DIR}" | grep -e '^[a-z0-9_]*$'
-
 echo default
 echo default_v4
 echo default_v6
 echo bind_v4
 echo bind_v6
 echo bind_port_basic
+echo bind_port_randomize
