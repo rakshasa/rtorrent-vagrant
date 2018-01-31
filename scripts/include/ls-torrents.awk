@@ -14,8 +14,10 @@
 
     name = $11
 
-    # Remember to update 'i'.
-    for (i = 10; i <= NF; i++)
+    # !!!!!!!!!!!!!!!!!!!!!!
+    # Remember to update 'i'
+    # !!!!!!!!!!!!!!!!!!!!!!
+    for (i = 12; i <= NF; i++)
 	name = name " " $(i)
 
     if (is_active == 1)
