@@ -9,10 +9,13 @@
     up_rate = $7
     down_rate = $8
 
-    name = $9
+    peers_connected = $9
+    peers_not_connected = $10
+
+    name = $11
 
     # Remember to update 'i'.
-    for (i = 10; i <= NF; i++)
+    for (i = 12; i <= NF; i++)
 	name = name " " $(i)
 
     if (is_active == 1)
@@ -27,5 +30,5 @@
     else
         progress = " partial";
 
-    print info_hash, state, progress, "chunks:" completed_chunks "/" size_chunks, "rate:" up_rate "/" down_rate, name
+    print info_hash, state, progress, "chunks:" completed_chunks "/" size_chunks, "rate:" up_rate "/" down_rate, "peers:" peers_connected "/" peers_not_connected, name
 }
