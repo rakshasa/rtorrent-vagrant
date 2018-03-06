@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+torrent_name="${1:?Torrent name not specified.}"
+dst_dir="${2:?Destination directory not specified.}"
+
+"${SCRIPT_DIR}/scp" "node-dl:/data/torrents/${torrent_name}" "${dst_dir}/"

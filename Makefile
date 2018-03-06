@@ -34,7 +34,7 @@ init:
 init_v4:
 	BRANCH=feature-bind "$(MAKE)" init
 
-rtorrent-dl:
+node-dl:
 	USE_CONFIG=rtorrent-dl "$(MAKE)" clean
 	USE_CONFIG=rtorrent-dl vagrant up
 	USE_CONFIG=rtorrent-dl ./scripts/update-ssh-config
@@ -82,6 +82,11 @@ setup:
 # Change to also destroy all found nodes.
 clean:
 	-USE_CONFIG="${USE_CONFIG}" vagrant destroy -f
+
+# Change to also destroy all found nodes.
+clean-dl:
+	-USE_CONFIG=rtorrent-dl vagrant destroy -f
+
 
 distclean:
 	-vagrant destroy -f
