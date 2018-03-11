@@ -1,0 +1,24 @@
+nodes:
+
+  - hostname: builder
+    no_destroy: true
+    primary: true
+    builder: true
+    cpus: 8
+    memory: 2048
+    interfaces:
+    - network: rt-dl
+      ipv4: 10.0.3.10
+      ipv6: fdcc::10
+
+  - hostname: node-dl
+    cpus: 4
+    memory: 10240
+    disk_space: 30GB
+    forward:
+    - guest: 5001
+      host: 18701
+    interfaces:
+    - network: rt-dl
+      ipv4: 10.0.3.11
+      ipv6: fdcc::11
