@@ -5,19 +5,14 @@ BRANCH?=master
 LIBTORRENT_BRANCH?=$(BRANCH)
 RTORRENT_BRANCH?=$(BRANCH)
 
+export VAGRANT_USE_VAGRANT_TRIGGERS=1
+
 all:
 	@echo "RTorrent Vagrant environment"
 	@echo
 	@echo "make setup      - install required vagrant plugins"
 	@echo "make init       - initialize vms and build rtorrent (support BRANCH, or LIBTORRENT_BRANCH and RTORRENT_BRANCH variables)"
 	@echo "make rebuild    - rebuild libtorrent and rtorrent"
-	@echo "make check      - rebuild libtorrent and rtorrent with unittests"
-	@echo "make test_http4 - creates torrent and attempts to seed it"
-	@echo
-	@echo "Example:"
-	@echo
-	@echo "make setup && RTORRENT_BRANCH=feature-foo make init && make test_http4"
-	@echo
 
 init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
