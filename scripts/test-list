@@ -9,3 +9,4 @@ echo bind_v4
 echo bind_v6
 echo bind_port_basic
 echo bind_port_randomize
+echo bind_separate_v4v6

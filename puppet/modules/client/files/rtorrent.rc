@@ -4,20 +4,21 @@
 
 # TODO: Rename 'critical' to something more descriptive.
 log.open_file = "crash", /data/local/log/crash.log
-log.add_output = "critical", "crash"
+try = ((log.add_output, "critical", "crash"))
+
+log.open_file = "rpc", /data/local/log/rpc.log
+try = ((log.add_output, "rpc_events", "rpc"))
 
 log.open_file = "dht_all", /data/local/log/dht_all.log
-log.add_output = "dht_all", "dht_all"
-
 log.open_file = "connection", /data/local/log/connection.log
-log.add_output = "connection", "connection"
-
 log.open_file = "system", /data/local/log/system.log
-log.add_output = "system", "system"
-
 log.open_file = "peer_list", /data/local/log/peer_list.log
-log.add_output = "peer_list_address", "peer_list"
-log.add_output = "peer_list_events", "peer_list"
+
+try = ((log.add_output, "dht_all", "dht_all"))
+try = ((log.add_output, "connection", "connection"))
+try = ((log.add_output, "system", "system"))
+try = ((log.add_output, "peer_list_address", "peer_list"))
+try = ((log.add_output, "peer_list_events", "peer_list"))
 
 
 # TODO: Refactor:
@@ -27,16 +28,15 @@ log.open_file = "socket", /data/local/log/socket.log
 log.open_file = "storage", /data/local/log/storage.log
 log.open_file = "thread", /data/local/log/thread.log
 log.open_file = "tracker", /data/local/log/tracker.log
-
-log.add_output = "debug", "rtorrent"
-log.add_output = "torrent_debug", "torrent"
-log.add_output = "socket_debug", "socket"
-log.add_output = "storage_debug", "storage"
-log.add_output = "thread_debug", "thread"
-log.add_output = "tracker_debug", "tracker"
-
 log.open_file = "old_dht", /data/local/log/old_dht.log
-log.add_output = "dht_debug", "old_dht"
+
+try = ((log.add_output, "debug", "rtorrent"))
+try = ((log.add_output, "torrent_debug", "torrent"))
+try = ((log.add_output, "socket_debug", "socket"))
+try = ((log.add_output, "storage_debug", "storage"))
+try = ((log.add_output, "thread_debug", "thread"))
+try = ((log.add_output, "tracker_debug", "tracker"))
+try = ((log.add_output, "dht_debug", "old_dht"))
 
 
 #
@@ -57,6 +57,7 @@ schedule = watch_untied, 10, 10, remove_untied=
 # Per-node optional resource file:
 #
 
+try_import = /data/shared/config/extra.rc
 try_import = /data/local/config/extra.rc
 
 #

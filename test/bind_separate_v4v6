@@ -8,6 +8,7 @@ echo "running bind_separate_v4v6"
 clean_all
 #NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address-4"
 
+# access for all(?)
 setup default
 
 # Add universal torrents... or not?
