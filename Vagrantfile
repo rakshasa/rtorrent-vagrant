@@ -10,7 +10,7 @@ Vagrant.require_version ">= 1.8.0"
 DEFAULT_BOX = 'ubuntu/trusty64'
 CONFIG_DIR = 'config/'
 
-global_config = parse_config_file(ENV['USE_CONFIG'] || 'default')
+global_config = parse_config_file(ENV['USE_CONFIG'].to_s.empty? ? 'default' : ENV['USE_CONFIG'])
 
 Vagrant.configure('2') do |config|
   global_config[:nodes].each do |node|
@@ -63,6 +63,8 @@ Vagrant.configure('2') do |config|
 
   if Vagrant.has_plugin?('vagrant-cachier')
     config.cache.scope = :box
+    config.cache.enable :apt_lists
+    config.cache.auto_detect = true
   end
 
   add_builder_repo(config, repo_name: 'libtorrent')

@@ -63,7 +63,10 @@ def forward_port(node, params)
     raise Vagrant::Errors::ConfigInvalid.new
   end
 
-  node.vm.network 'forwarded_port', guest: params[:guest], host: params[:host]
+  # TODO: Bind to NAT interface.
+  guest_ip = nil
+
+  node.vm.network 'forwarded_port', guest: params[:guest], guest_ip: guest_ip, host: params[:host]
 
   node.trigger.after :up do
     run_remote "echo #{params[:host]} > /data/local/metadata/forward.#{params[:guest]}"
