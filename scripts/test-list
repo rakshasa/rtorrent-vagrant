@@ -7,6 +7,7 @@ echo default_v4
 echo default_v6
 echo bind_v4
 echo bind_v6
-echo bind_port_basic
-echo bind_port_randomize
+echo bind_port_simple
+echo bind_port_randomize_v4
+echo bind_port_randomize_v6
 echo bind_separate_v4v6

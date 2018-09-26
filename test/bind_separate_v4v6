@@ -9,20 +9,20 @@ clean_all
 #NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address-4"
 
 # access for all(?)
-setup default
+setup single
 
 # Add universal torrents... or not?
 
 # Need a separate interface/network on node1.
 
-verify_completed node2 test_h4 "verifying it works with http4 tracker over ipv4"
-verify_completed node2 test_u4 "verifying it works with udp4  tracker over ipv4"
-verify_completed node3 test_h6 "verifying it works with http6 tracker over ipv6"
-verify_completed node3 test_u6 "verifying it works with udp6  tracker over ipv6"
+verify_completed node2 test_h4_if1 "verifying it works with http4 tracker over ipv4"
+verify_completed node2 test_u4_if1 "verifying it works with udp4  tracker over ipv4"
+verify_completed node3 test_h6_if1 "verifying it works with http6 tracker over ipv6"
+verify_completed node3 test_u6_if1 "verifying it works with udp6  tracker over ipv6"
 
-verify_incompleted node2 test_h6 "verifying it does not work with http6 tracker over ipv4"
-verify_incompleted node2 test_u6 "verifying it does not work with udp6  tracker over ipv4"
-verify_incompleted node3 test_h4 "verifying it does not work with http4 tracker over ipv6"
-verify_incompleted node3 test_u4 "verifying it does not work with udp4  tracker over ipv6"
+verify_incompleted node2 test_h6_if1 "verifying it does not work with http6 tracker over ipv4"
+verify_incompleted node2 test_u6_if1 "verifying it does not work with udp6  tracker over ipv4"
+verify_incompleted node3 test_h4_if1 "verifying it does not work with http4 tracker over ipv6"
+verify_incompleted node3 test_u4_if1 "verifying it does not work with udp4  tracker over ipv6"
 
 exit_test

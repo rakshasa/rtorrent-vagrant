@@ -37,3 +37,14 @@ Test all:
 ./scripts/test-all
 ```
 
+
+Blocked ports
+-------------
+
+```
+eth1 ipv4 blocks 15000-15499
+eth2 ipv4 blocks 15500-15999
+eth1 ipv6 blocks 16000-16499
+eth2 ipv6 blocks 16500-16999
+```
+

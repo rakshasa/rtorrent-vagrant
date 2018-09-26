@@ -17,7 +17,7 @@ start_nodes() {
 }
 
 create_torrents() {
-    CREATE_IF2="${CREATE_IF2}" CREATE_IPV6="${CREATE_IPV6}" "${SCRIPT_DIR}/test-create-all"
+    CREATE_PRESET="${CREATE_PRESET}" CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" "${SCRIPT_DIR}/test-create-all"
 
     local torrent=
     for torrent in `${SCRIPT_DIR}/torrent-list`; do
@@ -55,7 +55,18 @@ setup_default() {
     ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
 }
 
-setup_default_v4() {
+setup_single() {
+    "${SCRIPT_DIR}/build-tracker"
+
+    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node3"
+    ${SCRIPT_DIR}/ip-down-4-1 "node3"
+    ${SCRIPT_DIR}/ip-down-6-1 "node2"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
+}
+
+setup_single_v4() {
     IPV4_ONLY=yes "${SCRIPT_DIR}/build-tracker"
 
     ${SCRIPT_DIR}/ip-up-4-1 "node1 node2"
@@ -66,7 +77,7 @@ setup_default_v4() {
     ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
 }
 
-setup_default_v6() {
+setup_single_v6() {
     "${SCRIPT_DIR}/build-tracker"
 
     ${SCRIPT_DIR}/ip-up-4-1 "node2"
@@ -77,7 +88,7 @@ setup_default_v6() {
     ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
 }
 
-setup_default_pair() {
+setup_pair() {
     "${SCRIPT_DIR}/build-tracker"
 
     ${SCRIPT_DIR}/ip-up-4-1 "node1 node2"
@@ -90,13 +101,22 @@ setup_default_pair() {
     ${SCRIPT_DIR}/ip-down-6-2 "node2"
 }
 
-setup_default_pair_v4() {
+setup_pair_v4() {
     "${SCRIPT_DIR}/build-tracker"
 
     ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3"
     ${SCRIPT_DIR}/ip-down-6-1 "node1 node2 node3"
     ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3"
     ${SCRIPT_DIR}/ip-down-6-2 "node1 node2 node3"
+}
+
+setup_pair_v6() {
+    "${SCRIPT_DIR}/build-tracker"
+
+    ${SCRIPT_DIR}/ip-down-4-1 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
 }
 
 setup() {
@@ -107,25 +127,44 @@ setup() {
     case ${config} in
         "default")
             setup_default &> /dev/null
+            CREATE_PRESET=if_pair
             ;;
-        "default_v4")
-            setup_default_v4 &> /dev/null
+        "single")
+            setup_single &> /dev/null
+            CREATE_PRESET=if_single
             ;;
-        "default_v6")
-            setup_default_v6 &> /dev/null
+        "single_v4")
+            setup_single_v4 &> /dev/null
+            CREATE_PRESET=if_single
             ;;
-        "default_pair")
-            setup_default_pair &> /dev/null
+        "single_v6")
+            setup_single_v6 &> /dev/null
+            CREATE_PRESET=if_single
             ;;
-        "default_pair_v4")
-            setup_default_pair_v4 &> /dev/null
+        "pair")
+            setup_pair &> /dev/null
+            CREATE_PRESET=if_pair
+            ;;
+        "pair_v4")
+            setup_pair_v4 &> /dev/null
+            CREATE_PRESET=if_pair
+            CREATE_IPV6=no
+            ;;
+        "pair_v6")
+            setup_pair_v6 &> /dev/null
+            CREATE_PRESET=if_pair
+            CREATE_IPV4=no
+            ;;
+        *)
+            echo "missing config '${config}'"
+            exit -1
             ;;
     esac
 
     echo "starting nodes"
     start_nodes
 
-    CREATE_IF2="${CREATE_IF2}" create_torrents
+    CREATE_PRESET="${CREATE_PRESET}" CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" create_torrents
     POKE_SEED="${POKE_SEED}" verify_seeds
 
     # TODO: Replace with check to see if we have in-progess.
