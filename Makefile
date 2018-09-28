@@ -5,6 +5,7 @@ BRANCH?=master
 LIBTORRENT_BRANCH?=$(BRANCH)
 RTORRENT_BRANCH?=$(BRANCH)
 
+export USE_CONFIG?=$(shell cat ./data/current-config || echo default)
 export VAGRANT_USE_VAGRANT_TRIGGERS=1
 
 all:
@@ -18,27 +19,25 @@ init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 
 	"$(MAKE)" clean
-	USE_CONFIG="${USE_CONFIG}" vagrant up
-	USE_CONFIG="${USE_CONFIG}" ./scripts/update-ssh-config
+
+	echo "$(USE_CONFIG)" > ./data/current-config
+	vagrant up
+	./scripts/update-ssh-config
 
 	./scripts/build-tracker
 	"$(MAKE)" build_branch
 	./scripts/config-clear
 	./scripts/start-rtorrent
 
-init_v4:
-	BRANCH=feature-bind "$(MAKE)" init
+feature-bind:
+	echo "default" > ./data/current-config
+	BRANCH=feature-bind USE_CONFIG=default "$(MAKE)" init
 
 node-dl:
-	USE_CONFIG=rtorrent-dl "$(MAKE)" clean
-	USE_CONFIG=rtorrent-dl vagrant up
-	USE_CONFIG=rtorrent-dl ./scripts/update-ssh-config
+	echo "rtorrent-dl" > ./data/current-config
+	BRANCH=feature-bind USE_CONFIG=rtorrent-dl "$(MAKE)" init
 
-	BRANCH=feature-bind "$(MAKE)" build_branch
-	./scripts/config-clear
-	./scripts/start-rtorrent
-
-	USE_CONFIG=rtorrent-dl vagrant destroy -f builder
+	vagrant destroy -f builder
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
@@ -76,12 +75,7 @@ setup:
 
 # Change to also destroy all found nodes.
 clean:
-	-USE_CONFIG="${USE_CONFIG}" vagrant destroy -f
-
-# Change to also destroy all found nodes.
-clean-dl:
-	-USE_CONFIG=rtorrent-dl vagrant destroy -f
-
+	-vagrant destroy -f
 
 distclean:
 	-vagrant destroy -f
