@@ -4,11 +4,11 @@ require './lib/config.rb'
 require './lib/helpers.rb'
 require './lib/network.rb'
 
-Vagrant.require_version ">= 1.8.0"
-
 # TODO: Move to config file.
 DEFAULT_BOX = 'ubuntu/trusty64'
 CONFIG_DIR = 'config/'
+
+Vagrant.require_version ">= 1.8.0"
 
 global_config = parse_config_file(ENV['USE_CONFIG'].to_s.empty? ? 'default' : ENV['USE_CONFIG'])
 

@@ -2,6 +2,30 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
+function create_torrent() {
+    local name="${1:?Missing torrent name argument.}"
+
+    if "${SCRIPT_DIR}/is-torrent-cached" "${name}"; then
+        echo "already created, skipping: ${name}"
+        return
+    fi
+
+    echo "creating torrent: ${name}"
+    "${SCRIPT_DIR}/torrent-create" "${name}" &> /dev/null
+
+    if [ $? -ne 0 ]; then
+        echo "failed to create torrent"
+        exit 1
+    fi
+
+    "${SCRIPT_DIR}/torrent-activate" "${name}"
+
+    if [ $? -ne 0 ]; then
+        echo "failed to activate torrent"
+        exit 1
+    fi
+}
+
 case "${CREATE_PRESET}" in
     "if_single")
         CREATE_IF1="${CREATE_IF1:-yes}"

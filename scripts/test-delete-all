@@ -3,6 +3,6 @@
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
 for i in $("${SCRIPT_DIR}/test-torrent-all"); do
-    "${SCRIPT_DIR}/deactivate-torrent" $i &> /dev/null || :
+    "${SCRIPT_DIR}/torrent-deactivate" $i &> /dev/null || :
     "${SCRIPT_DIR}/rm-torrent" $i &> /dev/null || :
 done

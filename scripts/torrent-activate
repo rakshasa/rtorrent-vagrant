@@ -1,0 +1,13 @@
+#!/bin/bash
+
+export DATA_FILENAME="${1:?Missing torrent filename.}"
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+source `dirname ${BASH_SOURCE[0]}`/include/torrent
+
+# TODO: Check that filename and torrent exists.
+
+"${SCRIPT_DIR}/ssh" ${SEED_NODE} "cp -r '${DATA_VM_PATH}' '${DATA_VM_TORRENTS}'"
+
+rm "${DATA_HOST_WATCH_TORRENT}" || true
+ln "${DATA_HOST_PATH}.torrent" "${DATA_HOST_WATCH}"
