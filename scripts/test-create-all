@@ -5,17 +5,19 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 function create_torrent() {
     local name="${1:?Missing torrent name argument.}"
 
+    "${SCRIPT_DIR}/torrent-deactivate" "${name}" &> /dev/null
+
+    # TODO: Caching the torrent is an issue when doing tests? Just make smaller torrents instead.
     if "${SCRIPT_DIR}/is-torrent-cached" "${name}"; then
         echo "already created, skipping: ${name}"
-        return
-    fi
+    else
+        echo "creating torrent: ${name}"
+        "${SCRIPT_DIR}/torrent-create" "${name}" &> /dev/null
 
-    echo "creating torrent: ${name}"
-    "${SCRIPT_DIR}/torrent-create" "${name}" &> /dev/null
-
-    if [ $? -ne 0 ]; then
-        echo "failed to create torrent"
-        exit 1
+        if [ $? -ne 0 ]; then
+            echo "failed to create torrent"
+            exit 1
+        fi
     fi
 
     "${SCRIPT_DIR}/torrent-activate" "${name}"

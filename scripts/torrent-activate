@@ -9,5 +9,5 @@ source `dirname ${BASH_SOURCE[0]}`/include/torrent
 
 "${SCRIPT_DIR}/ssh" ${SEED_NODE} "cp -r '${DATA_VM_PATH}' '${DATA_VM_TORRENTS}'"
 
-rm "${DATA_HOST_WATCH_TORRENT}" || true
+(rm "${DATA_HOST_WATCH_TORRENT}" || true) &> /dev/null
 ln "${DATA_HOST_PATH}.torrent" "${DATA_HOST_WATCH}"

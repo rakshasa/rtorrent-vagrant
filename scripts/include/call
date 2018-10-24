@@ -110,7 +110,8 @@ wait_for_nodes() {
     done
 
     if [ -n "${failed[@]}" ]; then
-        >&2 echo "could not ${method} for nodes: ${failed[@]}"
+        >&2 echo "could not verify ${method} for nodes: ${failed[@]}"
+        >&2 echo "failed ${method} with arguments: $@"
         return 1
     fi
 
