@@ -3,4 +3,4 @@
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
 "${SCRIPT_DIR}/stop-rtorrent"
-"${SCRIPT_DIR}/ssh" builder rebuild-rtorrent
+"${SCRIPT_DIR}/ssh" builder SKIP_LIBTORRENT="${SKIP_LIBTORRENT}" SKIP_RTORRENT="${SKIP_RTORRENT}" rebuild-rtorrent

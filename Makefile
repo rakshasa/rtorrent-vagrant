@@ -46,6 +46,10 @@ rebuild:
 	./scripts/rebuild
 	./scripts/start-rtorrent -s
 
+rebuild_rtorrent:
+	SKIP_LIBTORRENT=yes ./scripts/rebuild
+	./scripts/start-rtorrent -s
+
 check:
 	./scripts/stop-rtorrent
 	./scripts/ssh builder -- "check-libtorrent"

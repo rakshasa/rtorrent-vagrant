@@ -51,7 +51,7 @@ call_ssh_nodes_s() {
 }
 
 call_rpc() {
-    FORWARD_PORT=`cat ${DATA_DIR}/${CALL_NODE}/metadata/forward.5001`
+    FORWARD_PORT=`cat ${DATA_DIR}/${CALL_NODE:?Missing node argument.}/metadata/forward.5001`
 
     if [ -z ${FORWARD_PORT} ]; then
         >&2 echo "Could not find forward port for ${CALL_NODE}"

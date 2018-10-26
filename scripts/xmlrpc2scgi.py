@@ -176,4 +176,7 @@ def main(argv):
 		print respxml
 
 if __name__ == "__main__":
-	main(sys.argv[1:])
+        try:
+	        main(sys.argv[1:])
+        except xmlrpclib.Fault as e:
+                print "xmlrpclib.Fault({0}): {1}".format(e.faultCode, e.faultString)

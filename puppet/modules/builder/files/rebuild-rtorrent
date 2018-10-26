@@ -6,8 +6,12 @@ export MAKEFLAGS="-j 8"
 
 RTORRENT_CONF="--with-xmlrpc-c"
 
-cd /data/local/libtorrent
-make && sudo make install || exit 1
+if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
+    cd /data/local/libtorrent
+    make && sudo make install || exit 1
+fi
 
-cd /data/local/rtorrent
-make && sudo make install || exit 1
+if [ "${SKIP_RTORRENT}" != "yes" ]; then
+    cd /data/local/rtorrent
+    make && sudo make install || exit 1
+fi

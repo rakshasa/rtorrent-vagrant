@@ -7,7 +7,7 @@ log.open_file = "crash", /data/local/log/crash.log
 try = ((log.add_output, "critical", "crash"))
 
 log.open_file = "rpc", /data/local/log/rpc.log
-try = ((log.add_output, "rpc_events", "rpc"))
+try = ((log.add_output, "rpc", "rpc"))
 
 log.open_file = "dht_all", /data/local/log/dht_all.log
 log.open_file = "connection", /data/local/log/connection.log

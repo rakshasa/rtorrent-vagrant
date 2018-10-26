@@ -4,7 +4,18 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 NODE=${1:?Target node not given.}
 NODE_IP=${2:?Node ip address not given.}
+OPTIONS=""
 
-echo "${NODE}: ${NODE_IP}"
+case "${NODE_IP}" in
+    ipv[46].[12])
+        NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/${NODE_IP}.address`
+        ;;
+esac
 
-echo -e "\nnetwork.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
+for o in ${@:3}; do
+    OPTIONS+=", ${o}"
+done
+
+echo "${NODE}: ${NODE_IP}${OPTIONS}"
+
+echo -e "\nnetwork.bind_address.set = ${NODE_IP}${OPTIONS}" >> "${DATA_DIR}/${NODE}/config/extra.rc"

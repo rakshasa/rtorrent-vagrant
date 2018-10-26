@@ -119,6 +119,15 @@ setup_pair_v6() {
     ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
 }
 
+setup_pair_v4v6() {
+    "${SCRIPT_DIR}/build-tracker"
+
+    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
+}
+
 setup() {
     local config="${1:?Missing config setup argument.}"
 
@@ -154,6 +163,10 @@ setup() {
             setup_pair_v6 &> /dev/null
             CREATE_PRESET=if_pair
             CREATE_IPV4=no
+            ;;
+        "pair_v4v6")
+            setup_pair_v4v6 &> /dev/null
+            CREATE_PRESET=if_pair
             ;;
         *)
             echo "missing config '${config}'"
