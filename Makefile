@@ -5,7 +5,7 @@ BRANCH?=master
 LIBTORRENT_BRANCH?=$(BRANCH)
 RTORRENT_BRANCH?=$(BRANCH)
 
-export USE_CONFIG?=$(shell cat ./data/current-config || echo default)
+export USE_CONFIG?=$(shell cat ./data/current-config 2> /dev/null || echo default)
 export VAGRANT_USE_VAGRANT_TRIGGERS=1
 
 all:
@@ -20,7 +20,7 @@ init:
 
 	"$(MAKE)" clean
 
-	echo "$(USE_CONFIG)" > ./data/current-config
+	./scripts/build-set-config "$(USE_CONFIG)"
 	vagrant up
 	./scripts/update-ssh-config
 
@@ -30,11 +30,11 @@ init:
 	./scripts/start-rtorrent
 
 feature-bind:
-	echo "default" > ./data/current-config
+	./scripts/build-set-config "default"
 	BRANCH=feature-bind USE_CONFIG=default "$(MAKE)" init
 
 node-dl:
-	echo "rtorrent-dl" > ./data/current-config
+	./scripts/build-set-config "rtorrent-dl"
 	BRANCH=feature-bind USE_CONFIG=rtorrent-dl "$(MAKE)" init
 
 	vagrant destroy -f builder

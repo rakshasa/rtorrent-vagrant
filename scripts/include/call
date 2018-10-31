@@ -23,7 +23,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 
 if [ -z "${NODES}" ]; then
-    NODES="$(cd ${DATA_DIR} && ls -d node*)"
+    NODES="$((cd ${DATA_DIR} && ls -d node*) 2> /dev/null)"
 fi
 
 call_ssh_nodes() {

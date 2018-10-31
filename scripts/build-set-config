@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/call"
+
+USE_CONFIG="${1:?Missing build config argument.}"
+
+mkdir "${DATA_DIR}" || true &> /dev/null
+echo "${USE_CONFIG}" > "${DATA_DIR}/current-config"
