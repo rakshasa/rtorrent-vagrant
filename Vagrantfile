@@ -67,10 +67,6 @@ Vagrant.configure('2') do |config|
     config.cache.auto_detect = true
   end
 
-  add_builder_repo(config, repo_name: 'libtorrent')
-  add_builder_repo(config, repo_name: 'rtorrent')
-  add_builder_repo(config, repo_name: 'opentracker')
-
   config.trigger.after :destroy, vm: ['builder'], force: true do
     run 'bash ./scripts/clean-builder'
   end

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/call"
+
+cd "${DATA_DIR}/builder/" || exit 1
+
+git clone git@github.com:rakshasa/libtorrent
+git clone git@github.com:rakshasa/rtorrent
+git clone git@github.com:rakshasa/opentracker

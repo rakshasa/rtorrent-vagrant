@@ -25,18 +25,6 @@ def disable_default_folder(node_config)
   node_config.vm.synced_folder '.', '/vagrant', disabled: true
 end  
 
-def add_builder_repo(node_config, repo_name:, repo_branch: 'master', repo_root: 'git@github.com:rakshasa', auto_cleanup: false)
-  node_config.git.add_repo { |rc|
-    rc.target = "#{repo_root}/#{repo_name}.git"
-    rc.path = "./data/builder/#{repo_name}"
-    rc.branch = repo_branch
-  }
-
-  node_config.trigger.after :destroy, vm: ['builder'], force: true do
-    run "rm -rf ./data/builder/#{repo_name}" if auto_cleanup
-  end
-end
-
 def add_local_data(node_config, node_name:, data_user: nil, data_group: nil, should_create: true, auto_cleanup:)
   if node_name.nil?
     raise Vagrant::Errors::VagrantError.new, "add_local_data called with no valid 'node_name'"

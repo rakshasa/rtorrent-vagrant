@@ -18,12 +18,13 @@ all:
 init:
 	@echo "Using branches libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 
-	"$(MAKE)" clean
+	-"$(MAKE)" clean
 
 	./scripts/build-set-config "$(USE_CONFIG)"
 	vagrant up
 	./scripts/update-ssh-config
 
+	./scripts/build-git-clone
 	./scripts/build-tracker
 	"$(MAKE)" build_branch
 	./scripts/config-clear
@@ -73,7 +74,6 @@ build_branch:
 setup:
 	vagrant plugin install vagrant-cachier
 	vagrant plugin install vagrant-disksize
-	vagrant plugin install vagrant-git
 	vagrant plugin install vagrant-triggers
 	vagrant plugin install vagrant-vbguest
 

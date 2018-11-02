@@ -46,6 +46,10 @@ class baseconfig {
     source => 'puppet:///modules/baseconfig/metadata.source',
   }
 
+  file { '/usr/local/bin/update-etc':
+    source => 'puppet:///modules/baseconfig/update-etc',
+  }
+
   file { '/usr/local/bin/update-metadata':
     source => 'puppet:///modules/baseconfig/update-metadata',
   }
