@@ -38,7 +38,7 @@ node-dl:
 	./scripts/build-set-config "rtorrent-dl"
 	BRANCH=feature-bind USE_CONFIG=rtorrent-dl "$(MAKE)" init
 
-	vagrant destroy -f builder
+	USE_CONFIG=rtorrent-dl vagrant destroy -f builder
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
