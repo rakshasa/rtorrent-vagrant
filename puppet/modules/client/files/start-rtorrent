@@ -1,6 +1,6 @@
 #!/bin/bash
 
-RTORRENT_EXEC="rtorrent -n -o try_import=/etc/rtorrent.rc,system.daemon.set=true"
+RTORRENT_EXEC="rtorrent -n -o try_import=/data/shared/config/rtorrent.rc,system.daemon.set=true"
 RTORRENT_LOG="/data/local/log"
 
 LOG_DATE=`date -u '+%F_%H-%M-%S'`

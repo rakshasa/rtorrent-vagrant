@@ -80,6 +80,12 @@ class builder {
     mode   => '0555',
   }
 
+  file { '/data/shared/config/rtorrent.rc':
+    ensure => file,
+    mode   => '0644',
+    source => 'puppet:///modules/builder/rtorrent.rc'
+  }
+
   file { '/data/shared/torrents':
     ensure => directory,
     mode   => '0555',

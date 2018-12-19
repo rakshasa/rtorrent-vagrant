@@ -33,17 +33,6 @@ class client {
     mode   => '0755',
   }
 
-  file { '/etc/init.d/rtorrent':
-    ensure => file,
-    source => 'puppet:///modules/client/rtorrent.init'
-  }
-
-  file { '/etc/rtorrent.rc':
-    ensure => file,
-    mode   => '0644',
-    source => 'puppet:///modules/client/rtorrent.rc'
-  }
-
   file { '/etc/iptables':
     ensure => directory
   }
