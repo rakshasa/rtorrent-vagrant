@@ -1,0 +1,25 @@
+#!/bin/bash
+
+config_add() {
+    local node="${1:?Missing node argument.}"
+    local entry="${2:?Missing config entry.}"
+
+    local config_dir="${DATA_DIR}/${node}/config"
+    local config_file="${config_dir}/extra.rc"
+
+    if [ ! -d "${config_dir}" ]; then
+        >&2 echo "Missing config file directory '${config_dir}'"
+        exit -1
+    fi
+
+    touch "${config_file}"
+
+    local new_name="$(echo ${entry} | cut -f 1 -d ' ')"
+    local last_command="$(tail -n1 "${config_file}" | cut -f 1 -d ' ')"
+    
+    if [ "${new_name}" != "${last_command}" ] && [ "${CONFIG_NO_SKIP}" != "yes" ]; then
+        echo >> "${DATA_DIR}/${node}/config/extra.rc"
+    fi
+
+    echo "${entry}" >> "${DATA_DIR}/${node}/config/extra.rc"
+}

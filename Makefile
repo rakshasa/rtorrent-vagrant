@@ -40,6 +40,9 @@ node-dl:
 
 	USE_CONFIG=rtorrent-dl vagrant destroy -f builder
 
+	./scripts/build-enable-dht-global "rtorrent-dl"
+	USE_CONFIG=rtorrent-dl "$(MAKE)" restart
+
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.

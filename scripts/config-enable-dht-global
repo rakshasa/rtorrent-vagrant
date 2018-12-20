@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+source `dirname ${BASH_SOURCE[0]}`/include/config
+
+config_add "${1}" 'dht.mode.set = on'
+export CONFIG_NO_SKIP="yes"
+
+config_add "${1}" 'schedule2 = dht_node_1, 1, 0, ((dht.add_node, "dht.transmissionbt.com"))'
+config_add "${1}" 'schedule2 = dht_node_2, 1, 0, ((dht.add_node, "router.utorrent.com:6881"))'

@@ -1,9 +1,6 @@
 #!/bin/bash
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
+source `dirname ${BASH_SOURCE[0]}`/include/config
 
-NODE=${1:?Target node not given.}
-
-echo "${NODE}: enable rpc dump"
-
-echo -e "\ntry = ((log.add_output, "rpc_dump", "rpc"))" >> "${DATA_DIR}/${NODE}/config/extra.rc"
+config_add "${1}" 'log.add_output = "rpc_dump", "rpc"'

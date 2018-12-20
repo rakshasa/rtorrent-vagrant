@@ -57,10 +57,7 @@ schedule = watch_untied, 10, 10, remove_untied=
 # Per-node optional resource file:
 #
 
-#try_import = /data/shared/config/dht.rc
-#try_import = /data/shared/config/debug.rc
 try_import = /data/shared/config/extra.rc
-
 try_import = /data/local/config/extra.rc
 
 #
@@ -68,10 +65,3 @@ try_import = /data/local/config/extra.rc
 #
 
 network.scgi.open_port = ":5001"
-
-#
-# DHT:
-#
-
-#dht=on
-#schedule = dht_add_node,2,0,((dht.add_node,router.utorrent.com:6881))

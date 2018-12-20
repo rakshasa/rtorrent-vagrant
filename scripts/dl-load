@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+URI="${1:?URI not given.}"
+CALL_NODE="node-dl"
+
+call_rpc load.start "s/" "${URI}"

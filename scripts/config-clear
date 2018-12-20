@@ -2,7 +2,7 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-for NODE in ${NODES[@]}; do
+for NODE in 'shared' ${NODES[@]}; do
     echo "$NODE: initializing extra.rc"
     rm "${DATA_DIR}/${NODE}/config/extra.rc" || true
     cat > "${DATA_DIR}/${NODE}/config/extra.rc" <<EOF
