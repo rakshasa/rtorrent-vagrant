@@ -29,12 +29,12 @@ Vagrant.configure('2') do |config|
       add_shared_data(node_config, node_name: node_name,
                       shared_name: 'shared',
                       should_create: node[:primary],
-                      should_destroy: !node[:no_destroy])
+                      should_destroy: false)
       add_shared_data(node_config, node_name: node_name,
                       shared_name: 'usr_local',
                       shared_path: '/usr/local',
                       should_create: node[:primary],
-                      should_destroy: !node[:no_destroy])
+                      should_destroy: false)
 
       # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do

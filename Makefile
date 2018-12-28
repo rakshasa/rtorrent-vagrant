@@ -38,10 +38,10 @@ node-dl:
 	./scripts/build-set-config "rtorrent-dl"
 	BRANCH=feature-bind USE_CONFIG=rtorrent-dl "$(MAKE)" init
 
-	USE_CONFIG=rtorrent-dl vagrant destroy -f builder
+	vagrant destroy -f builder
 
-	./scripts/build-enable-dht-global "rtorrent-dl"
-	USE_CONFIG=rtorrent-dl "$(MAKE)" restart
+	./scripts/config-enable-dht-global "shared"
+	"$(MAKE)" restart
 
 # TODO: This may have issues is the rtorrent clients don't shut down
 # fast enough. Consider adding a wait thing and do the stop_nodes
@@ -82,8 +82,10 @@ setup:
 
 # Change to also destroy all found nodes.
 clean:
+	-./scripts/stop-rtorrent
 	-vagrant destroy -f
 
 distclean:
+	-./scripts/stop-rtorrent
 	-vagrant destroy -f
 	-rm -rf ./data/*

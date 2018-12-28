@@ -1,7 +1,6 @@
 nodes:
 
   - hostname: builder
-    no_destroy: true
     primary: true
     builder: true
     cpus: 8

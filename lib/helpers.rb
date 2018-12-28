@@ -48,7 +48,9 @@ def add_shared_data(node_config, node_name:, shared_name:, shared_path: nil, sho
 
   node_config.vm.synced_folder "./data/#{shared_name}", shared_path || "/data/#{shared_name}", create: should_create
   
-  node_config.trigger.after :destroy, vm: [node_name], force: true do
-    run "rm -rf ./data/#{shared_name}" if should_create && should_destroy
+  if should_create && should_destroy
+    node_config.trigger.after :destroy, vm: [node_name], force: true do
+      run "rm -rf ./data/#{shared_name}"
+    end
   end
 end
