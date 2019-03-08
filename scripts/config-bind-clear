@@ -1,0 +1,8 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+NODE=${1:?Target node not given.}
+
+extra_rc_command_padding "network.bind"
+echo -e "network.bind.clear =" >> "${DATA_DIR}/${NODE}/config/extra.rc"

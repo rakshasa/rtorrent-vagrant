@@ -117,3 +117,13 @@ wait_for_nodes() {
 
     return 0
 }
+
+#
+# Helper functions.
+#
+
+extra_rc_command_padding() {
+    local name="${1:?Missing command name.}"
+    (tail -n 1 "${DATA_DIR}/${NODE}/config/extra.rc" | grep -e "^${name}") &> /dev/null || (echo >> "${DATA_DIR}/${NODE}/config/extra.rc")
+}
+

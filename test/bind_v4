@@ -5,6 +5,8 @@ source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
 
 echo "running bind_v4"
 
+# TODO: Rename, bind_set_*
+
 clean_all
 NODES="node2 node3" "${SCRIPT_DIR}/config-use-bind-address-4"
 

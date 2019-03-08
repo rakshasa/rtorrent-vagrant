@@ -3,7 +3,9 @@
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
 NODE=${1:?Target node not given.}
-NODE_IP=${2:?Node ip address not given.}
+BIND_NAME=${2:?Bind name not given.}
+PRIORITY=${3:?Priority not given.}
+NODE_IP=${4:?Node ip address not given.}
 OPTIONS=""
 
 case "${NODE_IP}" in
@@ -12,10 +14,11 @@ case "${NODE_IP}" in
         ;;
 esac
 
-for o in ${@:3}; do
+for o in ${@:5}; do
     OPTIONS+=", ${o}"
 done
 
 echo "${NODE}: ${NODE_IP}${OPTIONS}"
 
-echo -e "\nnetwork.bind_address.set = ${NODE_IP}${OPTIONS}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
+extra_rc_command_padding "network.bind"
+echo -e "network.bind.add = ${BIND_NAME}, ${PRIORITY}, ${NODE_IP}${OPTIONS}" >> "${DATA_DIR}/${NODE}/config/extra.rc"

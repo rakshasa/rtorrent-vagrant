@@ -208,7 +208,7 @@ verify_seeds() {
 verify_completed() {
     local node="${1:?Missing node argument.}"
     local torrent="${2:?Missing torrent argument.}"
-    local message="${3:?Missing message argument.}"
+    local message="${node} ${torrent} verify completed: ${3:?Missing message argument.}"
 
     [ -z "${LAST_VERIFY}" ] && echo
     LAST_VERIFY="${message}"
@@ -226,7 +226,7 @@ verify_completed() {
 verify_incompleted() {
     local node="${1:?Missing node argument.}"
     local torrent="${2:?Missing torrent argument.}"
-    local message="${3:?Missing message argument.}"
+    local message="${node} ${torrent} verify incomplete: ${3:?Missing message argument.}"
 
     [ -z "${LAST_VERIFY}" ] && echo
     LAST_VERIFY="${message}"
