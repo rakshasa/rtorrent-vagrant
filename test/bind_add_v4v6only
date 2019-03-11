@@ -5,7 +5,7 @@ source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
 
 # TODO: Rename to bind_ip_v4v6only
 
-echo "running bind_separate_v4v6"
+echo "running bind_add_v4v6only"
 
 clean_all
 

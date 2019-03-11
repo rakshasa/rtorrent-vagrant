@@ -10,4 +10,4 @@ echo bind_v6
 echo bind_port_simple
 echo bind_port_randomize_v4
 echo bind_port_randomize_v6
-echo bind_add_ip_v4v6only
+echo bind_add_v4v6only
