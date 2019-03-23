@@ -1,0 +1,9 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/call"
+
+rm "${DATA_DIR}/builder/libtorrent/test/test-suite.log"
+rm "${DATA_DIR}/builder/rtorrent/test/test-suite.log"
+
+"${SCRIPT_DIR}/ssh" builder check-libtorrent || cat "${DATA_DIR}/builder/libtorrent/test/test-suite.log"
+"${SCRIPT_DIR}/ssh" builder check-rtorrent || cat "${DATA_DIR}/builder/rtorrent/test/test-suite.log"

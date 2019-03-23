@@ -27,6 +27,7 @@ init:
 	./scripts/build-git-clone
 	./scripts/build-tracker
 	"$(MAKE)" build_branch
+	./scripts/build-tags
 	./scripts/config-clear
 	./scripts/start-rtorrent
 

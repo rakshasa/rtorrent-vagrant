@@ -119,13 +119,13 @@ setup_pair_v6() {
     ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
 }
 
-setup_pair_v4v6() {
+setup_quad_v4v6() {
     "${SCRIPT_DIR}/build-tracker"
 
-    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3"
-    ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3"
-    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3"
-    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3"
+    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3 node4 node5"
+    ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3 node4 node5"
+    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3 node4 node5"
+    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3 node4 node5"
 }
 
 setup() {
@@ -164,8 +164,8 @@ setup() {
             CREATE_PRESET=if_pair
             CREATE_IPV4=no
             ;;
-        "pair_v4v6")
-            setup_pair_v4v6 &> /dev/null
+        "pair_v4v6", "quad_v4v6")
+            setup_quad_v4v6 &> /dev/null
             CREATE_PRESET=if_pair
             ;;
         *)

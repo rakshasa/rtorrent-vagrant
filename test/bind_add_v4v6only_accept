@@ -1,0 +1,76 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+# Test accepting connections when bound to v4/v6only.
+#
+# Both interfaces on all nodes have ipv4/v6 addresses.
+
+echo "running bind_add_v4v6only_accept"
+
+clean_all
+
+"${SCRIPT_DIR}/config-set-block-connect" node1
+"${SCRIPT_DIR}/config-set-block-accept" node2
+"${SCRIPT_DIR}/config-set-block-accept" node3
+"${SCRIPT_DIR}/config-set-block-accept" node4
+"${SCRIPT_DIR}/config-set-block-accept" node5
+
+# TODO: Add support for looking up address by name, 
+# TODO: Pass hostname to bind, allow us to refresh it.
+# TODO: Test fails on invalid address. (:: on v4only, etc)
+# TODO: Make spec.
+# TODO: Add test for connect.
+
+"${SCRIPT_DIR}/config-bind-clear" node2
+"${SCRIPT_DIR}/config-bind-add"   node2 v4 100 0.0.0.0 v4only
+
+"${SCRIPT_DIR}/config-bind-clear" node3
+"${SCRIPT_DIR}/config-bind-add"   node3 v6 100 :: v6only
+
+"${SCRIPT_DIR}/config-bind-clear" node4
+"${SCRIPT_DIR}/config-bind-add"   node4 v4 100 ipv4.1 v4only
+
+"${SCRIPT_DIR}/config-bind-clear" node5
+"${SCRIPT_DIR}/config-bind-add"   node5 v6 100 ipv6.2 v6only
+
+setup quad_v4v6
+
+verify_completed   node2 test_h4_if1 "bind ipv4 any address with v4only"
+verify_completed   node2 test_u4_if1 "bind ipv4 any address with v4only"
+verify_incompleted node2 test_h6_if1 "bind ipv4 any address with v4only"
+verify_incompleted node2 test_u6_if1 "bind ipv4 any address with v4only"
+verify_completed   node2 test_h4_if2 "bind ipv4 any address with v4only"
+verify_completed   node2 test_u4_if2 "bind ipv4 any address with v4only"
+verify_incompleted node2 test_h6_if2 "bind ipv4 any address with v4only"
+verify_incompleted node2 test_u6_if2 "bind ipv4 any address with v4only"
+
+verify_incompleted node3 test_h4_if1 "bind ipv6 any address with v6only"
+verify_incompleted node3 test_u4_if1 "bind ipv6 any address with v6only"
+verify_completed   node3 test_h6_if1 "bind ipv6 any address with v6only"
+verify_completed   node3 test_u6_if1 "bind ipv6 any address with v6only"
+verify_incompleted node3 test_h4_if2 "bind ipv6 any address with v6only"
+verify_incompleted node3 test_u4_if2 "bind ipv6 any address with v6only"
+verify_completed   node3 test_h6_if2 "bind ipv6 any address with v6only"
+verify_completed   node3 test_u6_if2 "bind ipv6 any address with v6only"
+
+verify_completed   node4 test_h4_if1 "bind ipv4 specific address with v4only"
+verify_completed   node4 test_u4_if1 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_h6_if1 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_u6_if1 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_h4_if2 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_u4_if2 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_h6_if2 "bind ipv4 specific address with v4only"
+verify_incompleted node4 test_u6_if2 "bind ipv4 specific address with v4only"
+
+verify_incompleted node5 test_h4_if1 "bind ipv6 specific address with v6only"
+verify_incompleted node5 test_u4_if1 "bind ipv6 specific address with v6only"
+verify_incompleted node5 test_h6_if1 "bind ipv6 specific address with v6only"
+verify_incompleted node5 test_u6_if1 "bind ipv6 specific address with v6only"
+verify_incompleted node5 test_h4_if2 "bind ipv6 specific address with v6only"
+verify_incompleted node5 test_u4_if2 "bind ipv6 specific address with v6only"
+verify_completed   node5 test_h6_if2 "bind ipv6 specific address with v6only"
+verify_completed   node5 test_u6_if2 "bind ipv6 specific address with v6only"
+
+exit_test

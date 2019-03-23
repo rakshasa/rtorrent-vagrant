@@ -68,3 +68,17 @@ nodes:
     - network: rnet2
       ipv4: 10.0.4.14
       ipv6: fddd::14
+
+  - hostname: node5
+    cpus: 1
+    memory: 512
+    forward:
+    - guest: 5001
+      host: 18605
+    interfaces:
+    - network: rnet1
+      ipv4: 10.0.3.15
+      ipv6: fdcc::15
+    - network: rnet2
+      ipv4: 10.0.4.15
+      ipv6: fddd::15

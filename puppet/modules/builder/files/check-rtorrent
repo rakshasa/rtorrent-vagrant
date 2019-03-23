@@ -3,4 +3,4 @@
 export MAKEFLAGS="-j 8"
 
 cd /data/local/rtorrent
-make && make check && sudo make install
+make check

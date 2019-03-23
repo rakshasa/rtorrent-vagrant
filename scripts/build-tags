@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/call"
+
+cd "${DATA_DIR}/builder/" || exit 1
+
+(cd libtorrent && make tags) || exit 1
+(cd rtorrent && make tags) || exit 1
+
+IFS=$'\n'
+
+for i in `find "${PWD}/libtorrent/" "${PWD}/rtorrent/" -name TAGS`; do
+    sed -e "s:^${i/%TAGS/}:./:" "$i" > "$i.new"
+    mv "$i.new" "$i"
+done
