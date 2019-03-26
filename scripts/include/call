@@ -83,39 +83,45 @@ call_rpc_awk_nodes() {
 wait_for_nodes() {
     SECONDS=0
 
-    local timeout="${WAIT_TIMEOUT:-10}"
+    local timeout="${WAIT_TIMEOUT:-30}"
     local nodes="${WAIT_NODES:-${NODES}}"
-
-    local failed="invalid"
     local method="$1"
     shift
 
     #echo "wait_for_node: ${remaining} calling '${method}' $i $@"
 
-    while (( SECONDS <= timeout )) && [[ -n "${failed}" ]]; do
+    while true; do
         local check="${nodes[@]}"
-        failed=
+        local failed=
 
         for node in ${check[@]}; do
-            [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes: ${SCRIPT_DIR}/${method} ${node} $@"
-
-            if "${SCRIPT_DIR}/${method}" ${node} $@ &> /dev/null; then
-                : #echo "${node}: ${method} $@ done"
+            #if "${SCRIPT_DIR}/${method}" "${node}" $@ &> /dev/null; then
+            if "${SCRIPT_DIR}/${method}" "${node}" $@; then
+                [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes done: ${SCRIPT_DIR}/${method} ${node} $@"
             else
+                [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes failed: ${SCRIPT_DIR}/${method} ${node} $@"
                 failed+="${node} "
             fi
         done
 
+        if [ -z "${failed[@]}" ]; then
+            return 0
+        fi
+
+        if (( SECONDS > timeout )); then
+            >&2 echo "could not verify ${method} for nodes: ${failed[@]}"
+            >&2 echo "failed ${method} with arguments: $@"
+            return 1
+        fi
+
+        echo "----"
+        echo "${failed[@]}"
+        echo ${SECONDS}
+        echo ${timeout}
+        echo "----" 
+
         sleep 0.5
     done
-
-    if [ -n "${failed[@]}" ]; then
-        >&2 echo "could not verify ${method} for nodes: ${failed[@]}"
-        >&2 echo "failed ${method} with arguments: $@"
-        return 1
-    fi
-
-    return 0
 }
 
 #

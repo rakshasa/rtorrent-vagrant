@@ -164,7 +164,7 @@ setup() {
             CREATE_PRESET=if_pair
             CREATE_IPV4=no
             ;;
-        "pair_v4v6", "quad_v4v6")
+        "pair_v4v6"|"quad_v4v6")
             setup_quad_v4v6 &> /dev/null
             CREATE_PRESET=if_pair
             ;;
