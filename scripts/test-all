@@ -4,13 +4,15 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 # TODO: If TESTS is defined, check that all tests are available.
 
+"${SCRIPT_DIR}/stop-rtorrent"
+
 echo
 echo "===================="
 echo "Unit tests:"
 echo "===================="
 echo
 
-${SCRIPT_DIR}/build-check
+"${SCRIPT_DIR}/build-check"
 
 TESTS=(${TESTS:-$(${SCRIPT_DIR}/test-list)})
 

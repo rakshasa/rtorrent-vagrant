@@ -84,7 +84,7 @@ call_rpc_awk_nodes() {
 wait_for_nodes() {
     SECONDS=0
 
-    local timeout="${WAIT_TIMEOUT:-10}"
+    local timeout="${WAIT_TIMEOUT:-20}"
     local nodes="${WAIT_NODES:-${NODES}}"
     local method="$1"
     shift
