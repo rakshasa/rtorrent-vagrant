@@ -48,3 +48,8 @@ eth1 ipv6 blocks 16000-16499
 eth2 ipv6 blocks 16500-16999
 ```
 
+
+Cygwin issues
+-------------
+
+Including emacs's bin directory in PATH may causes issues.

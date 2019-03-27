@@ -62,6 +62,7 @@ call_rpc() {
     CALL_CMD="${RPC_CLIENT} -s ${NODE_URL} $@"
 
     [ "${DEBUG}" == "1" ] && >&2 echo "${CALL_CMD}"
+    [ "${RPC_DEBUG}" == "1" ] && >&2 ${CALL_CMD}
 
     ${CALL_CMD}
 }
@@ -83,7 +84,7 @@ call_rpc_awk_nodes() {
 wait_for_nodes() {
     SECONDS=0
 
-    local timeout="${WAIT_TIMEOUT:-30}"
+    local timeout="${WAIT_TIMEOUT:-10}"
     local nodes="${WAIT_NODES:-${NODES}}"
     local method="$1"
     shift
@@ -95,8 +96,7 @@ wait_for_nodes() {
         local failed=
 
         for node in ${check[@]}; do
-            #if "${SCRIPT_DIR}/${method}" "${node}" $@ &> /dev/null; then
-            if "${SCRIPT_DIR}/${method}" "${node}" $@; then
+            if "${SCRIPT_DIR}/${method}" "${node}" $@ &> /dev/null; then
                 [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes done: ${SCRIPT_DIR}/${method} ${node} $@"
             else
                 [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes failed: ${SCRIPT_DIR}/${method} ${node} $@"
@@ -113,12 +113,6 @@ wait_for_nodes() {
             >&2 echo "failed ${method} with arguments: $@"
             return 1
         fi
-
-        echo "----"
-        echo "${failed[@]}"
-        echo ${SECONDS}
-        echo ${timeout}
-        echo "----" 
 
         sleep 0.5
     done

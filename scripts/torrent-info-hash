@@ -2,7 +2,7 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-CALL_NODE=${1:?Target node not given.}
-TORRENT_NAME=${2:?Torrent name not given.}
+CALL_NODE="${1:?Target node not given.}"
+TORRENT_NAME="${2:?Torrent name not given.}"
 
-call_rpc d.multicall2 s/ s/ d.hash= d.name= | grep -e "^[A-Z0-9]* ${TORRENT_NAME}\$" | awk -f ${SCRIPT_DIR}/include/torrent-info-hash.awk
+call_rpc d.multicall2 s/ s/ d.hash= d.name= | grep -e "^[A-Z0-9]* ${TORRENT_NAME}" | cut -d ' ' -f 1

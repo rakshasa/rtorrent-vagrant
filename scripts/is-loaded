@@ -2,12 +2,10 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+CALL_NODE="${1:?Target node not given.}"
+TORRENT_NAME="${2:?Torrent name not given.}"
 
-CALL_NODE=${1:?Target node not given.}
-TORRENT_NAME=${2:?Torrent name not given.}
-
-if [ -z "$("${SCRIPT_DIR}/torrent-info-hash" "${CALL_NODE}" "${TORRENT_NAME}")" ]; then
+if [ -z `"${SCRIPT_DIR}/torrent-info-hash" "${CALL_NODE}" "${TORRENT_NAME}"` ]; then
     exit 1
 else
     exit 0
