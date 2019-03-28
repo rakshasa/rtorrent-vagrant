@@ -1,7 +1,0 @@
-#!/bin/bash
-
-source `dirname ${BASH_SOURCE[0]}`/include/call
-
-TORRENT_NAME=${1:?No torrent name specified.}
-
-call_ssh_nodes torrent-status ${TORRENT_NAME}

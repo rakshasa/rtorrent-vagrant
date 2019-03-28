@@ -36,6 +36,8 @@ Vagrant.configure('2') do |config|
                       should_create: node[:primary],
                       should_destroy: false)
 
+      node_config.vm.synced_folder "./scripts/node", "/data/scripts"
+
       # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do
         run_remote 'update-metadata'

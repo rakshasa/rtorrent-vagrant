@@ -1,8 +1,0 @@
-#!/bin/bash
-
-source `dirname ${BASH_SOURCE[0]}`/include/call
-
-find ${GIT_LIBTORRENT} ${GIT_RTORRENT} -name TAGS -exec rm {} \;
-
-(cd ${GIT_LIBTORRENT} && ctags -eR)
-(cd ${GIT_RTORRENT} && ctags -eR)

@@ -20,42 +20,6 @@ class builder {
   realize Group[opentracker]
   realize User[opentracker]
 
-  file { '/usr/local/bin/build-rtorrent':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/build-rtorrent'
-  }
-
-  file { '/usr/local/bin/check-libtorrent':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/check-libtorrent'
-  }
-
-  file { '/usr/local/bin/check-rtorrent':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/check-rtorrent'
-  }
-
-  file { '/usr/local/bin/rebuild-rtorrent':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/rebuild-rtorrent'
-  }
-
-  file { '/usr/local/bin/build-tracker':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/build-tracker'
-  }
-
-  file { '/usr/local/bin/make-torrent':
-    ensure => file,
-    mode   => '0755',
-    source => 'puppet:///modules/builder/make-torrent'
-  }
-
   file { '/etc/init.d/opentracker':
     ensure => file,
     owner  => 'root',

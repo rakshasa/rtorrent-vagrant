@@ -49,24 +49,4 @@ class client {
     source => 'puppet:///modules/client/rules.v6'
   }
 
-  file { '/usr/local/bin/start-rtorrent':
-    ensure => file,
-    source => 'puppet:///modules/client/start-rtorrent'
-  }
-
-  file { '/usr/local/bin/stop-rtorrent':
-    ensure => file,
-    source => 'puppet:///modules/client/stop-rtorrent'
-  }
-
-  file { '/usr/local/bin/kill-rtorrent':
-    ensure => file,
-    source => 'puppet:///modules/client/kill-rtorrent'
-  }
-
-  file { '/usr/local/bin/torrent-status':
-    ensure => file,
-    source => 'puppet:///modules/client/torrent-status'
-  }
-
 }
