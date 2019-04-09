@@ -13,15 +13,15 @@ def configure_networks(node, config)
 
     node.trigger.after :up do
       if enable_ipv4?(interface)
-        run_remote "change-ipv4-#{nw_index + 1} #{interface[:ipv4]}/24"
+        run_remote "/data/scripts/change-ipv4-#{nw_index + 1} #{interface[:ipv4]}/24"
       else
-        run_remote "disable-ipv4-#{nw_index + 1}"
+        run_remote "/data/scripts/disable-ipv4-#{nw_index + 1}"
       end
 
       if enable_ipv6?(interface)
-        run_remote "change-ipv6-#{nw_index + 1} #{interface[:ipv6]}/16"
+        run_remote "/data/scripts/change-ipv6-#{nw_index + 1} #{interface[:ipv6]}/16"
       else
-        run_remote "disable-ipv6-#{nw_index + 1}"
+        run_remote "/data/scripts/disable-ipv6-#{nw_index + 1}"
       end
     end
   }

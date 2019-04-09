@@ -40,7 +40,7 @@ Vagrant.configure('2') do |config|
 
       # Change how update-metadata handles disabling of inet.
       node_config.trigger.after :up do
-        run_remote 'update-metadata'
+        run_remote '/data/scripts/update-metadata'
       end
 
       node_config.vm.provider 'virtualbox' do |vb|
