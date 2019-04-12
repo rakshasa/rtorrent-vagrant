@@ -1,6 +1,7 @@
 nodes:
 
-  - hostname: builder
+  - name: builder
+    vm_name: builder-dl
     primary: true
     builder: true
     cpus: 8
@@ -10,7 +11,7 @@ nodes:
       ipv4: 10.0.3.10
       ipv6: fdcc::10
 
-  - hostname: node-dl
+  - name: node-dl
     cpus: 4
     memory: 10240
     disk_space: 30GB

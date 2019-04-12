@@ -1,0 +1,31 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+node="${1:?Node or local not specified.}"
+remote_path="/data/torrents/"
+local_path="${2:?Local torrent path not specified.}"
+torrent_name="${3:?Torrent name not specified.}"
+
+remote_wc="`\"${SCRIPT_DIR}/torrent-data-wc\" ${node} \"${remote_path}\" \"${torrent_name}\"`"
+local_wc="`\"${SCRIPT_DIR}/torrent-data-wc\" local \"${local_path}\" \"${torrent_name}\"`"
+
+IFS=$'\n'
+
+for i in ${remote_wc}; do echo "remote: ${i}"; done
+echo
+for i in ${local_wc}; do echo "local:  ${i}"; done
+echo
+
+if [ -z "${remote_wc}" ] || [ -z "${local_wc}" ]; then
+    echo "result: missing"
+    exit 1
+fi    
+
+if [ "${remote_wc}" = "${local_wc}" ]; then
+    echo "result: matching"
+    exit 0
+else
+    echo "result: mismatch"
+    exit 1
+fi

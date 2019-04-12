@@ -14,23 +14,24 @@ global_config = parse_config_file(ENV['USE_CONFIG'].to_s.empty? ? 'default' : EN
 
 Vagrant.configure('2') do |config|
   global_config[:nodes].each do |node|
-    node_name = node[:hostname]
+    name = node[:name]
+    vm_name = node[:vm_name] || name
 
-    config.vm.define node_name, node_define_params(node) do |node_config|
+    config.vm.define name, node_define_params(node) do |node_config|
       node_config.vm.box = (node[:box] || DEFAULT_BOX)
-      node_config.vm.hostname = node_name + '.example.com'
+      node_config.vm.hostname = name + '.example.com'
 
       configure_networks(node_config, node)
 
       disable_default_folder(node_config)
 
-      add_local_data(node_config, node_name: node_name,
+      add_local_data(node_config, node_name: name,
                      auto_cleanup: !node[:builder])
-      add_shared_data(node_config, node_name: node_name,
+      add_shared_data(node_config, node_name: name,
                       shared_name: 'shared',
                       should_create: node[:primary],
                       should_destroy: false)
-      add_shared_data(node_config, node_name: node_name,
+      add_shared_data(node_config, node_name: name,
                       shared_name: 'usr_local',
                       shared_path: '/usr/local',
                       should_create: node[:primary],
@@ -44,7 +45,7 @@ Vagrant.configure('2') do |config|
       end
 
       node_config.vm.provider 'virtualbox' do |vb|
-        vb.name = "rtorrent-#{node_name}"
+        vb.name = "rtorrent-#{vm_name}"
         vb.linked_clone = true
 
         vb.cpus = node[:cpus] if node[:cpus]

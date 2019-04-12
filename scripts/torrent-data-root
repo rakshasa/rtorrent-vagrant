@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+node="${1:?Node or local not specified.}"
+root_dir="${2:?Root directory not specified.}"
+wildcard="${3:?Wildcard not specified.}"
+
+if [ "${node}" = "local" ]; then
+    (cd ${root_dir} && ls -1d ${wildcard})
+else
+    ssh -F "${DATA_DIR}/ssh-config" "${node}" -- "(cd ${root_dir} && ls -1d ${wildcard})"
+fi

@@ -1,0 +1,28 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+dest_dir="${1:?Destination directory not specified.}"
+wildcard="${2:?Torrent wildcard name not specified.}"
+
+node="node-dl"
+
+if [ -n "${3}" ]; then
+    echo "Excessive number of arguments."
+    exit 1
+fi
+
+IFS=$'\n'
+
+for torrent_name in `${SCRIPT_DIR}/torrent-data-root ${node} /data/torrents "${wildcard}"`; do
+    [ -z "${torrent_name}" ] && continue
+
+    if "${SCRIPT_DIR}/torrent-data-compare" ${node} "${dest_dir}" "${torrent_name}" > /dev/null; then
+        echo "skipping - ${torrent_name}"
+    else
+        echo "copying  - ${torrent_name}"
+
+        rm -rf "${dest_dir}/${torrent_name}"
+        scp -F "${DATA_DIR}/ssh-config" -r "${node}:'/data/torrents/${torrent_name}'" "${dest_dir}/"
+    fi
+done

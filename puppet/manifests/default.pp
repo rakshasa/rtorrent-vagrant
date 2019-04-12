@@ -14,6 +14,10 @@ node /^builder\./ {
   include builder
 }
 
+node /^builder-dl\./ {
+  include builder
+}
+
 node /^node\d+\./ {
   include client
 }

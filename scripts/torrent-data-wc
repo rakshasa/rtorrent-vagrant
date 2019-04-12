@@ -1,0 +1,13 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+node="${1:?Node or local not specified.}"
+torrent_path="${2:?Torrent path not specified.}"
+torrent_name="${3:?Torrent name not specified.}"
+
+if [ "${node}" = "local" ]; then
+    cd "${torrent_path}" && ([ -d "${torrent_name}" ] || [ -f "${torrent_name}" ]) && (find "${torrent_name}" -type f -print0 | sort -z | xargs -0 wc -c)
+else
+    "${SCRIPT_DIR}/ssh" "${node}" -- "cd '${torrent_path}' && ([ -d '${torrent_name}' ] || [ -f '${torrent_name}' ]) && (find '${torrent_name}' -type f -print0 | sort -z | xargs -0 wc -c)"
+fi
