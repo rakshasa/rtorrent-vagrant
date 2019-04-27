@@ -39,7 +39,7 @@ node-dl:
 	./scripts/build-set-config "rtorrent-dl"
 	BRANCH=feature-bind USE_CONFIG=rtorrent-dl "$(MAKE)" init
 
-	vagrant destroy -f builder-dl
+	vagrant destroy -f builder
 
 	./scripts/config-enable-dht-global "shared"
 	"$(MAKE)" restart
