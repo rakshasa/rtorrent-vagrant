@@ -7,8 +7,17 @@ source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
 IFS=$'\n'
 
-for i in `find "${GIT_LIBTORRENT}" "${GIT_RTORRENT}" -name TAGS`; do
-    echo "Changing base path of directory tags in '${i}'"
-    sed -e "s:^${i/%TAGS/}:./:" "$i" > "$i.new"
-    mv "$i.new" "$i"
+for repo in 'libtorrent' 'rtorrent'; do
+    (
+        cd "${DATA_DIR}/builder/${repo}" || exit 1
+
+        for i in `find . -name TAGS`; do
+            echo "Changing base path of directory tags in '${i}'"
+
+            path="${i/%TAGS/}"
+            sed -e "s:^/data/local/${repo}/${path/.\//}:./:" "$i" > "$i.new"
+
+            mv "$i.new" "$i"
+        done
+    )
 done
