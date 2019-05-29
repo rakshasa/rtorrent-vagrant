@@ -2,4 +2,8 @@
 
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
-"${SCRIPT_DIR}/ssh" builder build-rtorrent
+if [ "$1" == "-r" ]; then
+    export SKIP_LIBTORRENT="yes"
+fi
+
+"${SCRIPT_DIR}/ssh" builder "SKIP_LIBTORRENT=${SKIP_LIBTORRENT} build-rtorrent"

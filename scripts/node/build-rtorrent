@@ -7,7 +7,7 @@ export MAKEFLAGS="-j 8"
 RTORRENT_CONF="--with-xmlrpc-c"
 
 cd /data/local/libtorrent
-./autogen.sh && ./configure && make tags && make && sudo make install || exit 1
+[ "${SKIP_LIBTORRENT}" != "yes" ] && (./autogen.sh && ./configure && make tags && make && sudo make install || exit 1)
 
 cd /data/local/rtorrent
 ./autogen.sh && ./configure ${RTORRENT_CONF} && make tags && make && sudo make install || exit 1
