@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export MAKEFLAGS="-j 8"
+export TEST_NAME="${TEST_NAME}"
 
 cd /data/local/rtorrent
 make check

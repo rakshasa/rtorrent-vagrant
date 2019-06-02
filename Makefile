@@ -48,11 +48,13 @@ node-dl:
 # fast enough. Consider adding a wait thing and do the stop_nodes
 # after build, or using a single script.
 rebuild:
-	./scripts/rebuild
+	./scripts/stop-rtorrent
+	./scripts/build-current
 	./scripts/start-rtorrent -s
 
 rebuild_rtorrent:
-	SKIP_LIBTORRENT=yes ./scripts/rebuild
+	./scripts/stop-rtorrent
+	SKIP_LIBTORRENT=yes ./scripts/build-current
 	./scripts/start-rtorrent -s
 
 check:
