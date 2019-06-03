@@ -200,7 +200,7 @@ exit_test() {
 verify_seeds() {
     local torrent=
     for torrent in `${SCRIPT_DIR}/torrent-list`; do
-        WAIT_NODES=node1 WAIT_TIMEOUT=30 wait_for_nodes is-completed ${torrent}
+        WAIT_NODES=node1 WAIT_TIMEOUT=60 wait_for_nodes is-completed ${torrent}
         echo "${torrent}: seed ready"
     done
 }
