@@ -10,7 +10,8 @@ CONFIG_DIR = 'config/'
 
 Vagrant.require_version ">= 1.8.0"
 
-global_config = parse_config_file(ENV['USE_CONFIG'].to_s.empty? ? 'default' : ENV['USE_CONFIG'])
+config_name = ENV['USE_CONFIG'].to_s.empty? ? 'default' : ENV['USE_CONFIG']
+global_config = parse_config_file(config_name)
 
 Vagrant.configure('2') do |config|
   global_config[:nodes].each do |node|
@@ -51,6 +52,8 @@ Vagrant.configure('2') do |config|
         vb.cpus = node[:cpus] if node[:cpus]
         vb.memory = node[:memory] if node[:memory]
         vb.disksize.size = node[:disk_size] if node[:disk_size]
+
+        vb.customize ["modifyvm", :id, "--groups", "/rtorrent-#{config_name}"]
       end
 
       node_config.vm.provision 'puppet' do |puppet|
