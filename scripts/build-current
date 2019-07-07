@@ -6,4 +6,5 @@ if [ "$1" == "-r" ]; then
     export SKIP_LIBTORRENT="yes"
 fi
 
-"${SCRIPT_DIR}/ssh" builder "SKIP_LIBTORRENT=${SKIP_LIBTORRENT} build-rtorrent"
+"${SCRIPT_DIR}/ssh" builder "SKIP_LIBTORRENT=${SKIP_LIBTORRENT} build-rtorrent" || exit 1
+"${SCRIPT_DIR}/build-tags" > /dev/null
