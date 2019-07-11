@@ -1,0 +1,49 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+echo "running bind_port_randomize"
+
+clean_all
+
+# node2 will sequentially pick port 15499
+# node3 will randomly pick a port between 15499-15900
+# node4 will sequentially pick port 16499
+# node5 will randomly pick a port between 16499-16900
+"${SCRIPT_DIR}/config-set-port-range" node2 15499 15900
+"${SCRIPT_DIR}/config-set-port-range" node3 15499 15900
+"${SCRIPT_DIR}/config-set-port-range" node4 16499 16900
+"${SCRIPT_DIR}/config-set-port-range" node5 16499 16900
+
+"${SCRIPT_DIR}/config-set-block-connect" node2
+"${SCRIPT_DIR}/config-set-block-connect" node3
+"${SCRIPT_DIR}/config-set-block-connect" node4
+"${SCRIPT_DIR}/config-set-block-connect" node5
+
+"${SCRIPT_DIR}/config-disable-port-randomize" node2
+"${SCRIPT_DIR}/config-disable-port-randomize" node4
+
+setup if1v4v6_if2v4v6
+
+verify_incompleted node2 test_h4_if1 "sequential http4"
+verify_incompleted node2 test_u4_if1 "sequential udp4"
+verify_completed   node2 test_h4_if2 "sequential http4"
+verify_completed   node2 test_u4_if2 "sequential udp4"
+
+verify_completed   node3 test_h4_if1 "randomized http4"
+verify_completed   node3 test_u4_if1 "randomized udp4"
+verify_incompleted node3 test_h4_if2 "randomized http4"
+verify_incompleted node3 test_u4_if2 "randomized udp4"
+
+verify_incompleted node4 test_h6_if1 "sequential http6"
+verify_incompleted node4 test_u6_if1 "sequential udp6"
+verify_completed   node4 test_h6_if2 "sequential http6"
+verify_completed   node4 test_u6_if2 "sequential udp6"
+
+verify_completed   node5 test_h6_if1 "randomized http6"
+verify_completed   node5 test_u6_if1 "randomized udp6"
+verify_incompleted node5 test_h6_if2 "randomized http6"
+verify_incompleted node5 test_u6_if2 "randomized udp6"
+
+exit_test

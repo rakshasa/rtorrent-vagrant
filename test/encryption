@@ -1,0 +1,44 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+echo "running encryption"
+
+clean_all
+
+# "${SCRIPT_DIR}/config-set-block-connect" node2
+# "${SCRIPT_DIR}/config-set-block-accept"  node3
+# "${SCRIPT_DIR}/config-set-block-connect" node4
+# "${SCRIPT_DIR}/config-set-block-accept"  node5
+
+#"${SCRIPT_DIR}/config-set-protocol-encryption" node4 "allow_incoming,prefer_plaintext,enable_retry"
+
+"${SCRIPT_DIR}/config-set-protocol-encryption" node2 "none"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node3 "none"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node4 "require,require_rc4"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node5 "require,require_rc4"
+
+setup if1v4v6
+
+verify_completed   node2 test_h4_if1 "incoming unencrypted connections over ipv4"
+verify_completed   node2 test_u4_if1 "incoming unencrypted connections over ipv4"
+verify_completed   node2 test_h6_if1 "incoming unencrypted connections over ipv6"
+verify_completed   node2 test_u6_if1 "incoming unencrypted connections over ipv6"
+
+verify_completed   node3 test_h4_if1 "outgoing unencrypted connections over ipv4"
+verify_completed   node3 test_u4_if1 "outgoing unencrypted connections over ipv4"
+verify_completed   node3 test_h6_if1 "outgoing unencrypted connections over ipv6"
+verify_completed   node3 test_u6_if1 "outgoing unencrypted connections over ipv6"
+
+verify_completed   node4 test_h4_if1 "incoming encrypted connections over ipv4"
+verify_completed   node4 test_u4_if1 "incoming encrypted connections over ipv4"
+verify_completed   node4 test_h6_if1 "incoming encrypted connections over ipv6"
+verify_completed   node4 test_u6_if1 "incoming encrypted connections over ipv6"
+
+verify_completed   node5 test_h4_if1 "outgoing encrypted connections over ipv4"
+verify_completed   node5 test_u4_if1 "outgoing encrypted connections over ipv4"
+verify_completed   node5 test_h6_if1 "outgoing encrypted connections over ipv6"
+verify_completed   node5 test_u6_if1 "outgoing encrypted connections over ipv6"
+
+exit_test

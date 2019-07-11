@@ -1,0 +1,30 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+echo "running bind_set_v4v6only"
+
+clean_all
+
+"${SCRIPT_DIR}/config-bind-set" "node2" "ipv4.1"
+"${SCRIPT_DIR}/config-bind-set" "node3" "ipv4.1"
+"${SCRIPT_DIR}/config-bind-set" "node4" "ipv6.1"
+"${SCRIPT_DIR}/config-bind-set" "node5" "ipv6.1"
+
+ACTIVE_NODES="node1 node2 node5" setup if1p1
+
+verify_completed   node2 test_h4_if1 "http4 tracker with v4only"
+verify_completed   node2 test_u4_if1 "udp4  tracker with v4only"
+verify_incompleted node2 test_h6_if1 "http6 tracker with v4only"
+verify_incompleted node2 test_u6_if1 "udp6  tracker with v4only"
+
+verify_bind_failed node3             "bind4 fails when no ipv4 is available"
+verify_bind_failed node4             "bind6 fails when no ipv6 is available"
+
+verify_incompleted node5 test_h4_if1 "http4 tracker with v6only"
+verify_incompleted node5 test_u4_if1 "udp4  tracker with v6only"
+verify_completed   node5 test_h6_if1 "http6 tracker with v6only"
+verify_completed   node5 test_u6_if1 "udp6  tracker with v6only"
+
+exit_test

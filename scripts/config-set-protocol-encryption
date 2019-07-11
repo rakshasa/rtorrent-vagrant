@@ -1,0 +1,10 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+NODE="${1:?Target node not given.}"
+OPTIONS="${2:?Options not given.}"
+
+echo "${NODE}: protocol encryption set to '${2}'"
+
+echo -e "\nprotocol.encryption.set = ${OPTIONS}" >> "${DATA_DIR}/${NODE}/config/extra.rc"

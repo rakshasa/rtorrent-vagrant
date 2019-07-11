@@ -3,7 +3,7 @@
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
 NODE=${1:?Target node not given.}
-PORT_BEGIN=${2:?Begining port number not given.}
+PORT_BEGIN=${2:?Beginning port number not given.}
 PORT_END=${3:?Ending port number not given.}
 
 echo "${NODE}: port range ${PORT_BEGIN}-${PORT_END}"

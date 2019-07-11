@@ -35,7 +35,7 @@ clean_all
 "${SCRIPT_DIR}/config-bind-clear" node5
 "${SCRIPT_DIR}/config-bind-add"   node5 v6 100 ipv6.2 v6only
 
-setup quad_v4v6
+setup if1v4v6_if2v4v6
 
 verify_completed   node2 test_h4_if1 "bind ipv4 any address with v4only"
 verify_completed   node2 test_u4_if1 "bind ipv4 any address with v4only"

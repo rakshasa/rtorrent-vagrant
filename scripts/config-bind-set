@@ -1,0 +1,17 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+NODE=${1:?Target node not given.}
+NODE_IP=${2:?Node ip address not given.}
+
+case "${NODE_IP}" in
+    ipv[46].[12])
+        NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/${NODE_IP}.address`
+        ;;
+esac
+
+echo "${NODE}: ${NODE_IP}"
+
+extra_rc_command_padding "network.bind"
+echo -e "network.bind_address.set = ${NODE_IP}" >> "${DATA_DIR}/${NODE}/config/extra.rc"
