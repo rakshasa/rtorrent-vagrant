@@ -1,0 +1,43 @@
+#!/bin/bash
+
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
+source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+
+echo "running encryption_require"
+
+clean_all
+
+"${SCRIPT_DIR}/config-set-block-connect" node2
+"${SCRIPT_DIR}/config-set-block-accept"  node3
+"${SCRIPT_DIR}/config-set-block-connect" node4
+"${SCRIPT_DIR}/config-set-block-accept"  node5
+
+"${SCRIPT_DIR}/config-set-protocol-encryption" node1 "require,require_rc4"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node2 "none"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node3 "none"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node4 "require,require_rc4"
+"${SCRIPT_DIR}/config-set-protocol-encryption" node5 "require,require_rc4"
+
+setup if1v4v6
+
+verify_incompleted node2 test_h4_if1 "incoming plaintext connections with v4only"
+verify_incompleted node2 test_u4_if1 "incoming plaintext connections with v4only"
+verify_incompleted node2 test_h6_if1 "incoming plaintext connections with v6only"
+verify_incompleted node2 test_u6_if1 "incoming plaintext connections with v6only"
+
+verify_incompleted node3 test_h4_if1 "outgoing plaintext connections with v4only"
+verify_incompleted node3 test_u4_if1 "outgoing plaintext connections with v4only"
+verify_incompleted node3 test_h6_if1 "outgoing plaintext connections with v6only"
+verify_incompleted node3 test_u6_if1 "outgoing plaintext connections with v6only"
+
+verify_completed   node4 test_h4_if1 "incoming encrypted connections with v4only"
+verify_completed   node4 test_u4_if1 "incoming encrypted connections with v4only"
+verify_completed   node4 test_h6_if1 "incoming encrypted connections with v6only"
+verify_completed   node4 test_u6_if1 "incoming encrypted connections with v6only"
+
+verify_completed   node5 test_h4_if1 "outgoing encrypted connections with v4only"
+verify_completed   node5 test_u4_if1 "outgoing encrypted connections with v4only"
+verify_completed   node5 test_h6_if1 "outgoing encrypted connections with v6only"
+verify_completed   node5 test_u6_if1 "outgoing encrypted connections with v6only"
+
+exit_test

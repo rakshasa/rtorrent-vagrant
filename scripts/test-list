@@ -7,4 +7,5 @@ echo bind_port_simple
 echo bind_port_randomize
 echo bind_set_v4v6only
 echo bind_add_v4v6only_accept
-echo encryption
+echo encryption_none
+echo encryption_require

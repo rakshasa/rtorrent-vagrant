@@ -31,12 +31,11 @@ clean_all() {
 
     echo "clean all"
 
-    "${SCRIPT_DIR}/test-delete-all"
-    sleep 2
-    WAIT_TIMEOUT=20 wait_for_nodes is-empty
-
-    "${SCRIPT_DIR}/stop-rtorrent"; sleep 1
+    "${SCRIPT_DIR}/stop-rtorrent"; sleep 5
     "${SCRIPT_DIR}/config-clear"
+
+    "${SCRIPT_DIR}/test-delete-all"; sleep 1
+    #WAIT_TIMEOUT=20 wait_for_nodes is-empty
 
     "${SCRIPT_DIR}/ip-down-4-1" "node1 node2 node3 node4 node5" &> /dev/null
     "${SCRIPT_DIR}/ip-down-6-1" "node1 node2 node3 node4 node5" &> /dev/null

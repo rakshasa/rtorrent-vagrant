@@ -1,8 +1,8 @@
 #!/bin/bash
 
-export DATA_FILENAME=$1
+export DATA_FILENAME="${1:?Missing torrent filename.}"
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 source `dirname ${BASH_SOURCE[0]}`/include/torrent
 
-rm "${DATA_HOST_WATCH_TORRENT}"
+rm "${DATA_HOST_WATCH}/${DATA_FILENAME}.torrent"
