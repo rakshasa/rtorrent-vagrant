@@ -9,7 +9,7 @@ nodes:
     interfaces:
     - network: rt-dl
       ipv4: 10.0.3.10
-      ipv6: fdcc::10
+      ipv6: fd00:7103:0:ff::10
 
   - name: node-dl
     cpus: 4
@@ -21,4 +21,4 @@ nodes:
     interfaces:
     - network: rt-dl
       ipv4: 10.0.3.11
-      ipv6: fdcc::11
+      ipv6: fd00:7103:0:ff::11
