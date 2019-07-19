@@ -1,17 +1,34 @@
 class builder {
 
+  exec { 'add-llvm-key':
+    command => 'wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -'
+  } ~> Exec['update-apt']
+
+  exec { 'add-llvm-repo':
+    command => 'sudo add-apt-repository "deb http://apt.llvm.org/`lsb_release -sc`/ llvm-toolchain-`lsb_release -sc` main"',
+  } ~> Exec['update-apt']
+
+  exec { 'add-ubuntu-toolchain-r-test':
+    command => 'sudo add-apt-repository ppa:ubuntu-toolchain-r/test',
+  } ~> Exec['update-apt']
+
+  exec { 'update-apt':
+    command => 'sudo apt-get update --fix-missing',
+  }
+
   package {
-    ['g++-4.8', 'g++-4.9',
+    ['g++-4.8', 'g++-4.9', 'clang-9',
+
      'automake', 'libtool', 'make', 'pkg-config', 'git-core',
      'libcppunit-dev',
      'libcurl4-openssl-dev', 'libncurses5-dev', 'libxmlrpc-core-c3-dev',
      'libowfat-dev',
 
      'mktorrent', 'emacs24-nox',
-     'swapspace'
+     'swapspace',
      ]:
-      ensure => installed,
-      require => Exec['update-apt']
+       ensure => installed,
+       require => Exec['add-llvm-key', 'add-llvm-repo', 'add-ubuntu-toolchain-r-test', 'update-apt'],
   }
 
   @group { opentracker: ensure=> present }

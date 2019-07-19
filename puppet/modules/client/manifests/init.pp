@@ -2,8 +2,7 @@ class client {
 
   package {
     ['iptables-persistent']:
-      ensure => installed,
-      require => Exec['update-apt']
+      ensure => installed
   }
 
   exec { 'iptables-persistent':
