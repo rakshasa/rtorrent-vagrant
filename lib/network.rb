@@ -1,9 +1,6 @@
 # -*- mode: ruby -*-
 
 def configure_networks(node, config)
-  # The VirtualBox host-only network should have a private IPv6
-  # subnet in 'fd00::/7', e.g. 'fdcc::/16'.
-
   config[:interfaces] && config[:interfaces].each_with_index { |interface, nw_index|
     interface[:network].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
     interface[:ipv4].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
@@ -19,7 +16,7 @@ def configure_networks(node, config)
       end
 
       if enable_ipv6?(interface)
-        run_remote "/data/scripts/change-ipv6-#{nw_index + 1} #{interface[:ipv6]}/16"
+        run_remote "/data/scripts/change-ipv6-#{nw_index + 1} #{interface[:ipv6]}/64"
       else
         run_remote "/data/scripts/disable-ipv6-#{nw_index + 1}"
       end

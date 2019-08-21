@@ -3,8 +3,17 @@
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
 if [ "$1" == "-r" ]; then
-    export SKIP_LIBTORRENT="yes"
+    SKIP_LIBTORRENT="yes"
 fi
 
-"${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 SKIP_LIBTORRENT=${SKIP_LIBTORRENT} build-rtorrent" || exit 1
+RTORRENT_CONF="--with-xmlrpc-c"
+LIBTORRENT_CONF=""
+
+if [ "${WITHOUT_UDNS}" == yes ]; then
+    LIBTORRENT_CONF+=" --without-udns"
+fi
+
+#rm "${DATA_DIR}/usr_local/bin/rtorrent" "${DATA_DIR}/usr_local/lib/libtorrent.*"
+
+"${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 DO_CONFIGURE=${DO_CONFIGURE} SKIP_LIBTORRENT=${SKIP_LIBTORRENT} LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" RTORRENT_CONF=\"${RTORRENT_CONF}\" build-rtorrent" || exit 1
 "${SCRIPT_DIR}/build-tags" > /dev/null

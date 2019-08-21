@@ -5,7 +5,7 @@ class baseconfig {
   }
 
   package {
-    ['libncurses5', 'libxmlrpc-core-c3',
+    ['libncurses5', 'libxmlrpc-core-c3', 'libudns0',
      'lsb-release', 'screen', 'gdb',
      ]:
       ensure => installed

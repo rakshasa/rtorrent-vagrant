@@ -9,16 +9,18 @@ try = ((log.add_output, "critical", "crash"))
 log.open_file = "rpc", /data/local/log/rpc.log
 try = ((log.add_output, "rpc", "rpc"))
 
-log.open_file = "dht_all", /data/local/log/dht_all.log
 log.open_file = "connection", /data/local/log/connection.log
-log.open_file = "system", /data/local/log/system.log
+log.open_file = "dht_all", /data/local/log/dht_all.log
+log.open_file = "net", /data/local/log/net.log
 log.open_file = "peer_list", /data/local/log/peer_list.log
+log.open_file = "system", /data/local/log/system.log
 
-try = ((log.add_output, "dht_all", "dht_all"))
 try = ((log.add_output, "connection", "connection"))
-try = ((log.add_output, "system", "system"))
+try = ((log.add_output, "dht_all", "dht_all"))
+try = ((log.add_output, "net_resolver", "net"))
 try = ((log.add_output, "peer_list_address", "peer_list"))
 try = ((log.add_output, "peer_list_events", "peer_list"))
+try = ((log.add_output, "system", "system"))
 
 
 # TODO: Refactor:

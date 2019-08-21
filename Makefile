@@ -78,10 +78,10 @@ build_branch:
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH)
 
 setup:
-	vagrant plugin install vagrant-cachier
-	vagrant plugin install vagrant-disksize
-	vagrant plugin install vagrant-triggers
 	vagrant plugin install vagrant-vbguest
+	vagrant plugin install vagrant-disksize
+	vagrant plugin install vagrant-cachier
+	vagrant plugin install vagrant-triggers
 
 # Change to also destroy all found nodes.
 clean:

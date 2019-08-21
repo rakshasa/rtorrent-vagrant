@@ -4,20 +4,14 @@ export CXX="${USE_CXX:?No C++ compiler specified.}"
 export CXXFLAGS="-Wno-error=strict-aliasing"
 export MAKEFLAGS="-j 8"
 
-RTORRENT_CONF="--with-xmlrpc-c"
-
-if [ "${DO_CONFIGURE}" != "yes" ]; then
-    cd /data/local/libtorrent && ./autogen.sh && ./configure || exit 1
-    cd /data/local/rtorrent   && ./autogen.sh && ./configure ${RTORRENT_CONF} || exit 1
-fi
-
 if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
     cd /data/local/libtorrent
+    [ "${DO_CONFIGURE}" == "yes" ] && (./autogen.sh && ./configure ${LIBTORRENT_CONF} || exit 1)
     make && sudo make install || exit 1
 fi
 
 if [ "${SKIP_RTORRENT}" != "yes" ]; then
     cd /data/local/rtorrent
+    [ "${DO_CONFIGURE}" == "yes" ] && (./autogen.sh && ./configure ${RTORRENT_CONF} || exit 1)
     make && sudo make install || exit 1
 fi
-

@@ -22,9 +22,11 @@ class builder {
      'automake', 'libtool', 'make', 'pkg-config', 'git-core',
      'libcppunit-dev',
      'libcurl4-openssl-dev', 'libncurses5-dev', 'libxmlrpc-core-c3-dev',
-     'libowfat-dev',
+     'libowfat-dev', 'libudns-dev',
 
-     'mktorrent', 'emacs24-nox',
+     'maradns',
+     'mktorrent',
+     'emacs24-nox',
      'swapspace',
      ]:
        ensure => installed,
@@ -45,6 +47,13 @@ class builder {
     source => 'puppet:///modules/builder/opentracker.init'
   }
 
+  file { '/etc/maradns/mararc':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    source => 'puppet:///modules/builder/mararc'
+  }
+
   file { '/etc/opentracker.conf':
     ensure => file,
     owner  => 'root',
@@ -53,6 +62,10 @@ class builder {
   }
 
   file { '/data/local/log/tracker':
+    ensure => directory,
+  }
+
+  file { '/data/local/maradns':
     ensure => directory,
   }
 
