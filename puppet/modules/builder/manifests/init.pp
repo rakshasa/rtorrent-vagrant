@@ -49,6 +49,7 @@ class builder {
 
   file { '/etc/maradns/mararc':
     ensure => file,
+    require => Package['maradns'],
     owner  => 'root',
     group  => 'root',
     source => 'puppet:///modules/builder/mararc'
