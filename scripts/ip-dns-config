@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+USE_SERVERS="/data/local/maradns/default"
+
+"${SCRIPT_DIR}/ssh" builder "sudo bash -c 'cat > /etc/default/maradns'" <<EOF
+SERVERS="${USE_SERVERS}"
+EOF
+
+"${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"
