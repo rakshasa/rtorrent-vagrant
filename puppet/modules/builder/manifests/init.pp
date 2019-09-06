@@ -62,15 +62,18 @@ class builder {
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
-  file { '/data/local/log/tracker':
+  file {
+    ['/data/local/log/tracker',
+     '/data/local/maradns',
+     ]:
     ensure => directory,
   }
 
-  file { '/data/local/maradns':
-    ensure => directory,
-  }
-
-  file { '/data/shared/config':
+  file {
+    ['/data/shared/config',
+     '/data/shared/torrents',
+     '/data/shared/watch',
+     ]:
     ensure => directory,
     mode   => '0555',
   }
@@ -79,16 +82,6 @@ class builder {
     ensure => file,
     mode   => '0644',
     source => 'puppet:///modules/builder/rtorrent.rc'
-  }
-
-  file { '/data/shared/torrents':
-    ensure => directory,
-    mode   => '0555',
-  }
-
-  file { '/data/shared/watch':
-    ensure => directory,
-    mode   => '0555',
   }
 
 }

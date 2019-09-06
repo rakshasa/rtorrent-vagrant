@@ -1,5 +1,0 @@
-#!/bin/bash
-
-source `dirname ${BASH_SOURCE[0]}`/include/call
-
-call_ssh_nodes_p "sudo ifdown ${1}"
