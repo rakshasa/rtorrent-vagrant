@@ -1,0 +1,14 @@
+#!/bin/bash
+
+source `dirname ${BASH_SOURCE[0]}`/include/call
+
+# also test option inet6
+
+NODES="${1:-${NODES}}" call_ssh_nodes "sudo bash -c 'cat > /etc/resolvconf/resolv.conf.d/base'" <<EOF
+nameserver 10.0.3.10
+nameserver 10.0.4.10
+nameserver fd00:7103:0:1::10
+nameserver fd00:7103:0:2::10
+EOF
+
+NODES="${1:-${NODES}}" call_ssh_nodes  "sudo resolvconf -u"

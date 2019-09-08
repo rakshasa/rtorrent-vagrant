@@ -41,36 +41,42 @@ class builder {
 
   file { '/etc/init.d/opentracker':
     ensure => file,
-    owner  => 'root',
-    group  => 'root',
     mode   => '0755',
     source => 'puppet:///modules/builder/opentracker.init'
   }
 
-  file { '/etc/maradns/mararc':
+  file { '/etc/maradns/mararc.default':
     ensure => file,
     require => Package['maradns'],
-    owner  => 'root',
-    group  => 'root',
-    source => 'puppet:///modules/builder/mararc'
+    source => 'puppet:///modules/builder/mararc.default'
+  }
+
+  file { '/etc/maradns/mararc.v4':
+    ensure => file,
+    require => Package['maradns'],
+    source => 'puppet:///modules/builder/mararc.v4'
+  }
+
+  file { '/etc/maradns/mararc.if1v4':
+    ensure => file,
+    require => Package['maradns'],
+    source => 'puppet:///modules/builder/mararc.if1v4'
   }
 
   file { '/etc/opentracker.conf':
     ensure => file,
-    owner  => 'root',
-    group  => 'root',
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
   file {
     ['/data/local/log/tracker',
-     '/data/local/maradns',
      ]:
     ensure => directory,
   }
 
   file {
     ['/data/shared/config',
+     '/data/shared/maradns',
      '/data/shared/torrents',
      '/data/shared/watch',
      ]:
@@ -83,5 +89,26 @@ class builder {
     mode   => '0644',
     source => 'puppet:///modules/builder/rtorrent.rc'
   }
+
+  file { '/data/shared/maradns/db.rtorrent.if1v4':
+    ensure => file,
+    source => 'puppet:///modules/builder/db.rtorrent.if1v4'
+  }
+
+  file { '/data/shared/maradns/db.rtorrent.if1v6':
+    ensure => file,
+    source => 'puppet:///modules/builder/db.rtorrent.if1v6'
+  }
+
+  file { '/data/shared/maradns/db.rtorrent.if2v4':
+    ensure => file,
+    source => 'puppet:///modules/builder/db.rtorrent.if2v4'
+  }
+
+  file { '/data/shared/maradns/db.rtorrent.if2v6':
+    ensure => file,
+    source => 'puppet:///modules/builder/db.rtorrent.if2v6'
+  }
+
 
 }

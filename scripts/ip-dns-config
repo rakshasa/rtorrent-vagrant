@@ -2,10 +2,8 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-USE_SERVERS="/data/local/maradns/default"
+CONFIG_NAME="${1:?Missing config name argument.}"
 
-"${SCRIPT_DIR}/ssh" builder "sudo bash -c 'cat > /etc/default/maradns'" <<EOF
-SERVERS="${USE_SERVERS}"
-EOF
-
+"${SCRIPT_DIR}/ssh" builder "sudo rm /etc/maradns/mararc"
+"${SCRIPT_DIR}/ssh" builder "sudo ln -s '/etc/maradns/mararc.${CONFIG_NAME}' /etc/maradns/mararc"
 "${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"

@@ -2,8 +2,4 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-# update binds
-# update dns file
-
-
-NODES="builder" call_ssh_nodes restart maradns
+"${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"
