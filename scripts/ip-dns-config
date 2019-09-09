@@ -7,3 +7,6 @@ CONFIG_NAME="${1:?Missing config name argument.}"
 "${SCRIPT_DIR}/ssh" builder "sudo rm /etc/maradns/mararc"
 "${SCRIPT_DIR}/ssh" builder "sudo ln -s '/etc/maradns/mararc.${CONFIG_NAME}' /etc/maradns/mararc"
 "${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"
+
+call_ssh_nodes "sudo service dns-clean restart"
+call_ssh_nodes "sudo /etc/init.d/networking force-reload"

@@ -29,6 +29,8 @@ init:
 	"$(MAKE)" build_branch
 	./scripts/build-tags
 	./scripts/config-clear
+	./scripts/ip-dns-config default
+	./scripts/ip-dns-resolver
 	./scripts/start-rtorrent
 
 feature-bind:

@@ -11,4 +11,4 @@ nameserver fd00:7103:0:1::10
 nameserver fd00:7103:0:2::10
 EOF
 
-NODES="${1:-${NODES}}" call_ssh_nodes  "sudo resolvconf -u"
+NODES="${1:-${NODES}}" call_ssh_nodes "sudo resolvconf -u"

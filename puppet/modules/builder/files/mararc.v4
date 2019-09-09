@@ -1,12 +1,9 @@
-ipv4_bind_address = "0.0.0.0"
-
-chroot_dir = "/data/shared/maradns/v4"
-
+chroot_dir = "/data/shared/maradns"
 maradns_user = "maradns"
 no_fingerprint = 1
 
-ipv4_alias["icann"] = "198.41.0.4,192.228.79.201,192.33.4.12,128.8.10.90,192.203.230.10"
+ipv4_bind_addresses = "127.0.0.1, 10.0.3.10, 10.0.4.10"
 
 csv2 = {}
-csv2['rtorrent.if1v4.'] = 'db.rtorrent.if1v4'
-csv2['rtorrent.if2v4.'] = 'db.rtorrent.if2v4'
+csv2["rtorrent.if1v4."] = "db.rtorrent.if1v4"
+csv2["rtorrent.if2v4."] = "db.rtorrent.if2v4"

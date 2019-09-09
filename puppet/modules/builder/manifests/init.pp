@@ -48,23 +48,27 @@ class builder {
   file { '/etc/maradns/mararc.default':
     ensure => file,
     require => Package['maradns'],
+    mode   => '0644',
     source => 'puppet:///modules/builder/mararc.default'
   }
 
   file { '/etc/maradns/mararc.v4':
     ensure => file,
     require => Package['maradns'],
+    mode   => '0644',
     source => 'puppet:///modules/builder/mararc.v4'
   }
 
   file { '/etc/maradns/mararc.if1v4':
     ensure => file,
     require => Package['maradns'],
+    mode   => '0644',
     source => 'puppet:///modules/builder/mararc.if1v4'
   }
 
   file { '/etc/opentracker.conf':
     ensure => file,
+    mode   => '0644',
     source => 'puppet:///modules/builder/opentracker.conf'
   }
 
@@ -92,21 +96,25 @@ class builder {
 
   file { '/data/shared/maradns/db.rtorrent.if1v4':
     ensure => file,
+    mode   => '0644',
     source => 'puppet:///modules/builder/db.rtorrent.if1v4'
   }
 
   file { '/data/shared/maradns/db.rtorrent.if1v6':
     ensure => file,
+    mode   => '0644',
     source => 'puppet:///modules/builder/db.rtorrent.if1v6'
   }
 
   file { '/data/shared/maradns/db.rtorrent.if2v4':
     ensure => file,
+    mode   => '0644',
     source => 'puppet:///modules/builder/db.rtorrent.if2v4'
   }
 
   file { '/data/shared/maradns/db.rtorrent.if2v6':
     ensure => file,
+    mode   => '0644',
     source => 'puppet:///modules/builder/db.rtorrent.if2v6'
   }
 
