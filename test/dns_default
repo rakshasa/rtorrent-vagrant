@@ -3,10 +3,10 @@
 source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
 source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
 
-echo "running default"
+echo "running dns_default"
 
 clean_all
-setup if1p1_if2v4v6
+setup if1p1_if2v4v6_dns
 
 verify_completed   node2 test_h4_if1 "http4 tracker with v4only"
 verify_completed   node2 test_u4_if1 "udp4  tracker with v4only"
@@ -17,6 +17,15 @@ verify_completed   node2 test_u4_if2 "udp4  tracker with v4v6"
 verify_completed   node2 test_h6_if2 "http6 tracker with v4v6"
 verify_completed   node2 test_u6_if2 "udp6  tracker with v4v6"
 
+verify_completed   node2 test_h4_dns1 "http4 tracker with v4only"
+verify_completed   node2 test_u4_dns1 "udp4  tracker with v4only"
+verify_incompleted node2 test_h6_dns1 "http6 tracker with v4only"
+verify_incompleted node2 test_u6_dns1 "udp6  tracker with v4only"
+verify_completed   node2 test_h4_dns2 "http4 tracker with v4v6"
+verify_completed   node2 test_u4_dns2 "udp4  tracker with v4v6"
+verify_completed   node2 test_h6_dns2 "http6 tracker with v4v6"
+verify_completed   node2 test_u6_dns2 "udp6  tracker with v4v6"
+
 verify_incompleted node3 test_h4_if1 "http4 tracker with v6only"
 verify_incompleted node3 test_u4_if1 "udp4  tracker with v6only"
 verify_completed   node3 test_h6_if1 "http6 tracker with v6only"
@@ -25,5 +34,14 @@ verify_completed   node3 test_h4_if2 "http4 tracker with v4v6"
 verify_completed   node3 test_u4_if2 "udp4  tracker with v4v6"
 verify_completed   node3 test_h6_if2 "http6 tracker with v4v6"
 verify_completed   node3 test_u6_if2 "udp6  tracker with v4v6"
+
+verify_incompleted node3 test_h4_dns1 "http4 tracker with v6only"
+verify_incompleted node3 test_u4_dns1 "udp4  tracker with v6only"
+verify_completed   node3 test_h6_dns1 "http6 tracker with v6only"
+verify_completed   node3 test_u6_dns1 "udp6  tracker with v6only"
+verify_completed   node3 test_h4_dns2 "http4 tracker with v4v6"
+verify_completed   node3 test_u4_dns2 "udp4  tracker with v4v6"
+verify_completed   node3 test_h6_dns2 "http6 tracker with v4v6"
+verify_completed   node3 test_u6_dns2 "udp6  tracker with v4v6"
 
 exit_test

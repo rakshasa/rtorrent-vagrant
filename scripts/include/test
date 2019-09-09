@@ -17,7 +17,10 @@ start_nodes() {
 }
 
 create_torrents() {
-    CREATE_PRESET="${CREATE_PRESET}" CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" "${SCRIPT_DIR}/test-create-all"
+    CREATE_PRESET="${CREATE_PRESET}" \
+                 CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
+                 CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
+                 "${SCRIPT_DIR}/test-create-all"
 
     local torrent=
     for torrent in `${SCRIPT_DIR}/torrent-list`; do
@@ -87,6 +90,11 @@ setup() {
             setup_if2v4v6 &> /dev/null
             CREATE_PRESET=if_pair
             ;;
+        "if1p1_if2v4v6_dns")
+            setup_if1p1 &> /dev/null
+            setup_if2v4v6 &> /dev/null
+            CREATE_PRESET=if_dns_pair
+            ;;
         "if1v4v6")
             setup_if1v4v6 &> /dev/null
             CREATE_PRESET=if_single
@@ -123,11 +131,15 @@ setup() {
     fi
 
     "${SCRIPT_DIR}/build-tracker"
+    "${SCRIPT_DIR}/ip-dns-resolver"
 
     echo "starting nodes"
     start_nodes
 
-    CREATE_PRESET="${CREATE_PRESET}" CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" create_torrents
+    CREATE_PRESET="${CREATE_PRESET}" \
+                 CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
+                 CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
+                 create_torrents
     verify_seeds
 
     # TODO: Replace with check to see if we have in-progess.

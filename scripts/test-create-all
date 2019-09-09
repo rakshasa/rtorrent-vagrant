@@ -5,8 +5,6 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 function create_torrent() {
     local name="${1:?Missing torrent name argument.}"
 
-    "${SCRIPT_DIR}/torrent-deactivate" "${name}" &> /dev/null
-
     # TODO: Caching the torrent is an issue when doing tests? Just make smaller torrents instead.
     if "${SCRIPT_DIR}/is-torrent-cached" "${name}"; then
         echo "already created, skipping: ${name}"
@@ -32,10 +30,20 @@ case "${CREATE_PRESET}" in
     "if_single")
         CREATE_IF1="${CREATE_IF1:-yes}"
         CREATE_IF2="${CREATE_IF2:-no}"
+        CREATE_DNS1="${CREATE_DNS1:-no}"
+        CREATE_DNS2="${CREATE_DNS2:-no}"
         ;;
     "if_pair")
         CREATE_IF1="${CREATE_IF1:-yes}"
         CREATE_IF2="${CREATE_IF2:-yes}"
+        CREATE_DNS1="${CREATE_DNS1:-no}"
+        CREATE_DNS2="${CREATE_DNS2:-no}"
+        ;;
+    "if_dns_pair")
+        CREATE_IF1="${CREATE_IF1:-yes}"
+        CREATE_IF2="${CREATE_IF2:-yes}"
+        CREATE_DNS1="${CREATE_DNS1:-yes}"
+        CREATE_DNS2="${CREATE_DNS2:-yes}"
         ;;
     "")
         ;;
@@ -43,6 +51,10 @@ case "${CREATE_PRESET}" in
         echo "unknown preset: '${CREATE_PRESET}'"
         exit 1
 esac
+
+for name in $("${SCRIPT_DIR}/test-torrent-all"); do
+    "${SCRIPT_DIR}/torrent-deactivate" "${name}" &> /dev/null
+done
 
 if [ "${CREATE_IF1}" = "yes" ]; then
     [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no  USE_IF1=yes USE_IF2=no create_torrent test_h4_if1
@@ -56,4 +68,18 @@ if [ "${CREATE_IF2}" = "yes" ]; then
     [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no  USE_IF1=no USE_IF2=yes create_torrent test_u4_if2
     [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=yes create_torrent test_h6_if2
     [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=yes create_torrent test_u6_if2
+fi
+
+if [ "${CREATE_DNS1}" = "yes" ]; then
+    [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no  USE_IF1=dns USE_IF2=no create_torrent test_h4_dns1
+    [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no  USE_IF1=dns USE_IF2=no create_torrent test_u4_dns1
+    [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no  USE_IPV6=yes USE_IF1=dns USE_IF2=no create_torrent test_h6_dns1
+    [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no  USE_IPV6=yes USE_IF1=dns USE_IF2=no create_torrent test_u6_dns1
+fi
+
+if [ "${CREATE_DNS2}" = "yes" ]; then
+    [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=yes USE_IPV6=no  USE_IF1=no USE_IF2=dns create_torrent test_h4_dns2
+    [ "${CREATE_IPV4}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=yes USE_IPV6=no  USE_IF1=no USE_IF2=dns create_torrent test_u4_dns2
+    [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=yes USE_UDP_TRACKER=no USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=dns create_torrent test_h6_dns2
+    [ "${CREATE_IPV6}" = "no" ] || USE_HTTP_TRACKER=no USE_UDP_TRACKER=yes USE_IPV4=no  USE_IPV6=yes USE_IF1=no USE_IF2=dns create_torrent test_u6_dns2
 fi

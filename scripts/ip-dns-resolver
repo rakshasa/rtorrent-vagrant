@@ -2,13 +2,18 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-# also test option inet6
+# Glibc crashes if you have multiple nameservers and either ipv4 or
+# ipv6 nameservers are not routeable.
 
-NODES="${1:-${NODES}}" call_ssh_nodes "sudo bash -c 'cat > /etc/resolvconf/resolv.conf.d/base'" <<EOF
-nameserver 10.0.3.10
-nameserver 10.0.4.10
-nameserver fd00:7103:0:1::10
-nameserver fd00:7103:0:2::10
+for n in ${NODES[@]}; do
+    [ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && 
+
+    "${SCRIPT_DIR}/ssh" "${n}" "sudo bash -c 'cat > /etc/resolvconf/resolv.conf.d/base'" <<EOF
+options rotate
+options timeout:1
+$([ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && echo nameserver 10.0.3.10)
+$([ -f "${DATA_DIR}/${n}/metadata/ipv6.1.up" ] && echo nameserver fd00:7103:0:1::10
 EOF
+done
 
 NODES="${1:-${NODES}}" call_ssh_nodes "sudo resolvconf -u"

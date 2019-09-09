@@ -2,7 +2,8 @@ chroot_dir = "/data/shared/maradns"
 maradns_user = "maradns"
 no_fingerprint = 1
 
-ipv4_bind_addresses = "127.0.0.1, 10.0.3.10, 10.0.4.10"
+ipv4_bind_addresses = "10.0.3.10"
+ipv6_bind_address = "fd00:7103:0:1::10"
 
 csv2 = {}
 csv2["rtorrent.if1v4."] = "db.rtorrent.if1v4"

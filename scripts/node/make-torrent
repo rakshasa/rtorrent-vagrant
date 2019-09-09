@@ -5,7 +5,7 @@ DATA_PATH="/data/shared/torrents/${DATA_FILENAME}"
 
 DATA_COUNT=${DATA_COUNT:=5}
 
-openssl rand $(( DATA_COUNT * 1000000 )) > "${DATA_PATH}"
+openssl rand $(( DATA_COUNT * 1000 )) > "${DATA_PATH}"
 
 IPV4_1_TRACKER=`cat /data/local/metadata/ipv4.1.address`
 IPV6_1_TRACKER=`cat /data/local/metadata/ipv6.1.address`
@@ -24,11 +24,15 @@ if [ "${USE_HTTP_TRACKER}" == "yes" ]; then
     if [ "${USE_IPV4}" == "yes" ]; then
         [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",http://${IPV4_1_TRACKER}:6969/announce"
         [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",http://${IPV4_2_TRACKER}:6969/announce"
+        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v4:6969/announce"
+        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v4:6969/announce"
     fi
 
     if [ "$USE_IPV6" == "yes" ]; then
         [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",http://[${IPV6_1_TRACKER}]:6969/announce"
         [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",http://[${IPV6_2_TRACKER}]:6969/announce"
+        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v6:6969/announce"
+        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v6:6969/announce"
     fi
 fi
 
@@ -36,11 +40,15 @@ if [ "${USE_UDP_TRACKER}" == "yes" ]; then
     if [ "${USE_IPV4}" == "yes" ]; then
         [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",udp://${IPV4_1_TRACKER}:6969"
         [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",udp://${IPV4_2_TRACKER}:6969"
+        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v4:6969"
+        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v4:6969"
     fi
 
     if [ "${USE_IPV6}" == "yes" ]; then
         [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",udp://[${IPV6_1_TRACKER}]:6969"
         [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",udp://[${IPV6_2_TRACKER}]:6969"
+        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v6:6969"
+        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v6:6969"
     fi
 fi
 

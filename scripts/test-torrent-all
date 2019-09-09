@@ -2,4 +2,4 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-echo test_{h,u}{4,6}_if{1,2}
+echo test_{h,u}{4,6}_{dns,if}{1,2}

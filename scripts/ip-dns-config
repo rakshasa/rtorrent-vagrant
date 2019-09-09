@@ -9,4 +9,4 @@ CONFIG_NAME="${1:?Missing config name argument.}"
 "${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"
 
 call_ssh_nodes "sudo service dns-clean restart"
-call_ssh_nodes "sudo /etc/init.d/networking force-reload"
+#call_ssh_nodes "sudo /etc/init.d/networking force-reload"
