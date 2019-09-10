@@ -6,13 +6,17 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 # ipv6 nameservers are not routeable.
 
 for n in ${NODES[@]}; do
-    [ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && 
+    nameserver_if1v4=$(cat "${DATA_DIR}/builder/metadata/ipv4.1.address")
+    nameserver_if1v6=$(cat "${DATA_DIR}/builder/metadata/ipv6.1.address")
+
+    [ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && ns4="nameserver ${nameserver_if1v4}" || ns4=
+    [ -f "${DATA_DIR}/${n}/metadata/ipv6.1.up" ] && ns6="nameserver ${nameserver_if1v6}" || ns6=
 
     "${SCRIPT_DIR}/ssh" "${n}" "sudo bash -c 'cat > /etc/resolvconf/resolv.conf.d/base'" <<EOF
 options rotate
 options timeout:1
-$([ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && echo nameserver 10.0.3.10)
-$([ -f "${DATA_DIR}/${n}/metadata/ipv6.1.up" ] && echo nameserver fd00:7103:0:1::10
+${ns4}
+${ns6}
 EOF
 done
 

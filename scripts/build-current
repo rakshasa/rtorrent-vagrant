@@ -13,7 +13,8 @@ if [ "${WITHOUT_UDNS}" == yes ]; then
     LIBTORRENT_CONF+=" --without-udns"
 fi
 
-#rm "${DATA_DIR}/usr_local/bin/rtorrent" "${DATA_DIR}/usr_local/lib/libtorrent.*"
+[[ "${SKIP_LIBTORRENT}" != "yes" ]] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
+[[ "${SKIP_RTORRENT}" != "yes" ]] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
 
 "${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 DO_CONFIGURE=${DO_CONFIGURE} SKIP_LIBTORRENT=${SKIP_LIBTORRENT} LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" RTORRENT_CONF=\"${RTORRENT_CONF}\" build-rtorrent" || exit 1
 "${SCRIPT_DIR}/build-tags" > /dev/null
