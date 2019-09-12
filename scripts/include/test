@@ -104,6 +104,11 @@ setup() {
             setup_if2v4v6 &> /dev/null
             CREATE_PRESET=if_pair
             ;;
+        "if1v4v6_if2p1_dns")
+            setup_if1v4v6 &> /dev/null
+            setup_if2p1 &> /dev/null
+            CREATE_PRESET=if_dns_pair
+            ;;
         *)
             echo "missing config '${config}'"
             exit -1
