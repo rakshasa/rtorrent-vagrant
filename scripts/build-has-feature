@@ -1,0 +1,39 @@
+#!/bin/bash
+
+source "$(dirname ${BASH_SOURCE[0]})/include/init"
+
+has_feature() {
+  local feature="${1:?Missing feature name.}"
+  local repo=
+  local match=
+
+  case "${feature}" in
+    with-udns)
+      repo=libtorrent
+      match='#define USE_UDNS'
+      ;;
+    without-udns)
+      repo=libtorrent
+      match='#undef USE_UDNS'
+      ;;
+    *)
+      echo "invalid feature name: ${feature}"
+      exit 1
+      ;;
+  esac
+
+  grep -e "${match}" "${DATA_DIR}/builder/${repo}/config.h" &> /dev/null
+}
+
+declare -a MISSING
+
+for feature in ${@}; do
+  if ! has_feature ${feature}; then
+    MISSING+=(${feature})
+  fi
+done
+
+if (( ${#MISSING[@]} )); then
+  echo "missing features: ${MISSING[@]}"
+  exit 1
+fi

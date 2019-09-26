@@ -1,0 +1,37 @@
+#!/bin/bash
+
+source "$(dirname ${BASH_SOURCE[0]})/init"
+
+declare -a TEST_NAMES
+declare -a TEST_RESULTS
+
+test_unit() {
+  local unit="${1:?Missing unit name.}"
+
+  TEST_NAMES+=("${unit}")
+  ("${TEST_DIR}/${unit}" && TEST_RESULTS+=(0)) || TEST_RESULTS+=(1)
+}
+
+test_print_header() {
+  local message="${1:?Missing message.}"
+
+  echo
+  echo "======================================================================"
+  echo "${message}"
+  echo "======================================================================"
+  echo
+}
+
+test_print_results() {
+  echo
+  for (( i = 0; i < ${#TEST_RESULTS[@]}; i++ )); do
+    if [[ "${TEST_RESULTS[i]}" == 0 ]]; then
+      color="${GREEN}"
+    else
+      color="${RED}"
+    fi
+
+    echo -e "${color}${TEST_NAMES[i]}:\t ${TEST_RESULTS[i]}${NC}"
+  done
+  echo
+}

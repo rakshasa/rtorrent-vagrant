@@ -6,11 +6,11 @@ rm "${DATA_DIR}/builder/libtorrent/test/test-suite.log"
 rm "${DATA_DIR}/builder/rtorrent/test/test-suite.log"
 
 if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
-    "${SCRIPT_DIR}/ssh" builder "TEST_NAME=${TEST_NAME} check-libtorrent" || cat "${DATA_DIR}/builder/libtorrent/test/test-suite.log" || exit 1
+    "${SCRIPT_DIR}/ssh" builder "TEST_NAMES=${TEST_NAMES} check-libtorrent" || cat "${DATA_DIR}/builder/libtorrent/test/test-suite.log" || exit 1
 fi
 
 if [ "${SKIP_RTORRENT}" != "yes" ]; then
-    "${SCRIPT_DIR}/ssh" builder "TEST_NAME=${TEST_NAME} check-rtorrent"   || cat "${DATA_DIR}/builder/rtorrent/test/test-suite.log"   || exit 1
+    "${SCRIPT_DIR}/ssh" builder "TEST_NAMES=${TEST_NAMES} check-rtorrent"   || cat "${DATA_DIR}/builder/rtorrent/test/test-suite.log"   || exit 1
 fi
 
 "${SCRIPT_DIR}/build-tags" > /dev/null

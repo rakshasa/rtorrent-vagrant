@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source "$(dirname ${BASH_SOURCE[0]})/include/test_unit"
+
+# Compile with each of the different async dns resolvers, do make
+# check and ci test default/bind/dns.
+
+# Improve test naming in the results.
+
+test_dns() {
+  test_unit "default"
+  test_unit "dns_default"
+}
+
+test_print_header "Without UDNS"
+DO_CONFIGURE=yes WITHOUT_UDNS=yes "${SCRIPT_DIR}/build-current"
+"${SCRIPT_DIR}/build-has-feature" without-udns
+test_dns
+
+test_print_header "With UDNS"
+DO_CONFIGURE=yes WITHOUT_UDNS=no "${SCRIPT_DIR}/build-current"
+"${SCRIPT_DIR}/build-has-feature" with-udns
+test_dns
+
+test_print_header "Results"
+test_print_results

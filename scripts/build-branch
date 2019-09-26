@@ -6,8 +6,12 @@ REPO_NAME=${3:-origin}
 LIBTORRENT_GIT_BRANCH=${1:?no libtorrent git branch provided}
 RTORRENT_GIT_BRANCH=${2:?no rtorrent git branch provided}
 
+echo "build-branch: updating git repositories"
 (cd $GIT_LIBTORRENT && (git pull $REPO_NAME || true) && git checkout $LIBTORRENT_GIT_BRANCH && (git pull || true)) || exit 1
 (cd $GIT_RTORRENT   && (git pull $REPO_NAME || true) && git checkout $RTORRENT_GIT_BRANCH   && (git pull || true)) || exit 1
 
+echo "build-branch: building rtorrent"
 "${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 build-rtorrent"
+
+echo "build-branch: building tags"
 "${SCRIPT_DIR}/build-tags" > /dev/null

@@ -6,12 +6,11 @@ if [ "$1" == "-r" ]; then
     SKIP_LIBTORRENT="yes"
 fi
 
-RTORRENT_CONF="--with-xmlrpc-c"
-LIBTORRENT_CONF=""
+declare -a RTORRENT_CONF=("--with-xmlrpc-c")
+declare -a LIBTORRENT_CONF
 
-if [ "${WITHOUT_UDNS}" == yes ]; then
-    LIBTORRENT_CONF+=" --without-udns"
-fi
+[ "${WITH_UDNS}" == yes ] && LIBTORRENT_CONF+=("--with-udns")
+[ "${WITHOUT_UDNS}" == yes ] && LIBTORRENT_CONF+=("--without-udns")
 
 [[ "${SKIP_LIBTORRENT}" != "yes" ]] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
 [[ "${SKIP_RTORRENT}" != "yes" ]] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
