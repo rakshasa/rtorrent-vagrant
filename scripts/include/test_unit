@@ -12,7 +12,7 @@ test_unit() {
   ("${TEST_DIR}/${unit}" && TEST_RESULTS+=(0)) || TEST_RESULTS+=(1)
 }
 
-test_print_header() {
+test_begin() {
   local message="${1:?Missing message.}"
 
   echo
@@ -20,6 +20,8 @@ test_print_header() {
   echo "${message}"
   echo "======================================================================"
   echo
+
+  "${SCRIPT_DIR}/stop-rtorrent"
 }
 
 test_print_results() {

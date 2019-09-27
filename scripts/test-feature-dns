@@ -12,15 +12,15 @@ test_dns() {
   test_unit "dns_default"
 }
 
-test_print_header "Without UDNS"
+test_begin "Without UDNS"
 DO_CONFIGURE=yes WITHOUT_UDNS=yes "${SCRIPT_DIR}/build-current"
 "${SCRIPT_DIR}/build-has-feature" without-udns
 test_dns
 
-test_print_header "With UDNS"
+test_begin "With UDNS"
 DO_CONFIGURE=yes WITHOUT_UDNS=no "${SCRIPT_DIR}/build-current"
 "${SCRIPT_DIR}/build-has-feature" with-udns
 test_dns
 
-test_print_header "Results"
+test_begin "Results"
 test_print_results

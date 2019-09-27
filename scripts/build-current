@@ -6,14 +6,14 @@ if [ "$1" == "-r" ]; then
     SKIP_LIBTORRENT="yes"
 fi
 
-declare -a RTORRENT_CONF=("--with-xmlrpc-c")
-declare -a LIBTORRENT_CONF
+RTORRENT_CONF=("--with-xmlrpc-c")
+LIBTORRENT_CONF=()
 
 [ "${WITH_UDNS}" == yes ] && LIBTORRENT_CONF+=("--with-udns")
 [ "${WITHOUT_UDNS}" == yes ] && LIBTORRENT_CONF+=("--without-udns")
 
-[[ "${SKIP_LIBTORRENT}" != "yes" ]] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
-[[ "${SKIP_RTORRENT}" != "yes" ]] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
+[[ "${SKIP_LIBTORRENT}" != yes ]] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
+[[ "${SKIP_RTORRENT}" != yes ]] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
 
 "${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 DO_CONFIGURE=${DO_CONFIGURE} SKIP_LIBTORRENT=${SKIP_LIBTORRENT} LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" RTORRENT_CONF=\"${RTORRENT_CONF}\" build-rtorrent" || exit 1
 "${SCRIPT_DIR}/build-tags" > /dev/null
