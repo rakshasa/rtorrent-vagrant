@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
 if [ "$1" == "-r" ]; then
@@ -12,8 +14,26 @@ LIBTORRENT_CONF=()
 [ "${WITH_UDNS}" == yes ] && LIBTORRENT_CONF+=("--with-udns")
 [ "${WITHOUT_UDNS}" == yes ] && LIBTORRENT_CONF+=("--without-udns")
 
-[[ "${SKIP_LIBTORRENT}" != yes ]] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
-[[ "${SKIP_RTORRENT}" != yes ]] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
+[ "${SKIP_LIBTORRENT}" != yes ] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
+[ "${SKIP_RTORRENT}" != yes ] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
 
-"${SCRIPT_DIR}/ssh" builder "USE_CXX=g++-4.8 DO_CONFIGURE=${DO_CONFIGURE} SKIP_LIBTORRENT=${SKIP_LIBTORRENT} LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" RTORRENT_CONF=\"${RTORRENT_CONF}\" build-rtorrent" || exit 1
-"${SCRIPT_DIR}/build-tags" > /dev/null
+call_build() {
+  "${SCRIPT_DIR}/ssh" builder "\
+USE_CXX=g++-4.8 \
+BUILD_CONFIGURE=${BUILD_CONFIGURE} \
+BUILD_QUIET=${BUILD_QUIET} \
+SKIP_LIBTORRENT=${SKIP_LIBTORRENT} \
+LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" \
+RTORRENT_CONF=\"${RTORRENT_CONF}\" \
+build-rtorrent"
+}
+
+if [ "${BUILD_QUIET}" == yes ]; then
+  echo "rtorrent started compiling..."
+  call_quiet call_build
+  call_quiet "${SCRIPT_DIR}/build-tags"
+  echo "rtorrent finished compiling"
+else
+  call_build
+  "${SCRIPT_DIR}/build-tags" > /dev/null
+fi

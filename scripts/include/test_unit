@@ -21,7 +21,7 @@ test_begin() {
   echo "======================================================================"
   echo
 
-  "${SCRIPT_DIR}/stop-rtorrent"
+  "${SCRIPT_DIR}/stop-rtorrent" || :
 }
 
 test_print_results() {

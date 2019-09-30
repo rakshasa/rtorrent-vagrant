@@ -2,4 +2,7 @@
 
 source `dirname ${BASH_SOURCE[0]}`/include/call
 
-ssh -F "${DATA_DIR}/ssh-config" $@
+if ! ssh -F "${DATA_DIR}/ssh-config" $@; then
+  echo "ssh failed to connect to '$1'" >&2
+  exit 1
+fi

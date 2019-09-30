@@ -6,8 +6,13 @@ RTORRENT_LOG="/data/local/log"
 LOG_DATE=`date -u '+%F_%H-%M-%S'`
 
 for i in ${RTORRENT_LOG}/*.log; do
-    mv ${i} ${i/\/log\//\/log\/old\/}.${LOG_DATE}
+    mv ${i} ${i/\/log\//\/log\/old\/}.${LOG_DATE} || : &> /dev/null
 done
+
+if ls "${RTORRENT_LOG}/*.log" &> /dev/null; then
+  echo "Log files not moved." 1>&2
+  exit 1
+fi
 
 if [ "$DEBUG" == "yes" ]; then
     gdb --args ${RTORRENT_EXEC}

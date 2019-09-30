@@ -6,7 +6,7 @@ export MAKEFLAGS="-j 8"
 
 if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
     cd /data/local/libtorrent
-    if [ ! -f "Makefile" ] || [ "${DO_CONFIGURE}" == "yes" ]; then
+    if [ ! -f "Makefile" ] || [ "${BUILD_CONFIGURE}" == "yes" ]; then
         ./autogen.sh && ./configure ${LIBTORRENT_CONF} || exit 1
     fi
     make && sudo make install || exit 1
@@ -14,7 +14,7 @@ fi
 
 if [ "${SKIP_RTORRENT}" != "yes" ]; then
     cd /data/local/rtorrent
-    if [ ! -f "Makefile" ] || [ "${DO_CONFIGURE}" == "yes" ]; then
+    if [ ! -f "Makefile" ] || [ "${BUILD_CONFIGURE}" == "yes" ]; then
         ./autogen.sh && ./configure ${RTORRENT_CONF} || exit 1
     fi
     make && sudo make install || exit 1

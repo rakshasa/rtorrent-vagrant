@@ -1,23 +1,25 @@
 #!/bin/bash
 
+set -e
+
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
-"${SCRIPT_DIR}/ssh" builder 'cd /data/local/libtorrent && make tags' || exit 1
-"${SCRIPT_DIR}/ssh" builder 'cd /data/local/rtorrent && make tags' || exit 1
+"${SCRIPT_DIR}/ssh" builder 'cd /data/local/libtorrent && make tags'
+"${SCRIPT_DIR}/ssh" builder 'cd /data/local/rtorrent && make tags'
 
 IFS=$'\n'
 
 for repo in 'libtorrent' 'rtorrent'; do
-    (
-        cd "${DATA_DIR}/builder/${repo}" || exit 1
+  (
+    cd "${DATA_DIR}/builder/${repo}"
 
-        for i in `find . -name TAGS`; do
-            echo "Changing base path of directory tags in '${i}'"
+    for i in `find . -name TAGS`; do
+      echo "Changing base path of directory tags in '${i}'"
 
-            path="${i/%TAGS/}"
-            sed -e "s:^/data/local/${repo}/${path/.\//}:./:" "$i" > "$i.new"
+      path="${i/%TAGS/}"
+      sed -e "s:^/data/local/${repo}/${path/.\//}:./:" "$i" > "$i.new"
 
-            mv "$i.new" "$i"
-        done
-    )
+      mv "$i.new" "$i"
+    done
+  )
 done
