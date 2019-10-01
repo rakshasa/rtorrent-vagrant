@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 USE_CONFIG="${1:?Missing build config argument.}"
 

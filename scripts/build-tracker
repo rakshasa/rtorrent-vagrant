@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 echo "tracker stopping"
 "${SCRIPT_DIR}/ssh" builder "sudo service opentracker stop" &> /dev/null || :
