@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Compile with each of the different async dns resolvers, do make
 # check and ci test default/bind/dns.
@@ -12,7 +12,8 @@ test_dns() {
   test_unit "dns_default"
 }
 
-set -e
+# TODO: Add named logs, 'log', 'result', etc.
+init_logging "test-feature-dns" "log"
 
 # Move to test_unit, make configurable.
 export BUILD_CONFIGURE=yes
@@ -24,11 +25,9 @@ WITHOUT_UDNS=yes "${SCRIPT_DIR}/build-current"
 test_dns
 
 test_begin "With UDNS"
-WITHOUT_UDNS=no "${SCRIPT_DIR}/build-current"
+SKIP_RTORRENT=yes WITHOUT_UDNS=no "${SCRIPT_DIR}/build-current"
 "${SCRIPT_DIR}/build-has-feature" with-udns
 test_dns
 
 test_begin "Results"
 test_print_results
-
-shopt -op errexit

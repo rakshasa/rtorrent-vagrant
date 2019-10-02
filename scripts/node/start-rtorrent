@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 RTORRENT_EXEC="rtorrent -n -o try_import=/data/shared/config/rtorrent.rc,system.daemon.set=true"
 RTORRENT_LOG="/data/local/log"

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cp /etc/ssh/sshd_config /etc/ssh/sshd_config.orig
 sed -e "s/^\(AcceptEnv[A-Z0-9 _*]*$\)/\1 SSH_AUTH_SOCK SSH_AGENT_PID/" /etc/ssh/sshd_config > /etc/ssh/sshd_config.new

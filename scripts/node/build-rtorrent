@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export CXX="${USE_CXX:?No C++ compiler specified.}"
 export CXXFLAGS="-Wno-error=strict-aliasing"

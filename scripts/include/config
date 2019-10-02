@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 config_add() {
     local node="${1:?Missing node argument.}"

@@ -79,6 +79,9 @@ build_branch:
 	@echo "Bulding libtorrent '$(LIBTORRENT_BRANCH)' and rtorrent '$(RTORRENT_BRANCH)'."
 	./scripts/build-branch $(LIBTORRENT_BRANCH) $(RTORRENT_BRANCH)
 
+tags:
+	find scripts -name '[a-z0-9/-]*' | etags -
+
 setup:
 	vagrant plugin install vagrant-vbguest
 	vagrant plugin install vagrant-disksize

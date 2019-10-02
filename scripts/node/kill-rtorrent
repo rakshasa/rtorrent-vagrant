@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 RTORRENT_LOCKFILE="/data/local/session/rtorrent.lock"
 

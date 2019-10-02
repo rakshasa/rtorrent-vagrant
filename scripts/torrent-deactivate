@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export DATA_FILENAME="${1:?Missing torrent filename.}"
 

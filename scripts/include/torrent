@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SEED_NODE=${SEED_NODE:-node1}
 

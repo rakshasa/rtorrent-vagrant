@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -e
 
@@ -38,4 +38,30 @@ call_quiet() {
   eval "${oldstate}"
 
   return ${call_result}
+}
+
+init_logging() {
+  local log_category="${1:?Missing category name.}"
+  local log_name="${2:?Missing log name.}"
+  local log_dir="${ROOT_DIR}/logs"
+  local log_target="${log_category}.logs/${log_name}.$(date '+%Y-%m-%d_%H:%M:%S')"
+  local log_file="${ROOT_DIR}/logs/${log_target}"
+
+  (cd "${ROOT_DIR}" && mkdir -p "logs/${log_category}.logs")
+  echo "started logging category:${log_category} name:${log_name}" > "${log_file}"
+
+  if [[ ${BASH_VERSINFO[0]} > 4 ]] || ( [[ ${BASH_VERSINFO[0]} == 4 ]] && [[ ${BASH_VERSINFO[1]} > 0 ]] ); then
+    # exec 50>> "${log_file}"
+    # export BASH_XTRACEFD=50
+    # set -x
+    :
+  else
+    echo "not logging 'set -x' output, bash version >= 4.1 required" >>{log}
+  fi
+
+  exec 1> >(tee -ia "${log_file}")
+  exec 2> >(tee -ia "${log_file}")
+  exec {log}>> "${log_file}"
+
+  ln -fs "./${log_target}" "${log_dir}/${log_category}.${log_name}"
 }
