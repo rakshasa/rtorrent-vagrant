@@ -62,7 +62,7 @@ wait_for_nodes() {
 
     local timeout="${WAIT_TIMEOUT:-40}"
     local nodes="${WAIT_NODES:-${NODES}}"
-    local method="$1"
+    local method="${1:?Missing wait node method.}"
     shift
 
     #echo "wait_for_node: ${remaining} calling '${method}' $i $@"

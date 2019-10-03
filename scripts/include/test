@@ -4,236 +4,241 @@ FAILED=0
 LAST_VERIFY=
 
 start_nodes() {
-    echo "starting clients"
-    "${SCRIPT_DIR}/start-rtorrent"
+  echo "clients: starting"
+  "${SCRIPT_DIR}/start-rtorrent"
 
-    echo "waiting for clients"
+  echo "clients: waiting"
+  if [ -n "${ACTIVE_NODES}" ]; then
+    WAIT_NODES="${ACTIVE_NODES}" wait_for_nodes "is-client-active"
+  else
+    wait_for_nodes "is-client-active"
+  fi
 
-    if [ -n "${ACTIVE_NODES}" ]; then
-        WAIT_NODES="${ACTIVE_NODES}" wait_for_nodes "is-client-active"
-    else
-        wait_for_nodes "is-client-active"
-    fi
+  echo "clients: active"
 }
 
 create_torrents() {
-    CREATE_PRESET="${CREATE_PRESET}" \
-                 CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
-                 CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
-                 "${SCRIPT_DIR}/test-create-all"
+  echo "torrents: creating all"
+  CREATE_PRESET="${CREATE_PRESET}" \
+               CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
+               CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
+               "${SCRIPT_DIR}/test-create-all"
 
-    local torrent=
-    for torrent in `${SCRIPT_DIR}/torrent-list`; do
-        WAIT_NODES="${ACTIVE_NODES}" WAIT_TIMEOUT=60 wait_for_nodes is-loaded ${torrent}
-        echo "${torrent}: loaded"
-    done
+  echo "torrents: waiting for loaded"
+  local torrent=
+  for torrent in `${SCRIPT_DIR}/torrent-list`; do
+    WAIT_NODES="${ACTIVE_NODES}" WAIT_TIMEOUT=60 wait_for_nodes is-loaded ${torrent}
+    echo "${torrent}: loaded"
+  done
+
+  echo "torrents: loaded all"
 }
 
 clean_all() {
-    set -e
+  echo "clean all"
 
-    echo "clean all"
+  "${SCRIPT_DIR}/stop-rtorrent"; sleep 5
+  "${SCRIPT_DIR}/config-clear"
 
-    "${SCRIPT_DIR}/stop-rtorrent"; sleep 5
-    "${SCRIPT_DIR}/config-clear"
+  "${SCRIPT_DIR}/test-delete-all"; sleep 1
+  #WAIT_TIMEOUT=20 wait_for_nodes is-empty
 
-    "${SCRIPT_DIR}/test-delete-all"; sleep 1
-    #WAIT_TIMEOUT=20 wait_for_nodes is-empty
-
-    "${SCRIPT_DIR}/ip-down-4-1" "node1 node2 node3 node4 node5" &> /dev/null
-    "${SCRIPT_DIR}/ip-down-6-1" "node1 node2 node3 node4 node5" &> /dev/null
-    "${SCRIPT_DIR}/ip-down-4-2" "node1 node2 node3 node4 node5" &> /dev/null
-    "${SCRIPT_DIR}/ip-down-6-2" "node1 node2 node3 node4 node5" &> /dev/null
+  "${SCRIPT_DIR}/ip-down-4-1" "node1 node2 node3 node4 node5" &> /dev/null
+  "${SCRIPT_DIR}/ip-down-6-1" "node1 node2 node3 node4 node5" &> /dev/null
+  "${SCRIPT_DIR}/ip-down-4-2" "node1 node2 node3 node4 node5" &> /dev/null
+  "${SCRIPT_DIR}/ip-down-6-2" "node1 node2 node3 node4 node5" &> /dev/null
 }
 
 setup_if1v4v6() {
-    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3 node4 node5"
-    ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3 node4 node5"
+  ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node3 node4 node5"
+  ${SCRIPT_DIR}/ip-up-6-1 "node1 node2 node3 node4 node5"
 }
 
 setup_if2v4v6() {
-    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3 node4 node5"
-    ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3 node4 node5"
+  ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node3 node4 node5"
+  ${SCRIPT_DIR}/ip-up-6-2 "node1 node2 node3 node4 node5"
 }
 
 setup_if1p1() {
-    ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node4"
-    ${SCRIPT_DIR}/ip-up-6-1 "node1 node3 node5"
-    ${SCRIPT_DIR}/ip-down-4-1 "node3 node5"
-    ${SCRIPT_DIR}/ip-down-6-1 "node2 node4"
+  ${SCRIPT_DIR}/ip-up-4-1 "node1 node2 node4"
+  ${SCRIPT_DIR}/ip-up-6-1 "node1 node3 node5"
+  ${SCRIPT_DIR}/ip-down-4-1 "node3 node5"
+  ${SCRIPT_DIR}/ip-down-6-1 "node2 node4"
 }
 
 setup_if2p1() {
-    ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node4"
-    ${SCRIPT_DIR}/ip-up-6-2 "node1 node3 node5"
-    ${SCRIPT_DIR}/ip-down-4-2 "node3 node5"
-    ${SCRIPT_DIR}/ip-down-6-2 "node2 node4"
+  ${SCRIPT_DIR}/ip-up-4-2 "node1 node2 node4"
+  ${SCRIPT_DIR}/ip-up-6-2 "node1 node3 node5"
+  ${SCRIPT_DIR}/ip-down-4-2 "node3 node5"
+  ${SCRIPT_DIR}/ip-down-6-2 "node2 node4"
 }
 
 setup() {
-    local config="${1:?Missing config setup argument.}"
+  local config="${1:?Missing config setup argument.}"
 
-    echo "setting up config '${config}'"
+  echo "setting up config '${config}'"
 
-    case "${config}" in
-        "if1p1")
-            setup_if1p1 &> /dev/null
-            CREATE_PRESET=if_single
-            ;;
-        "if1p1_if2p1")
-            setup_if1p1 &> /dev/null
-            setup_if2p1 &> /dev/null
-            CREATE_PRESET=if_pair
-            ;;
-        "if1p1_if2v4v6")
-            setup_if1p1 &> /dev/null
-            setup_if2v4v6 &> /dev/null
-            CREATE_PRESET=if_pair
-            ;;
-        "if1p1_if2v4v6_dns")
-            setup_if1p1 &> /dev/null
-            setup_if2v4v6 &> /dev/null
-            CREATE_PRESET=if_dns_pair
-            ;;
-        "if1v4v6")
-            setup_if1v4v6 &> /dev/null
-            CREATE_PRESET=if_single
-            ;;
-        "if1v4v6_if2v4v6")
-            setup_if1v4v6 &> /dev/null
-            setup_if2v4v6 &> /dev/null
-            CREATE_PRESET=if_pair
-            ;;
-        "if1v4v6_if2p1_dns")
-            setup_if1v4v6 &> /dev/null
-            setup_if2p1 &> /dev/null
-            CREATE_PRESET=if_dns_pair
-            ;;
-        *)
-            echo "missing config '${config}'"
-            exit -1
-            ;;
-    esac
+  case "${config}" in
+    "if1p1")
+      setup_if1p1 &> /dev/null
+      CREATE_PRESET=if_single
+      ;;
+    "if1p1_if2p1")
+      setup_if1p1 &> /dev/null
+      setup_if2p1 &> /dev/null
+      CREATE_PRESET=if_pair
+      ;;
+    "if1p1_if2v4v6")
+      setup_if1p1 &> /dev/null
+      setup_if2v4v6 &> /dev/null
+      CREATE_PRESET=if_pair
+      ;;
+    "if1p1_if2v4v6_dns")
+      setup_if1p1 &> /dev/null
+      setup_if2v4v6 &> /dev/null
+      CREATE_PRESET=if_dns_pair
+      ;;
+    "if1v4v6")
+      setup_if1v4v6 &> /dev/null
+      CREATE_PRESET=if_single
+      ;;
+    "if1v4v6_if2v4v6")
+      setup_if1v4v6 &> /dev/null
+      setup_if2v4v6 &> /dev/null
+      CREATE_PRESET=if_pair
+      ;;
+    "if1v4v6_if2p1_dns")
+      setup_if1v4v6 &> /dev/null
+      setup_if2p1 &> /dev/null
+      CREATE_PRESET=if_dns_pair
+      ;;
+    *)
+      echo "missing config '${config}'"
+      exit -1
+      ;;
+  esac
 
-    if [ "${SEED_IF1_V4ONLY}" == "yes" ]; then
-        echo "seed if1 v4only"
-        ${SCRIPT_DIR}/ip-down-6-1 "node1"
-    fi
+  if [ "${SEED_IF1_V4ONLY}" == "yes" ]; then
+    echo "seed if1 v4only"
+    ${SCRIPT_DIR}/ip-down-6-1 "node1"
+  fi
 
-    if [ "${SEED_IF2_V4ONLY}" == "yes" ]; then
-        echo "seed if2 v4only"
-        ${SCRIPT_DIR}/ip-down-6-2 "node1"
-    fi
+  if [ "${SEED_IF2_V4ONLY}" == "yes" ]; then
+    echo "seed if2 v4only"
+    ${SCRIPT_DIR}/ip-down-6-2 "node1"
+  fi
 
-    if [ "${SEED_IF1_V6ONLY}" == "yes" ]; then
-        echo "seed if1 v6only"
-        ${SCRIPT_DIR}/ip-down-4-1 "node1"
-    fi
+  if [ "${SEED_IF1_V6ONLY}" == "yes" ]; then
+    echo "seed if1 v6only"
+    ${SCRIPT_DIR}/ip-down-4-1 "node1"
+  fi
 
-    if [ "${SEED_IF2_V6ONLY}" == "yes" ]; then
-        echo "seed if2 v6only"
-        ${SCRIPT_DIR}/ip-down-4-2 "node1"
-    fi
+  if [ "${SEED_IF2_V6ONLY}" == "yes" ]; then
+    echo "seed if2 v6only"
+    ${SCRIPT_DIR}/ip-down-4-2 "node1"
+  fi
 
-    "${SCRIPT_DIR}/build-tracker"
-    "${SCRIPT_DIR}/ip-dns-resolver"
+  "${SCRIPT_DIR}/build-tracker"
+  "${SCRIPT_DIR}/ip-dns-resolver"
 
-    echo "starting nodes"
-    start_nodes
+  echo "starting nodes"
+  start_nodes
 
-    CREATE_PRESET="${CREATE_PRESET}" \
-                 CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
-                 CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
-                 create_torrents
-    verify_seeds
+  echo "creating torrents"
+  CREATE_PRESET="${CREATE_PRESET}" \
+               CREATE_IPV4="${CREATE_IPV4}" CREATE_IPV6="${CREATE_IPV6}" \
+               CREATE_IF1="${CREATE_IF1}" CREATE_IF2="${CREATE_IF2}" \
+               create_torrents
+  echo "verifying seeds"
+  verify_seeds
 
-    # TODO: Replace with check to see if we have in-progess.
-    sleep 20
-    set +e
+  # TODO: Replace with check to see if we have in-progess.
+  echo "sleeping..."
+  sleep 20
 }
 
 exit_test() {
-    echo
+  echo
 
-    if [[ ${FAILED} -eq 0 ]]; then
-        echo "done: success"
-    else
-        echo "done: failed:${FAILED}"
-    fi
+  if [[ ${FAILED} -eq 0 ]]; then
+    echo "done: success"
+  else
+    echo "done: failed:${FAILED}"
+  fi
 
-    exit ${FAILED}
+  exit ${FAILED}
 }
 
 verify_seeds() {
-    local torrent=
-    for torrent in `${SCRIPT_DIR}/torrent-list`; do
-        WAIT_NODES=node1 WAIT_TIMEOUT=60 wait_for_nodes is-completed ${torrent}
-        echo "${torrent}: seed ready"
-    done
+  local torrent=
+  for torrent in `${SCRIPT_DIR}/torrent-list`; do
+    WAIT_NODES=node1 WAIT_TIMEOUT=60 wait_for_nodes is-completed ${torrent}
+    echo "${torrent}: seed ready"
+  done
 
-    echo "poking all nodes"
-    sleep 5
-    NODES="${ACTIVE_NODES}" "${SCRIPT_DIR}/call-d-multicall" d.tracker_announce.force= > /dev/null
+  echo "poking all nodes"
+  sleep 5
+  NODES="${ACTIVE_NODES}" "${SCRIPT_DIR}/call-d-multicall" d.tracker_announce.force= > /dev/null
 }
 
 verify_completed() {
-    local node="${1:?Missing node argument.}"
-    local torrent="${2:?Missing torrent argument.}"
-    local message="${node} ${torrent} verify completed:  ${3:?Missing message argument.}"
+  local node="${1:?Missing node argument.}"
+  local torrent="${2:?Missing torrent argument.}"
+  local message="${node} ${torrent} verify completed:  ${3:?Missing message argument.}"
 
-    [ -z "${LAST_VERIFY}" ] && echo
-    LAST_VERIFY="${message}"
+  [ -z "${LAST_VERIFY}" ] && echo
+  LAST_VERIFY="${message}"
 
-    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo -e "${GREEN}${message}... succeeded${NC}"
-    else
-        echo -e "${RED}${message}... failed${NC}"
-        (( FAILED++ ))
-    fi
+  if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+    echo -e "${GREEN}${message}... succeeded${NC}"
+  else
+    echo -e "${RED}${message}... failed${NC}"
+    FAILED=$((FAILED+1))
+  fi
 
-    return 0
+  return 0
 }
 
 verify_incompleted() {
-    local node="${1:?Missing node argument.}"
-    local torrent="${2:?Missing torrent argument.}"
-    local message="${node} ${torrent} verify incomplete: ${3:?Missing message argument.}"
+  local node="${1:?Missing node argument.}"
+  local torrent="${2:?Missing torrent argument.}"
+  local message="${node} ${torrent} verify incomplete: ${3:?Missing message argument.}"
 
-    [ -z "${LAST_VERIFY}" ] && echo
-    LAST_VERIFY="${message}"
+  [ -z "${LAST_VERIFY}" ] && echo
+  LAST_VERIFY="${message}"
 
-    if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
-        echo -e "${RED}${message}... failed${NC}"
-        (( FAILED++ ))
-    else
-        echo -e "${GREEN}${message}... succeeded${NC}"
-    fi
+  if "${SCRIPT_DIR}/is-completed" "${node}" "${torrent}"; then
+    echo -e "${RED}${message}... failed${NC}"
+    FAILED=$((FAILED+1))
+  else
+    echo -e "${GREEN}${message}... succeeded${NC}"
+  fi
 
-    return 0
+  return 0
 }
 
 verify_has_log_message() {
-    local node="${1:?Missing node argument.}"
-    local log_name="${2:?Missing log name argument.}"
-    local message="${3:?Missing message argument.}"
-    local log_message="${4:?Missing message argument.}"
+  local node="${1:?Missing node argument.}"
+  local log_name="${2:?Missing log name argument.}"
+  local message="${3:?Missing message argument.}"
+  local log_message="${4:?Missing message argument.}"
 
-    [ -z "${LAST_VERIFY}" ] && echo
-    LAST_VERIFY="${message}"
+  [ -z "${LAST_VERIFY}" ] && echo
+  LAST_VERIFY="${message}"
 
-    if grep "${log_message}" "${DATA_DIR}/${node}/log/${log_name}.log" &> /dev/null; then
-        echo -e "${GREEN}${message}... succeeded${NC}"
-    else
-        echo -e "${RED}${message}... failed${NC}"
-        (( FAILED++ ))
-    fi
+  if grep "${log_message}" "${DATA_DIR}/${node}/log/${log_name}.log" &> /dev/null; then
+    echo -e "${GREEN}${message}... succeeded${NC}"
+  else
+    echo -e "${RED}${message}... failed${NC}"
+    FAILED=$((FAILED+1))
+  fi
 
-    return 0
+  return 0
 }
 
 verify_bind_failed() {
-    local node="${1:?Missing node argument.}"
-    local message="${2:?Missing message argument.}"
+  local node="${1:?Missing node argument.}"
+  local message="${2:?Missing message argument.}"
 
-    verify_has_log_message ${node} crash "${message}" "C Caught exception: 'Could not open/bind port for listening: Cannot assign requested address'."
+  verify_has_log_message ${node} crash "${message}" "C Caught exception: 'Could not open/bind port for listening: Cannot assign requested address'."
 }
