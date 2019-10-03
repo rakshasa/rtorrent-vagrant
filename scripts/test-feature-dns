@@ -12,22 +12,16 @@ test_dns() {
   test_unit "dns_default"
 }
 
-# TODO: Add named logs, 'log', 'result', etc.
-init_logging "test-feature-dns" "log"
-
-# Move to test_unit, make configurable.
-export BUILD_CONFIGURE=yes
-export BUILD_QUIET=yes
+test_init "test-feature-dns"
 
 test_begin "Without UDNS"
-WITHOUT_UDNS=yes "${SCRIPT_DIR}/build-current"
+test_compile "WITHOUT_UDNS=yes"
 "${SCRIPT_DIR}/build-has-feature" without-udns
 test_dns
 
 test_begin "With UDNS"
-SKIP_RTORRENT=yes WITHOUT_UDNS=no "${SCRIPT_DIR}/build-current"
+test_compile "SKIP_RTORRENT=yes WITHOUT_UDNS=no"
 "${SCRIPT_DIR}/build-has-feature" with-udns
 test_dns
 
-test_begin "Results"
-test_print_results
+test_cleanup

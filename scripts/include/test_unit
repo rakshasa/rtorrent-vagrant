@@ -5,6 +5,16 @@ source "$(dirname ${BASH_SOURCE[0]})/init"
 declare -a TEST_NAMES
 declare -a TEST_RESULTS
 
+test_init() {
+  init_logging "standard" "test-feature-dns" "log"
+  init_logging "compile" "test-feature-dns" "compile"
+}
+
+test_cleanup() {
+  test_print_header "Results"
+  test_print_results
+}
+
 test_unit() {
   local unit="${1:?Missing unit name.}"
 
@@ -13,6 +23,27 @@ test_unit() {
 }
 
 test_begin() {
+  test_print_header "${1:?Missing message.}"
+  "${SCRIPT_DIR}/stop-rtorrent" || :
+}
+
+test_compile() {
+  local options="${1}"
+
+  echo "compiling with options '${options}'"
+
+  if eval "BUILD_CONFIGURE=yes ${options} \"${SCRIPT_DIR}/build-current\"" >&${compile} 2>&1; then
+    test_print_header "compilation logs"
+    #exec ${compile}>&-
+    tail -n50 "${LOG_FILENAMES['compile']}"
+    test_print_header "compilation failed"
+    return 1
+  fi
+
+  echo "finished compiling"
+}
+
+test_print_header() {
   local message="${1:?Missing message.}"
 
   echo
@@ -20,8 +51,6 @@ test_begin() {
   echo "${message}"
   echo "======================================================================"
   echo
-
-  "${SCRIPT_DIR}/stop-rtorrent" || :
 }
 
 test_print_results() {

@@ -24,6 +24,8 @@ NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 
+declare -A LOG_FILENAMES
+
 if [ -z "${NODES}" ]; then
   NODES="$((cd ${DATA_DIR} && ls -d node* || :) 2> /dev/null)"
 fi
@@ -32,17 +34,17 @@ call_quiet() {
   local oldstate="$(shopt -op errexit)"; set -e
   local command="${1:?Missing call quiet command argument.}"
   local call_log="$(${command} 2>&1)"
-  local call_result=$?
+  eval "${oldstate}"
 
   [ ${call_result} -eq 0 ] || echo "${call_log}"
-  eval "${oldstate}"
 
   return ${call_result}
 }
 
 init_logging() {
-  local log_category="${1:?Missing category name.}"
-  local log_name="${2:?Missing log name.}"
+  local log_type="${1:?Missing type.}"
+  local log_category="${2:?Missing category name.}"
+  local log_name="${3:?Missing log name.}"
   local log_dir="${ROOT_DIR}/logs"
   local log_target="${log_category}.logs/${log_name}.$(date '+%Y-%m-%d_%H:%M:%S')"
   local log_file="${ROOT_DIR}/logs/${log_target}"
@@ -56,12 +58,27 @@ init_logging() {
     # set -x
     :
   else
-    echo "not logging 'set -x' output, bash version >= 4.1 required" >>{log}
+    echo "not logging 'set -x' output, bash version >= 4.1 required"
+    echo "not logging named redirects, bash version >= 4.1 required"
+    exit 1
   fi
 
-  exec 1> >(tee -ia "${log_file}")
-  exec 2> >(tee -ia "${log_file}")
-  exec {log}>> "${log_file}"
+  case "${log_type}" in
+    standard)
+      exec 1> >(tee -ia "${log_file}")
+      exec 2> >(tee -ia "${log_file}")
+      exec {log}>> "${log_file}"
+      LOG_FILENAMES["log"]="${log_file}"
+      ;;
+    compile)
+      exec {compile}>> "${log_file}"
+      LOG_FILENAMES["compile"]="${log_file}"
+      ;;
+    *)
+      echo "Unknown logging type."
+      exit 1
+    ;;
+  esac
 
   ln -fs "./${log_target}" "${log_dir}/${log_category}.${log_name}"
 }
