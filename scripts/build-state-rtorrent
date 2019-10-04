@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/init"
+
+(cd "${GIT_RTORRENT}" && cat "./config.h" && git log -n1 && git status) | md5

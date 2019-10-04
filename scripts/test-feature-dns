@@ -22,7 +22,7 @@ test_compile "WITHOUT_UDNS=yes"
 test_dns
 
 test_begin "With UDNS"
-test_compile "SKIP_RTORRENT=yes WITHOUT_UDNS=no"
+test_compile "WITHOUT_UDNS=no"
 "${SCRIPT_DIR}/build-has-feature" with-udns
 test_dns
 

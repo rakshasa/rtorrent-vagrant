@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+source "`dirname ${BASH_SOURCE[0]}`/include/init"
+
+OLD_HASH="$(cat ${DATA_DIR}/current-state-headers 2> /dev/null)"
+CURRENT_HASH="$(${SCRIPT_DIR}/build-state-headers 2> /dev/null)"
+
+[ -n "${OLD_HASH}" ] && [ "${OLD_HASH}" == "${CURRENT_HASH}" ]

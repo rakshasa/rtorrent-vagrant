@@ -1,12 +1,21 @@
 #!/usr/bin/env bash
 
-set -e
-
 source "`dirname ${BASH_SOURCE[0]}`/include/call"
 
 if [ "$1" == "-r" ]; then
     SKIP_LIBTORRENT="yes"
 fi
+
+call_build() {
+  "${SCRIPT_DIR}/ssh" builder "\
+USE_CXX=g++-4.8 \
+BUILD_CONFIGURE=${BUILD_CONFIGURE} \
+SKIP_LIBTORRENT=${SKIP_LIBTORRENT} \
+SKIP_RTORRENT=${SKIP_RTORRENT} \
+LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" \
+RTORRENT_CONF=\"${RTORRENT_CONF}\" \
+build-rtorrent"
+}
 
 RTORRENT_CONF=("--with-xmlrpc-c")
 LIBTORRENT_CONF=()
@@ -17,15 +26,24 @@ LIBTORRENT_CONF=()
 [ "${SKIP_LIBTORRENT}" != yes ] && echo ${LIBTORRENT_CONF} > "${DATA_DIR}/current-libtorrent-conf"
 [ "${SKIP_RTORRENT}" != yes ] && echo ${RTORRENT_CONF} > "${DATA_DIR}/current-rtorrent-conf"
 
-call_build() {
-  "${SCRIPT_DIR}/ssh" builder "\
-USE_CXX=g++-4.8 \
-BUILD_CONFIGURE=${BUILD_CONFIGURE} \
-SKIP_LIBTORRENT=${SKIP_LIBTORRENT} \
-LIBTORRENT_CONF=\"${LIBTORRENT_CONF}\" \
-RTORRENT_CONF=\"${RTORRENT_CONF}\" \
-build-rtorrent"
-}
+if [ "${BUILD_FORCE}" != yes ]; then
+  if "${SCRIPT_DIR}/build-compare-libtorrent"; then
+    echo "build-current: libtorrent state unchanged, skipping"
+    SKIP_LIBTORRENT=yes
+  else
+    echo "build-current: libtorrent state changed, compiling"
+  fi
+
+  if "${SCRIPT_DIR}/build-compare-headers" && "${SCRIPT_DIR}/build-compare-rtorrent"; then
+    echo "build-current: rtorrent state unchanged, skipping"
+    SKIP_RTORRENT=yes
+  else
+    echo "build-current: rtorrent state changed, compiling"
+  fi
+else
+  SKIP_LIBTORRENT=no
+  SKIP_RTORRENT=no
+fi
 
 if [ "${BUILD_QUIET}" == yes ]; then
   echo "rtorrent started compiling..."
@@ -36,3 +54,7 @@ else
   call_build
   "${SCRIPT_DIR}/build-tags" > /dev/null
 fi
+
+[ "${SKIP_LIBTORRENT}" == yes ] || "${SCRIPT_DIR}/build-state-libtorrent" > "${DATA_DIR}/current-state-libtorrent"
+[ "${SKIP_RTORRENT}" == yes ] || "${SCRIPT_DIR}/build-state-rtorrent" > "${DATA_DIR}/current-state-rtorrent"
+[ "${SKIP_RTORRENT}" == yes ] || "${SCRIPT_DIR}/build-state-headers" > "${DATA_DIR}/current-state-headers"
