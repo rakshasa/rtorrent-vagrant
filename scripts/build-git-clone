@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 cd "${DATA_DIR}/builder/" || exit 1
 

@@ -5,7 +5,8 @@
 #
 # Improve test naming in the results.
 
-source "$(dirname ${BASH_SOURCE[0]})/include/test_unit"
+source "$(dirname ${BASH_SOURCE[0]})/include/init"
+source "$(dirname ${BASH_SOURCE[0]})/include/test-unit"
 
 test_dns() {
   test_unit "default"
@@ -14,16 +15,19 @@ test_dns() {
 
 test_init "test-feature-dns"
 
-# make feature test proper test
+test_begin "Default"
+test_compile ""
+test_has_features with-udns
+test_dns
 
 test_begin "Without UDNS"
 test_compile "WITHOUT_UDNS=yes"
-"${SCRIPT_DIR}/build-has-feature" without-udns
+test_has_features without-udns
 test_dns
 
 test_begin "With UDNS"
 test_compile "WITHOUT_UDNS=no"
-"${SCRIPT_DIR}/build-has-feature" with-udns
+test_has_features with-udns
 test_dns
 
 test_cleanup

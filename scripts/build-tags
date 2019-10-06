@@ -2,7 +2,7 @@
 
 set -e
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 "${SCRIPT_DIR}/ssh" builder 'cd /data/local/libtorrent && make tags'
 "${SCRIPT_DIR}/ssh" builder 'cd /data/local/rtorrent && make tags'

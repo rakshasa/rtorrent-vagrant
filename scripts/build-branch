@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 REPO_NAME=${3:-origin}
 LIBTORRENT_GIT_BRANCH=${1:?no libtorrent git branch provided}

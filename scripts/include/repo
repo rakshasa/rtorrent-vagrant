@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+repo_state_blob() {
+  local repo_dir="${1:?Missing repo dir argument.}"
+  echo "repo state block for '${repo_dir}'"
+
+  cd "${repo_dir}"
+  git log -n1
+  git status
+
+  cat "./config.h"
+
+  IFS=$'\n'
+  for status in $(git status -s); do
+    local state=$(echo "${status}" | cut -b 1-2)
+    local filename=$(echo "${status}" | cut -b 4-)
+    cat "${filename}"
+  done
+}

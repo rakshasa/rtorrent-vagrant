@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#
+# Hash of all headers installed and used by nodes.
 
 source "$(dirname ${BASH_SOURCE[0]})/include/init"
 

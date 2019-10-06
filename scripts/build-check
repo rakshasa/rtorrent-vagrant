@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/call"
+source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
 rm "${DATA_DIR}/builder/libtorrent/test/test-suite.log"
 rm "${DATA_DIR}/builder/rtorrent/test/test-suite.log"

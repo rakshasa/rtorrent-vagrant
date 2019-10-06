@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
+#
+# Returns an empty string any state source is missing.
 
 source "`dirname ${BASH_SOURCE[0]}`/include/init"
+source "`dirname ${BASH_SOURCE[0]}`/include/repo"
 
-(cd "${GIT_RTORRENT}" && cat "./config.h" && git log -n1 && git status) | md5
+cat "${DATA_DIR}/current-rtorrent-conf" && repo_state_blob "${GIT_RTORRENT}" | md5

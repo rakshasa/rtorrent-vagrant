@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
 
-source "$(dirname ${BASH_SOURCE[0]})/init"
-
 declare -a TEST_NAMES
 declare -a TEST_RESULTS
 
 test_init() {
-  init_logging "standard" "test-feature-dns" "log"
+  init_logging "standard" "test-feature-dns" "output"
   init_logging "compile" "test-feature-dns" "compile"
 }
 
@@ -41,6 +39,12 @@ test_compile() {
   fi
 
   echo "finished compiling"
+}
+
+test_has_features() {
+  local features="${@}"
+  echo "checking if build has features: ${features}"
+  "${SCRIPT_DIR}/build-has-feature" ${features}
 }
 
 test_print_header() {
