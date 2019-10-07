@@ -2,8 +2,8 @@
 
 source "$(dirname ${BASH_SOURCE[0]})/include/call"
 
-rm "${DATA_DIR}/builder/libtorrent/test/test-suite.log"
-rm "${DATA_DIR}/builder/rtorrent/test/test-suite.log"
+rm "${DATA_DIR}/builder/libtorrent/test/test-suite.log" || :
+rm "${DATA_DIR}/builder/rtorrent/test/test-suite.log" || :
 
 if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
     "${SCRIPT_DIR}/ssh" builder "TEST_NAMES=${TEST_NAMES} check-libtorrent" || cat "${DATA_DIR}/builder/libtorrent/test/test-suite.log" || exit 1
