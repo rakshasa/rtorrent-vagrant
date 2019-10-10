@@ -4,6 +4,20 @@ source `dirname ${BASH_SOURCE[0]}`/include/call
 
 # Glibc crashes if you have multiple nameservers and either ipv4 or
 # ipv6 nameservers are not routeable.
+#
+# Some resolvers don't handle multiple nameservers properly, pass
+# argument to reorder the nameservers.
+
+case "${1}" in
+  builder)
+    CLEAR_TARGET="/etc/resolvconf/resolv.conf.d/base"
+    RESOLV_TARGET="/etc/resolvconf/resolv.conf.d/head"
+    ;;
+  internet | default | *)
+    CLEAR_TARGET="/etc/resolvconf/resolv.conf.d/head"
+    RESOLV_TARGET="/etc/resolvconf/resolv.conf.d/base"
+    ;;
+esac
 
 for n in ${NODES[@]}; do
     nameserver_if1v4=$(cat "${DATA_DIR}/builder/metadata/ipv4.1.address")
@@ -12,7 +26,8 @@ for n in ${NODES[@]}; do
     [ -f "${DATA_DIR}/${n}/metadata/ipv4.1.up" ] && ns4="nameserver ${nameserver_if1v4}" || ns4=
     [ -f "${DATA_DIR}/${n}/metadata/ipv6.1.up" ] && ns6="nameserver ${nameserver_if1v6}" || ns6=
 
-    "${SCRIPT_DIR}/ssh" "${n}" "sudo bash -c 'cat > /etc/resolvconf/resolv.conf.d/base'" <<EOF
+    [ -n "${CLEAR_TARGET}" ] && "${SCRIPT_DIR}/ssh" "${n}" "sudo bash -c 'echo > ${CLEAR_TARGET}'"
+    [ -n "${RESOLV_TARGET}" ] && "${SCRIPT_DIR}/ssh" "${n}" "sudo bash -c 'cat > ${RESOLV_TARGET}'" <<EOF
 options rotate
 options timeout:1
 ${ns4}
@@ -20,4 +35,4 @@ ${ns6}
 EOF
 done
 
-NODES="${1:-${NODES}}" call_ssh_nodes "sudo resolvconf -u"
+call_ssh_nodes "sudo resolvconf -u"

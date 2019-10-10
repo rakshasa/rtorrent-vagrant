@@ -25,22 +25,6 @@ test_begin() {
   "${SCRIPT_DIR}/stop-rtorrent" || :
 }
 
-test_compile() {
-  local options="${1}"
-
-  echo "compiling with options '${options}'"
-
-  if ! eval "BUILD_CONFIGURE=yes ${options} \"${SCRIPT_DIR}/build-current\"" >&${compile} 2>&1; then
-    test_print_header "compilation logs"
-    #exec ${compile}>&-
-    tail -n100 "${LOG_FILENAMES['compile']}"
-    test_print_header "compilation failed"
-    return 1
-  fi
-
-  echo "finished compiling"
-}
-
 test_has_features() {
   local features="${@}"
   echo "checking if build has features: ${features}"
@@ -69,4 +53,27 @@ test_print_results() {
     echo -e "${color}${TEST_NAMES[i]}:\t ${TEST_RESULTS[i]}${NC}"
   done
   echo
+}
+
+test_compile() {
+  local options="${1}"
+
+  echo "compiling with options '${options}'"
+
+  if ! eval "BUILD_CONFIGURE=yes ${options} \"${SCRIPT_DIR}/build-current\"" >&${compile} 2>&1; then
+    test_print_header "compilation logs"
+    #exec ${compile}>&-
+    tail -n100 "${LOG_FILENAMES['compile']}"
+    test_print_header "compilation failed"
+    return 1
+  fi
+
+  echo "finished compiling"
+}
+
+test_dns_resolver() {
+  local resolver="${1:?Missing resolver argument.}"
+
+  echo "using resolver '${resolver}'"
+  "${SCRIPT_DIR}/ip-dns-resolver" "${resolver}"
 }

@@ -4,4 +4,4 @@
 
 source "$(dirname ${BASH_SOURCE[0]})/include/init"
 
-find "${DATA_DIR}/usr_local/include/torrent/" -name \*.h -exec cat {} \; | md5
+find "${DATA_DIR}/usr_local/include/torrent/" -name \*.h -exec cat {} \; | md5sum

@@ -11,9 +11,13 @@ source "$(dirname ${BASH_SOURCE[0]})/include/test-unit"
 test_dns() {
   test_unit "default"
   test_unit "dns_default"
+  test_dns_resolver builder
+  test_unit "dns_default"
+  test_dns_resolver default
 }
 
 test_init "test-feature-dns"
+test_dns_resolver default
 
 test_begin "Default"
 test_compile ""
