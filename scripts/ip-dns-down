@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-"${SCRIPT_DIR}/ssh" builder "sudo service maradns stop"
+call_ssh_node builder sudo service maradns stop

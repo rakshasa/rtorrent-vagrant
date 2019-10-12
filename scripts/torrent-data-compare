@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 node="${1:?Node or local not specified.}"
 remote_path="/data/torrents/"
@@ -17,12 +17,12 @@ echo
 for i in ${local_wc}; do echo "local:  ${i}"; done
 echo
 
-if [ -z "${remote_wc}" ] || [ -z "${local_wc}" ]; then
+if [[ -z "${remote_wc}" ]] || [[ -z "${local_wc}" ]]; then
     echo "result: missing"
     exit 1
 fi    
 
-if [ "${remote_wc}" = "${local_wc}" ]; then
+if [[ "${remote_wc}" = "${local_wc}" ]]; then
     echo "result: matching"
     exit 0
 else

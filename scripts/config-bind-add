@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 NODE=${1:?Target node not given.}
 BIND_NAME=${2:?Bind name not given.}
@@ -10,7 +10,7 @@ OPTIONS=""
 
 case "${NODE_IP}" in
     ipv[46].[12])
-        NODE_IP=`cat ${DATA_DIR}/${NODE}/metadata/${NODE_IP}.address`
+        NODE_IP="$(<"${DATA_DIR}/${NODE}/metadata/${NODE_IP}.address")"
         ;;
 esac
 

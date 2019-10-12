@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/call"
 
 call_rpc_nodes network.bind

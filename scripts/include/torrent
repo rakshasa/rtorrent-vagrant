@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-SEED_NODE=${SEED_NODE:-node1}
+SEED_NODE="${SEED_NODE:-node1}"
 
-DATA_FILENAME=${DATA_FILENAME:?no filename provided}
+DATA_FILENAME="${DATA_FILENAME:?no filename provided}"
 
 DATA_VM_PATH="/data/shared/torrents/${DATA_FILENAME}"
 DATA_HOST_PATH="${DATA_DIR}/shared/torrents/${DATA_FILENAME}"

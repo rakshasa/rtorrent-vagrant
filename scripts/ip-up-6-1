@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-NODES="${1:-${NODES}}" call_ssh_nodes enable-ipv6-1
+export NODES=("${@}")
+
+call_ssh_parallel enable-ipv6-1

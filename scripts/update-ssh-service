@@ -3,6 +3,4 @@
 source "${BASH_SOURCE[0]%/*}/include/init"
 source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-export NODES=("${@}")
-
-call_ssh_parallel disable-ipv4-2
+call_ssh_parallel sudo restart ssh

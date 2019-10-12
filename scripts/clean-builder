@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ! -d './data/builder/' ]; then
+if [[ ! -d './data/builder/' ]]; then
     echo "Could not find './data/builder/', success"
     exit 0
 fi
@@ -8,7 +8,7 @@ fi
 DELETE_FILES=($(ls ./data/builder/))
 
 for i in ${!DELETE_FILES[@]}; do
-    if [ "${DELETE_FILES[$i]}" == "libtorrent" ] || [ "${DELETE_FILES[$i]}" == "rtorrent" ] || [ "${DELETE_FILES[$i]}" == "opentracker" ]; then
+    if [[ "${DELETE_FILES[$i]}" == "libtorrent" ]] || [[ "${DELETE_FILES[$i]}" == "rtorrent" ]] || [[ "${DELETE_FILES[$i]}" == "opentracker" ]]; then
         unset DELETE_FILES[$i]
     fi 
 done

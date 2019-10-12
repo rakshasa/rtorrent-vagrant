@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname ${BASH_SOURCE[0]})/include/init"
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 has_feature() {
   local feature="${1:?Missing feature name.}"

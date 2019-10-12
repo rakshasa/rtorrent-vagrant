@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source "`dirname ${BASH_SOURCE[0]}`/include/init"
+source "${BASH_SOURCE[0]%/*}/include/init"
 
-OLD_HASH="$(cat ${DATA_DIR}/current-state-rtorrent 2> /dev/null)"
-CURRENT_HASH="$(${SCRIPT_DIR}/build-state-rtorrent 2> /dev/null)"
+OLD_HASH="$(<"${DATA_DIR}/current-state-rtorrent")"
+CURRENT_HASH="$("${SCRIPT_DIR}/build-state-rtorrent" 2> /dev/null)"
 
-[ -n "${OLD_HASH}" ] && [ "${OLD_HASH}" == "${CURRENT_HASH}" ]
+[[ -n "${OLD_HASH}" ]] && [[ "${OLD_HASH}" == "${CURRENT_HASH}" ]]

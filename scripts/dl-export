@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 dest_dir="${1:?Destination directory not specified.}"
 wildcard="${2:?Torrent wildcard name not specified.}"
 
 node="node-dl"
 
-if [ -n "${3}" ]; then
+if [[ -n "${3}" ]]; then
     echo "Excessive number of arguments."
     exit 1
 fi
@@ -15,7 +15,7 @@ fi
 IFS=$'\n'
 
 for torrent_name in `${SCRIPT_DIR}/torrent-data-root ${node} /data/torrents "${wildcard}"`; do
-    [ -z "${torrent_name}" ] && continue
+    [[ -z "${torrent_name}" ]] && continue
 
     if "${SCRIPT_DIR}/torrent-data-compare" ${node} "${dest_dir}" "${torrent_name}" > /dev/null; then
         echo "skipping - ${torrent_name}"

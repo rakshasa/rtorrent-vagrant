@@ -22,6 +22,8 @@ init:
 
 	./scripts/build-set-config "$(USE_CONFIG)"
 	vagrant up
+	./scripts/update-current-nodes
+	./scripts/update-ssh-service
 	./scripts/update-ssh-config
 
 	./scripts/build-git-clone
@@ -30,7 +32,7 @@ init:
 	./scripts/build-tags
 	./scripts/config-clear
 	./scripts/ip-dns-config default
-	./scripts/ip-dns-resolver
+	./scripts/ip-dns-resolver default
 	./scripts/start-rtorrent
 
 feature-bind:

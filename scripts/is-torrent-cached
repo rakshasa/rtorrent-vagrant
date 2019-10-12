@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 name="${1:?Missing torrent name argument.}"
 
-[ -f "${TORRENT_SHARED_DIR}/${name}" ] && [ -f "${TORRENT_SHARED_DIR}/${name}.torrent" ]
+[[ -f "${TORRENT_SHARED_DIR}/${name}" ]] && [[ -f "${TORRENT_SHARED_DIR}/${name}.torrent" ]]

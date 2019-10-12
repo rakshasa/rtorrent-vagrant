@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/call"
 
 torrent_name="${1:?Torrent name not specified.}"
 dst_dir="${2:?Destination directory not specified.}"

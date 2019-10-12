@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-set -e
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-source "$(dirname ${BASH_SOURCE[0]})/include/call"
-
-"${SCRIPT_DIR}/ssh" builder 'cd /data/local/libtorrent && make tags'
-"${SCRIPT_DIR}/ssh" builder 'cd /data/local/rtorrent && make tags'
+call_ssh_node builder 'cd /data/local/libtorrent && make tags'
+call_ssh_node builder 'cd /data/local/rtorrent && make tags'
 
 IFS=$'\n'
 

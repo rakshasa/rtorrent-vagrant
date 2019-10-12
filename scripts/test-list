@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
-
 echo default
 echo bind_port_simple
 echo bind_port_randomize

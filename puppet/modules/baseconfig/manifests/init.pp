@@ -24,9 +24,28 @@ class baseconfig {
 
   file { '/etc/environment':
     ensure => file,
-    owner  => 'root',
-    group  => 'root',
     source => 'puppet:///modules/baseconfig/environment',
   }
 
+  file { '/etc/ssh/sshd_config':
+    ensure => file,
+    source => 'puppet:///modules/baseconfig/sshd_config',
+  }
+
+  file { '/etc/pam.d/common-session':
+    ensure => file,
+    source => 'puppet:///modules/baseconfig/pam.common-session',
+  }
+
+  file { '/home/vagrant/.bashrc':
+    ensure => file,
+    owner => "vagrant",
+    group => "vagrant",
+    source => 'puppet:///modules/baseconfig/bashrc',
+  }
+
+  file { '/home/vagrant/.hushlogin':
+    ensure => present,
+    content => '',
+  }
 }

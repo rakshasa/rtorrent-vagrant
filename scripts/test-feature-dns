@@ -5,8 +5,8 @@
 #
 # Improve test naming in the results.
 
-source "$(dirname ${BASH_SOURCE[0]})/include/init"
-source "$(dirname ${BASH_SOURCE[0]})/include/test-unit"
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/test-unit"
 
 test_dns() {
   test_unit "default"
@@ -21,7 +21,7 @@ test_dns_resolver default
 
 test_begin "Default"
 test_compile ""
-test_has_features with-udns
+test_has_features without-udns
 test_dns
 
 test_begin "Without UDNS"
@@ -30,7 +30,7 @@ test_has_features without-udns
 test_dns
 
 test_begin "With UDNS"
-test_compile "WITHOUT_UDNS=no"
+test_compile "WITH_UDNS=no"
 test_has_features with-udns
 test_dns
 

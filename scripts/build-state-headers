@@ -2,6 +2,6 @@
 #
 # Hash of all headers installed and used by nodes.
 
-source "$(dirname ${BASH_SOURCE[0]})/include/init"
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 find "${DATA_DIR}/usr_local/include/torrent/" -name \*.h -exec cat {} \; | md5sum

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+CLEAR_TARGET="/etc/resolvconf/resolv.conf.d/${1:?Missing clear file target.}"
+RESOLV_TARGET="/etc/resolvconf/resolv.conf.d/${2:?Missing resolv file target.}"
+
+NAMESERVER_IF1V4="${3:-}"
+NAMESERVER_IF1V6="${4:-}"
+
+[[ -n "${NAMESERVER_IF1V4}" ]] && [[ -f "/data/local/metadata/ipv4.1.up" ]] && ns4="nameserver ${NAMESERVER_IF1V4}" || ns4=
+[[ -n "${NAMESERVER_IF1V6}" ]] && [[ -f "/data/local/metadata/ipv6.1.up" ]] && ns6="nameserver ${NAMESERVER_IF1V6}" || ns6=
+
+[[ -n "${CLEAR_TARGET}" ]] && sudo bash -c "echo > '${CLEAR_TARGET}'"
+[[ -n "${RESOLV_TARGET}" ]] && sudo bash -c "cat > '${RESOLV_TARGET}'" <<EOF
+#options rotate
+#options timeout:1
+${ns4}
+${ns6}
+EOF
+
+sudo resolvconf -u

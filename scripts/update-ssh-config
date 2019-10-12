@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 vagrant ssh-config > "${DATA_DIR}/ssh-config"

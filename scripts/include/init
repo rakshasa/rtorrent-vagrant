@@ -4,9 +4,20 @@ set -e
 
 DEBUG=${DEBUG:-0}
 
-SCRIPT_DIR="$(dirname $(dirname ${BASH_SOURCE[0]}))"
-ROOT_DIR="$(dirname ${SCRIPT_DIR})"
+case "$OSTYPE" in
+  cygwin* | msys* | win*)
+    ENABLE_SOCKETS=no
+    ;;
+  bsd* | darwin* | linux* | solaris* | *)
+    ENABLE_SOCKETS=yes
+    ;;
+esac
+
+TMP_SCRIPT_DIR="${BASH_SOURCE[0]%/*}"
+ROOT_DIR="$(dirname "${TMP_SCRIPT_DIR[0]%/*}")"
 DATA_DIR="${ROOT_DIR}/data"
+SCRIPT_DIR="${ROOT_DIR}/scripts"
+SOCKET_DIR="${ROOT_DIR}/data/sockets"
 TEST_DIR="${ROOT_DIR}/test"
 
 RPC_CLIENT="${SCRIPT_DIR}/xmlrpc2scgi.py"
@@ -24,21 +35,59 @@ NC='\033[0m'
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 
+shopt -u progcomp
 declare -A LOG_FILENAMES
 
-if [ -z "${NODES}" ]; then
-  NODES="$((cd ${DATA_DIR} && ls -d node* || :) 2> /dev/null)"
-fi
+[[ -f "${DATA_DIR}/current-nodes" ]] && source "${DATA_DIR}/current-nodes"
 
 call_quiet() {
-  local oldstate="$(shopt -op errexit)"; set -e
+  set +e
   local command="${1:?Missing call quiet command argument.}"
-  local call_log="$(${command} 2>&1)"
-  eval "${oldstate}"
+  local args=("${@:2}")
+  local call_log="$("${command}" "${args}" 2>&1)"
+  local call_result=$?
+  set -e
 
-  [ ${call_result} -eq 0 ] || echo "${call_log}"
+  [[ ${call_result} -eq 0 ]] || echo "${call_log}"
 
   return ${call_result}
+}
+
+wait_for_nodes() {
+    SECONDS=0
+
+    local timeout="${WAIT_TIMEOUT:-40}"
+    local nodes="${WAIT_NODES:-${NODES}}"
+    local method="${1:?Missing wait node method.}"
+    shift
+
+    #echo "wait_for_node: ${remaining} calling '${method}' $i $@"
+
+    while true; do
+        local check="${nodes[@]}"
+        local failed=
+
+        for node in ${check[@]}; do
+            if "${SCRIPT_DIR}/${method}" "${node}" $@ &> /dev/null; then
+                [[ "${DEBUG}" == "1" ]] && >&2 echo "wait_for_nodes done: ${SCRIPT_DIR}/${method} ${node} $@"
+            else
+                [[ "${DEBUG}" == "1" ]] && >&2 echo "wait_for_nodes failed: ${SCRIPT_DIR}/${method} ${node} $@"
+                failed+="${node} "
+            fi
+        done
+
+        if [[ -z "${failed[@]}" ]]; then
+            return 0
+        fi
+
+        if (( SECONDS > timeout )); then
+            >&2 echo "could not verify ${method} for nodes: ${failed[@]}"
+            >&2 echo "failed ${method} with arguments: $@"
+            return 1
+        fi
+
+        sleep 0.5
+    done
 }
 
 init_logging() {

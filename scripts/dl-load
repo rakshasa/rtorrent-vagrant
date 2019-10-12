@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/call"
 
 URI="${1:?URI not given.}"
 CALL_NODE="${NODE:-node-dl}"

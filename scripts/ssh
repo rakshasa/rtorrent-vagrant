@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-if ! ssh -F "${DATA_DIR}/ssh-config" $@; then
-  echo "ssh failed to connect to '$1'" >&2
-  exit 1
-fi
+args=("${@}")
+
+call_ssh_node "${args[@]}"

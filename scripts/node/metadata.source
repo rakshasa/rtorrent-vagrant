@@ -3,18 +3,18 @@ METADATA="/data/local/metadata"
 PRIVATE_DEV_1="eth1"
 PRIVATE_DEV_2="eth2"
 
-if [ -f "${METADATA}/ipv4.1.address" ]; then
+if [[ -f "${METADATA}/ipv4.1.address" ]]; then
    METADATA_PRIVATE_IPV4_1="`cat ${METADATA}/ipv4.1.address`/`cat ${METADATA}/ipv4.1.prefix`"
 fi
 
-if [ -f "${METADATA}/ipv6.1.address" ]; then
+if [[ -f "${METADATA}/ipv6.1.address" ]]; then
    METADATA_PRIVATE_IPV6_1="`cat ${METADATA}/ipv6.1.address`/`cat ${METADATA}/ipv6.1.prefix`"
 fi
 
-if [ -f "${METADATA}/ipv4.2.address" ]; then
+if [[ -f "${METADATA}/ipv4.2.address" ]]; then
    METADATA_PRIVATE_IPV4_2="`cat ${METADATA}/ipv4.2.address`/`cat ${METADATA}/ipv4.2.prefix`"
 fi
 
-if [ -f "${METADATA}/ipv6.2.address" ]; then
+if [[ -f "${METADATA}/ipv6.2.address" ]]; then
    METADATA_PRIVATE_IPV6_2="`cat ${METADATA}/ipv6.2.address`/`cat ${METADATA}/ipv6.2.prefix`"
 fi

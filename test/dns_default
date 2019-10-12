@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/call"
-source "`dirname ${BASH_SOURCE[0]}`/../scripts/include/test"
+source "${BASH_SOURCE[0]%/*}/../scripts/include/init"
+source "${BASH_SOURCE[0]%/*}/../scripts/include/test"
 
 echo "running dns_default"
+
+set -x
 
 clean_all
 setup if1v4v6_if2p1_dns

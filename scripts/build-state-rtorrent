@@ -2,7 +2,7 @@
 #
 # Returns an empty string any state source is missing.
 
-source "`dirname ${BASH_SOURCE[0]}`/include/init"
-source "`dirname ${BASH_SOURCE[0]}`/include/repo"
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/repo"
 
 cat "${DATA_DIR}/current-rtorrent-conf" && repo_state_blob "${GIT_RTORRENT}" | md5sum

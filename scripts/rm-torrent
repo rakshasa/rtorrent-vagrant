@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-call_ssh_nodes_p "rm ${TORRENT_VM_DIR}/${1}"
+call_ssh_parallel rm "${TORRENT_VM_DIR}/${1}"
 
 rm "${TORRENT_SHARED_DIR}/${1}" &> /dev/null
 rm "${TORRENT_SHARED_DIR}/${1}.torrent" &> /dev/null

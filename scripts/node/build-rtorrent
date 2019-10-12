@@ -4,17 +4,17 @@ export CXX="${USE_CXX:?No C++ compiler specified.}"
 export CXXFLAGS="-Wno-error=strict-aliasing"
 export MAKEFLAGS="-j 8"
 
-if [ "${SKIP_LIBTORRENT}" != "yes" ]; then
+if [[ "${SKIP_LIBTORRENT}" != "yes" ]]; then
     cd /data/local/libtorrent
-    if [ ! -f "Makefile" ] || [ "${BUILD_CONFIGURE}" == "yes" ]; then
+    if [[ ! -f "Makefile" ]] || [[ "${BUILD_CONFIGURE}" == "yes" ]]; then
         ./autogen.sh && ./configure ${LIBTORRENT_CONF} || exit 1
     fi
     make && sudo make install || exit 1
 fi
 
-if [ "${SKIP_RTORRENT}" != "yes" ]; then
+if [[ "${SKIP_RTORRENT}" != "yes" ]]; then
     cd /data/local/rtorrent
-    if [ ! -f "Makefile" ] || [ "${BUILD_CONFIGURE}" == "yes" ]; then
+    if [[ ! -f "Makefile" ]] || [[ "${BUILD_CONFIGURE}" == "yes" ]]; then
         ./autogen.sh && ./configure ${RTORRENT_CONF} || exit 1
     fi
     make && sudo make install || exit 1

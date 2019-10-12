@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE[0]%/*}/include/init"
+
+nodes="$(( cd "${DATA_DIR}" && ls -d node* || :) 2> /dev/null)"
+
+echo "NODES=(
+${nodes[@]}
+)" > "${DATA_DIR}/current-nodes"

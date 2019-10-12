@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
-source `dirname ${BASH_SOURCE[0]}`/include/config
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/config"
 
 config_add "${1}" 'dht.mode.set = on'
 export CONFIG_NO_SKIP="yes"

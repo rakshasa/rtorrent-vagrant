@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
+set -e
+
 RTORRENT_EXEC="rtorrent -n -o try_import=/data/shared/config/rtorrent.rc,system.daemon.set=true"
 RTORRENT_LOG="/data/local/log"
 
 LOG_DATE=`date -u '+%F_%H-%M-%S'`
 
-for i in ${RTORRENT_LOG}/*.log; do
-    mv ${i} ${i/\/log\//\/log\/old\/}.${LOG_DATE} || : &> /dev/null
+for log_file in ${RTORRENT_LOG}/*.log; do
+  mv "${log_file}" "${log_file/\/log\//\/log\/old\/}.${LOG_DATE}" &> /dev/null || :
 done
 
 if ls "${RTORRENT_LOG}/*.log" &> /dev/null; then
@@ -15,9 +17,7 @@ if ls "${RTORRENT_LOG}/*.log" &> /dev/null; then
 fi
 
 if [[ "$DEBUG" == "yes" ]]; then
-    gdb --args ${RTORRENT_EXEC}
+  gdb --args ${RTORRENT_EXEC}
 else
-    nohup ${RTORRENT_EXEC} > ${RTORRENT_LOG}/daemon.log &
+  nohup ${RTORRENT_EXEC} > "${RTORRENT_LOG}/daemon.log" &
 fi
-
-sleep 1

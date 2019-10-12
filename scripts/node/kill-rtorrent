@@ -2,7 +2,7 @@
 
 RTORRENT_LOCKFILE="/data/local/session/rtorrent.lock"
 
-if [ ! -e $RTORRENT_LOCKFILE ]; then
+if [[ ! -e $RTORRENT_LOCKFILE ]]; then
     exit 0
 fi
 

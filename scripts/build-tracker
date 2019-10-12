@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 
-source "$(dirname ${BASH_SOURCE[0]})/include/call"
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
 echo "tracker stopping"
-"${SCRIPT_DIR}/ssh" builder "sudo service opentracker stop" &> /dev/null || :
+call_ssh_node builder sudo service opentracker stop &> /dev/null || :
 echo "tracker building"
-"${SCRIPT_DIR}/ssh" builder "IPV4_ONLY=${IPV4_ONLY} build-tracker"
+call_ssh_node builder IPV4_ONLY=${IPV4_ONLY} build-tracker
 echo "tracker starting"
-"${SCRIPT_DIR}/ssh" builder "sudo service opentracker start"
+call_ssh_node builder sudo service opentracker start
 echo "tracker started"

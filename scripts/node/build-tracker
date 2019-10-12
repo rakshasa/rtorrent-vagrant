@@ -3,7 +3,7 @@
 cleanup() {
     rc=$?
 
-    if [ ${rc} -eq 0 ]; then
+    if [[ ${rc} -eq 0 ]]; then
         echo "Done building OpenTracker."
     else
         echo "Failed building OpenTracker."
@@ -14,13 +14,13 @@ cleanup() {
 
 WANTED="default"
 
-if [ "${IPV4_ONLY}" != yes ]; then
+if [[ "${IPV4_ONLY}" != yes ]]; then
     export FEATURES="-DWANT_V6"
 else
     WANTED="${WANTED}_v4"
 fi
 
-if [ ${WANTED} = "$(cat /data/local/metadata/tracker.info)" ]; then
+if [[ ${WANTED} = "$(</data/local/metadata/tracker.info)" ]]; then
     echo "Skipping building OpenTracker, already built: ${WANTED}"
     exit 0
 fi

@@ -20,35 +20,35 @@ USE_IPV6=${USE_IPV6:=no}
 USE_HTTP_TRACKER=${USE_HTTP_TRACKER:=yes}
 USE_UDP_TRACKER=${USE_UDP_TRACKER:=no}
 
-if [ "${USE_HTTP_TRACKER}" == "yes" ]; then
-    if [ "${USE_IPV4}" == "yes" ]; then
-        [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",http://${IPV4_1_TRACKER}:6969/announce"
-        [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",http://${IPV4_2_TRACKER}:6969/announce"
-        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v4:6969/announce"
-        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v4:6969/announce"
+if [[ "${USE_HTTP_TRACKER}" == "yes" ]]; then
+    if [[ "${USE_IPV4}" == "yes" ]]; then
+        [[ "${USE_IF1}" == "yes" ]] && ANNOUNCE_URLS+=",http://${IPV4_1_TRACKER}:6969/announce"
+        [[ "${USE_IF2}" == "yes" ]] && ANNOUNCE_URLS+=",http://${IPV4_2_TRACKER}:6969/announce"
+        [[ "${USE_IF1}" == "dns" ]] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v4:6969/announce"
+        [[ "${USE_IF2}" == "dns" ]] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v4:6969/announce"
     fi
 
-    if [ "$USE_IPV6" == "yes" ]; then
-        [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",http://[${IPV6_1_TRACKER}]:6969/announce"
-        [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",http://[${IPV6_2_TRACKER}]:6969/announce"
-        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v6:6969/announce"
-        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v6:6969/announce"
+    if [[ "$USE_IPV6" == "yes" ]]; then
+        [[ "${USE_IF1}" == "yes" ]] && ANNOUNCE_URLS+=",http://[${IPV6_1_TRACKER}]:6969/announce"
+        [[ "${USE_IF2}" == "yes" ]] && ANNOUNCE_URLS+=",http://[${IPV6_2_TRACKER}]:6969/announce"
+        [[ "${USE_IF1}" == "dns" ]] && ANNOUNCE_URLS+=",http://builder.rtorrent.if1v6:6969/announce"
+        [[ "${USE_IF2}" == "dns" ]] && ANNOUNCE_URLS+=",http://builder.rtorrent.if2v6:6969/announce"
     fi
 fi
 
-if [ "${USE_UDP_TRACKER}" == "yes" ]; then
-    if [ "${USE_IPV4}" == "yes" ]; then
-        [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",udp://${IPV4_1_TRACKER}:6969"
-        [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",udp://${IPV4_2_TRACKER}:6969"
-        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v4:6969"
-        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v4:6969"
+if [[ "${USE_UDP_TRACKER}" == "yes" ]]; then
+    if [[ "${USE_IPV4}" == "yes" ]]; then
+        [[ "${USE_IF1}" == "yes" ]] && ANNOUNCE_URLS+=",udp://${IPV4_1_TRACKER}:6969"
+        [[ "${USE_IF2}" == "yes" ]] && ANNOUNCE_URLS+=",udp://${IPV4_2_TRACKER}:6969"
+        [[ "${USE_IF1}" == "dns" ]] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v4:6969"
+        [[ "${USE_IF2}" == "dns" ]] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v4:6969"
     fi
 
-    if [ "${USE_IPV6}" == "yes" ]; then
-        [ "${USE_IF1}" == "yes" ] && ANNOUNCE_URLS+=",udp://[${IPV6_1_TRACKER}]:6969"
-        [ "${USE_IF2}" == "yes" ] && ANNOUNCE_URLS+=",udp://[${IPV6_2_TRACKER}]:6969"
-        [ "${USE_IF1}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v6:6969"
-        [ "${USE_IF2}" == "dns" ] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v6:6969"
+    if [[ "${USE_IPV6}" == "yes" ]]; then
+        [[ "${USE_IF1}" == "yes" ]] && ANNOUNCE_URLS+=",udp://[${IPV6_1_TRACKER}]:6969"
+        [[ "${USE_IF2}" == "yes" ]] && ANNOUNCE_URLS+=",udp://[${IPV6_2_TRACKER}]:6969"
+        [[ "${USE_IF1}" == "dns" ]] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if1v6:6969"
+        [[ "${USE_IF2}" == "dns" ]] && ANNOUNCE_URLS+=",udp://builder.rtorrent.if2v6:6969"
     fi
 fi
 

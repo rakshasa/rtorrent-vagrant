@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-call_ssh_nodes "sudo netstat -pn | grep rtorrent"
+call_ssh_sequential "sudo netstat -pn | grep rtorrent"

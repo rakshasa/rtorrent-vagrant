@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source "$(dirname ${BASH_SOURCE[0]})/init"
+source "${BASH_SOURCE[0]%/*}/init"
 
 call_ssh_nodes() {
     for node in ${NODES[@]}; do
@@ -29,7 +29,7 @@ call_ssh_nodes_s() {
 call_rpc() {
     FORWARD_PORT=`cat ${DATA_DIR}/${CALL_NODE:?Missing node argument.}/metadata/forward.5001`
 
-    if [ -z ${FORWARD_PORT} ]; then
+    if [[ -z ${FORWARD_PORT} ]]; then
         >&2 echo "Could not find forward port for ${CALL_NODE}"
         exit -1
     fi
@@ -37,8 +37,8 @@ call_rpc() {
     NODE_URL="scgi://localhost:${FORWARD_PORT}"
     CALL_CMD="${RPC_CLIENT} -s ${NODE_URL} $@"
 
-    [ "${DEBUG}" == "1" ] && >&2 echo "${CALL_CMD}"
-    [ "${RPC_DEBUG}" == "1" ] && >&2 ${CALL_CMD}
+    [[ "${DEBUG}" == "1" ]] && >&2 echo "${CALL_CMD}"
+    [[ "${RPC_DEBUG}" == "1" ]] && >&2 ${CALL_CMD}
 
     ${CALL_CMD}
 }
@@ -54,43 +54,6 @@ call_rpc_awk_nodes() {
     for CALL_NODE in ${NODES[@]}; do
         echo "${CALL_NODE}:"
         call_rpc $@ | awk -f "${SCRIPT_DIR}/include/${AWK_FILE}.awk"
-    done
-}
-
-wait_for_nodes() {
-    SECONDS=0
-
-    local timeout="${WAIT_TIMEOUT:-40}"
-    local nodes="${WAIT_NODES:-${NODES}}"
-    local method="${1:?Missing wait node method.}"
-    shift
-
-    #echo "wait_for_node: ${remaining} calling '${method}' $i $@"
-
-    while true; do
-        local check="${nodes[@]}"
-        local failed=
-
-        for node in ${check[@]}; do
-            if "${SCRIPT_DIR}/${method}" "${node}" $@ &> /dev/null; then
-                [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes done: ${SCRIPT_DIR}/${method} ${node} $@"
-            else
-                [ "${DEBUG}" == "1" ] && >&2 echo "wait_for_nodes failed: ${SCRIPT_DIR}/${method} ${node} $@"
-                failed+="${node} "
-            fi
-        done
-
-        if [ -z "${failed[@]}" ]; then
-            return 0
-        fi
-
-        if (( SECONDS > timeout )); then
-            >&2 echo "could not verify ${method} for nodes: ${failed[@]}"
-            >&2 echo "failed ${method} with arguments: $@"
-            return 1
-        fi
-
-        sleep 0.5
     done
 }
 

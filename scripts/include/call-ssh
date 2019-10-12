@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+# Doesn't handle multiple spaces, etc.
+
+# echo "ssh failed to connect to '$1'" >&2
+
+call_ssh_init_socker() {
+  local node="${1:?Missing node argument.}"
+  local socket_path="${SOCKET_DIR:?Missing socket directory setting.}/ssh.${node}"
+
+  [[ -s "${socket_path}" ]] && return
+  [[ -d "${SOCKET_DIR}" ]] || mkdir -p "${SOCKET_DIR}"
+
+  ssh -F "${DATA_DIR}/ssh-config" -M -S "${socket_path}" -o ControlPersist=1h "${node}" exit
+}
+
+call_ssh_node() {
+  local node="${1:?Missing node argument.}"
+  local cmd="${2:?Missing command argument.}"
+  local socket_path="${SOCKET_DIR:?Missing socket directory setting.}/ssh.${node}"
+  local args=("${@:3}")
+
+  if [[ "${ENABLE_SOCKETS}" == "yes" ]]; then
+    call_ssh_init_socker "${node}"
+    ssh -F "${DATA_DIR}/ssh-config" -S "${socket_path}" "${node}" "${cmd}" "${args[@]}"
+  else
+    ssh -F "${DATA_DIR}/ssh-config" "${node}" "${cmd}" "${args[@]}"
+  fi
+}
+
+call_ssh_sequential() {
+  local cmd="${1:?Missing command argument.}"
+  local args=("${@:2}")
+
+  for node in "${NODES[@]}"; do
+    call_ssh_node "${node}" "${cmd}" "${args[@]}"
+  done
+}
+
+call_ssh_parallel() {
+  local cmd="${1:?Missing command argument.}"
+  local args=("${@:2}")
+  local pids=()
+
+  for node in "${NODES[@]}"; do
+    call_ssh_node "${node}" "${cmd}" "${args[@]}" &
+    pids+=(${!})
+  done
+
+  wait ${pids[@]}
+}

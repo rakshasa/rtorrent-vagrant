@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/call"
 
 find "${TORRENT_SHARED_DIR}" -name \*.torrent -exec basename {} \; | sed -e 's/\.torrent$//'

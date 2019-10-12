@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
-
 echo test_{h,u}{4,6}_{dns,if}{1,2}

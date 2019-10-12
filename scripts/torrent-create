@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-"${SCRIPT_DIR}/ssh" builder "USE_HTTP_TRACKER=${USE_HTTP_TRACKER} USE_UDP_TRACKER=${USE_UDP_TRACKER} USE_IPV4=${USE_IPV4} USE_IPV6=${USE_IPV6} USE_IF1=${USE_IF1} USE_IF2=${USE_IF2} make-torrent" $@ || exit -1
+call_ssh_node builder \
+              USE_HTTP_TRACKER=${USE_HTTP_TRACKER} USE_UDP_TRACKER=${USE_UDP_TRACKER} \
+              USE_IPV4=${USE_IPV4} USE_IPV6=${USE_IPV6} USE_IF1=${USE_IF1} USE_IF2=${USE_IF2} \
+              make-torrent $@

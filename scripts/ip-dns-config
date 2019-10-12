@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-source `dirname ${BASH_SOURCE[0]}`/include/call
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
 CONFIG_NAME="${1:?Missing config name argument.}"
 
-"${SCRIPT_DIR}/ssh" builder "sudo rm /etc/maradns/mararc"
-"${SCRIPT_DIR}/ssh" builder "sudo ln -s '/etc/maradns/mararc.${CONFIG_NAME}' /etc/maradns/mararc"
-"${SCRIPT_DIR}/ssh" builder "sudo service maradns restart"
+call_ssh_node builder sudo rm /etc/maradns/mararc
+call_ssh_node builder sudo ln -s "/etc/maradns/mararc.${CONFIG_NAME}" /etc/maradns/mararc
+call_ssh_node builder sudo service maradns restart
 
-call_ssh_nodes "sudo service dns-clean restart"
-#call_ssh_nodes "sudo /etc/init.d/networking force-reload"
+call_ssh_parallel sudo service dns-clean restart

@@ -15,7 +15,7 @@ ip -6 addr show dev ${PRIVATE_DEV_2} permanent primary | sed -n 's_^.*inet6 \([0
 rm "${METADATA}"/ipv{4,6}.{1,2}.{up,down} &> /dev/null
 
 for prefix in "${METADATA}"/ipv{4,6}.{1,2}; do
-    if [ -n "$(cat ${prefix}.address)" ]; then
+    if [[ -n "$(<"${prefix}.address")" ]]; then
         touch "${prefix}.up"
     else
         touch "${prefix}.down"
