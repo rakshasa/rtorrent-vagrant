@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+call_rpc_node() {
+  local node="${1:?Missing node argument.}"
+  local cmd="${2:?Missing command argument.}"
+  local args=("${@:3}")
+
+  # Include this in current-nodes.
+  local forward_port=`cat ${DATA_DIR}/${node:?Missing node argument.}/metadata/forward.5001`
+
+  if [[ -z "${forward_port}" ]]; then
+    >&2 echo "Could not find forward port for ${CALL_NODE}"
+    exit -1
+  fi
+
+  "${RPC_CLIENT}" -s "scgi://localhost:${forward_port}" "${cmd}" "${args[@]}"
+}
+
+call_rpc_sequential() {
+  exit 111
+}
+
+call_rpc_parallel() {
+  exit 111
+}

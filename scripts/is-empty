@@ -2,9 +2,8 @@
 
 source "${BASH_SOURCE[0]%/*}/include/call"
 
-CALL_NODE=${1:?Target node not given.}
-
-RESULT=`call_rpc d.multicall2 s/ main d.hash=`
+CALL_NODE="${1:?Target node not given.}"
+RESULT="$(call_rpc d.multicall2 s/ main d.hash=)"
 
 if [[ -z "${RESULT}" ]]; then
     [[ "${DEBUG}" == "1" ]] && >&2 echo "is-empty (true): '${RESULT}'"

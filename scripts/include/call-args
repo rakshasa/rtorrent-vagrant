@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+ARG_ALL=false
+ARG_WAIT=
+
+# Define array of options, source the include file.
+while [[ -n "${1}" ]]; do
+  case "${1}" in
+    --all)
+      shift
+      ARG_ALL=true
+      ;;
+    --wait)
+      shift
+      [[ -z "${1##*[!0-9]*}" ]] && (echo "Not an integer."; exit 1)
+      ARG_WAIT="${1}"
+      shift
+      ;;
+    *)
+      if [[ -z "${1##-*}" ]]; then
+        echo "unknown parameter: ${1}" 2> /dev/null
+        exit 1
+      fi
+
+      break
+      ;;
+  esac
+done

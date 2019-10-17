@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+test_is_node() {
+  if ${ARG_ALL}; then
+    TEST_IS_WAIT="${ARG_WAIT}" test_is_node_all "${@}"
+  else
+    TEST_IS_WAIT="${ARG_WAIT}" test_is_node_single "${@}"
+  fi
+}
+
+test_is_node_single() {
+  SECONDS=0
+
+  while ! test_is_node_check "${@}" ; do
+    [[ -z "${TEST_IS_WAIT}" ]] && return 1
+    (( SECONDS >= TEST_IS_WAIT )) && return 1
+    sleep 0.2
+  done
+}
+
+# Test doesn't wait for others sub-processes to complete once it
+# receives a negative result.
+test_is_node_all() {
+  local pids=()
+
+  for node in "${NODES[@]}"; do
+    TEST_IS_WAIT="${TEST_IS_WAIT}" test_is_node_single "${node}" "${@}" &
+    pids+=(${!})
+  done
+
+  while true; do
+    set +e
+    wait -n ${pids[@]}
+    local result=${?}
+    set -e
+
+    # Wait return 127 if all pids are done or not sub-processes.
+    [[ ${result} == 127 ]] && return
+    [[ ${result} != 0 ]] && return ${result}
+  done
+}

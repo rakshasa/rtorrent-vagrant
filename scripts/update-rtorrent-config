@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
-source "${BASH_SOURCE[0]%/*}/include/call"
-
-set -e
+source "${BASH_SOURCE[0]%/*}/include/init"
 
 for CALL_NODE in ${NODES[@]}; do
     "${SCRIPT_DIR}/scp" -F "${DATA_DIR}/ssh-config" "${ROOT_DIR}/puppet/modules/client/files/rtorrent.rc" "${CALL_NODE}:"
 done
 
-call_ssh_nodes sudo mv ./rtorrent.rc /etc/rtorrent.rc
+call_ssh_parallel sudo mv ./rtorrent.rc /etc/rtorrent.rc

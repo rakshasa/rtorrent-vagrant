@@ -2,16 +2,10 @@
 
 source "${BASH_SOURCE[0]%/*}/include/call"
 
-set -x
-
 CALL_NODE="${1:?Target node not given.}"
 TORRENT_NAME="${2:?Torrent name not given.}"
 
 INFO_HASH_RET="$(${SCRIPT_DIR}/torrent-info-hash "${CALL_NODE}" "${TORRENT_NAME}")"
 INFO_HASH="${INFO_HASH_RET:?Info hash not found.}"
 
-if [[ "`call_rpc d.complete \"s/${INFO_HASH}\"`" != "1" ]]; then
-    exit 1
-else
-    exit 0
-fi
+[[ "$(call_rpc d.complete s/${INFO_HASH})" == "1" ]]

@@ -47,5 +47,14 @@ call_ssh_parallel() {
     pids+=(${!})
   done
 
-  wait ${pids[@]}
+  while true; do
+    set +e
+    wait -n ${pids[@]}
+    local result=${?}
+    set -e
+
+    # Wait return 127 if all pids are done or not sub-processes.
+    [[ ${result} == 127 ]] && return
+    [[ ${result} != 0 ]] && return ${result}
+  done
 }

@@ -8,7 +8,7 @@ source "${BASH_SOURCE[0]%/*}/include/call-test"
 test_is_node_check() {
   local node="${1:?Target node not given.}"
 
-  [[ -n "$(call_rpc_node "${node}" system.client_version)" ]]
+  [[ -z "$(call_rpc_node "${node}" system.client_version)" ]]
 }
 
 test_is_node "${@}"

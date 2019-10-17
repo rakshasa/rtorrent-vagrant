@@ -55,6 +55,8 @@ for name in $("${SCRIPT_DIR}/test-torrent-all"); do
   "${SCRIPT_DIR}/torrent-deactivate" "${name}" &> /dev/null || :
 done
 
+# wait for deactiva
+
 echo "test-create-all: create torrents"
 
 if [[ "${CREATE_IF1}" = "yes" ]]; then

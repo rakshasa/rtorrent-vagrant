@@ -60,10 +60,10 @@ test_compile() {
 
   echo "compiling with options '${options}'"
 
-  if ! eval "BUILD_CONFIGURE=yes ${options} \"${SCRIPT_DIR}/build-current\"" >&${compile} 2>&1; then
+  if ! eval "BUILD_CONFIGURE=yes ${options} '${SCRIPT_DIR}/build-current'" >&${compile} 2>&1; then
     test_print_header "compilation logs"
     #exec ${compile}>&-
-    tail -n100 "${LOG_FILENAMES['compile']}"
+    tail -n100 "${LOG_FILENAMES[compile]}"
     test_print_header "compilation failed"
     return 1
   fi

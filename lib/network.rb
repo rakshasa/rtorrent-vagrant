@@ -6,8 +6,8 @@ def configure_networks(node, config)
     interface[:ipv4].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
     interface[:ipv6].nil? && (raise Vagrant::Errors::ConfigInvalid.new)
 
-    # node.vm.network 'private_network', type: 'static', ip: private_network_ip(interface), virtualbox__intnet: interface[:network]
-    node.vm.network 'private_network', type: 'static', ip: private_network_ip(interface), virtualbox__hostonly: interface[:network]
+    node.vm.network 'private_network', type: 'static', ip: private_network_ip(interface), virtualbox__intnet: interface[:network]
+    # node.vm.network 'private_network', type: 'static', ip: private_network_ip(interface), virtualbox__hostonly: interface[:network]
 
     node.trigger.after :up do
       if enable_ipv4?(interface)

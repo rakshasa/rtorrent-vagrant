@@ -15,7 +15,7 @@ test_is_node_check() {
     for output_name in "${output[@]}"; do
       [[ "${output_name}" =~ ^${match_name}$ ]] && match_found="${match_name}"
     done
-    [[ -n "${match_found}" ]] || return 1
+    [[ -z "${match_found}" ]] || return 1
   done
 }
 

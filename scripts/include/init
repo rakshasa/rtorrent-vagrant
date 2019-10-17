@@ -53,6 +53,7 @@ call_quiet() {
   return ${call_result}
 }
 
+# DEPRECATE: Replace with parallel method.
 wait_for_nodes() {
     SECONDS=0
 
