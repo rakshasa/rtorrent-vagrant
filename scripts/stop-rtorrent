@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-source "${BASH_SOURCE[0]%/*}/include/call"
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-call_ssh_nodes_p "stop-rtorrent"
+call_ssh_parallel "stop-rtorrent"

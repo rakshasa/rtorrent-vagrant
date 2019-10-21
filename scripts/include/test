@@ -40,6 +40,14 @@ clean_all() {
   "${SCRIPT_DIR}/stop-rtorrent"; sleep 5
   "${SCRIPT_DIR}/config-clear"
 
+  # Make this work with stopped nodes.
+
+  # rename is-client-empty, check session dir (no need to check
+  # is-inactive+empty?) might need to as we can delete session files
+  # yet client still has torrents active
+
+  # TODO: --wait-completed, error if timeout echo error
+
   "${SCRIPT_DIR}/test-delete-all"; sleep 1
   WAIT_TIMEOUT=20 wait_for_nodes is-empty
 
