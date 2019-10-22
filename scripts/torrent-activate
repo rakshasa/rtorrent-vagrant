@@ -1,14 +1,11 @@
 #!/usr/bin/env bash
 
-export DATA_FILENAME="${1:?Missing torrent filename.}"
-
 source "${BASH_SOURCE[0]%/*}/include/init"
 source "${BASH_SOURCE[0]%/*}/include/call-ssh"
-source "${BASH_SOURCE[0]%/*}/include/torrent"
 
-# TODO: Check that filename and torrent exists.
+TORRENT_FILENAME="${1:?Missing torrent filename.}"
 
-call_ssh_node "${SEED_NODE}" cp -r "${DATA_VM_PATH}" "${DATA_VM_TORRENTS}"
+call_ssh_node "${SEED_NODE}" cp -r "${TORRENT_VM_SHARED_DIR}/*" "${TORRENT_VM_DIR}"
 
-(rm "${DATA_HOST_WATCH}/${DATA_FILENAME}.torrent" || true) &> /dev/null
-ln "${DATA_HOST_PATH}.torrent" "${DATA_HOST_WATCH}"
+(rm "${DATA_HOST_WATCH}/${TORRENT_FILENAME}.torrent" || true) &> /dev/null
+cp "${TORRENT_SHARED_DIR}/${TORRENT_FILENAME}.torrent" "${DATA_HOST_WATCH}"

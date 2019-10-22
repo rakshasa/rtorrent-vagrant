@@ -28,6 +28,24 @@ call_ssh_node() {
   fi
 }
 
+call_ssh_interactive() {
+  if (( ${#} >= 3 )); then
+    call_ssh_node "${@}"
+    return
+  fi
+
+  local node="${1:?Missing node argument.}"
+  local socket_path="${SOCKET_DIR:?Missing socket directory setting.}/ssh.${node}"
+  local args=("${@:2}")
+
+  if [[ "${ENABLE_SOCKETS}" == "yes" ]]; then
+    call_ssh_init_socker "${node}"
+    ssh -F "${DATA_DIR}/ssh-config" -S "${socket_path}" "${node}" "${args[@]}"
+  else
+    ssh -F "${DATA_DIR}/ssh-config" "${node}" "${args[@]}"
+  fi
+}
+
 call_ssh_sequential() {
   local cmd="${1:?Missing command argument.}"
   local args=("${@:2}")
@@ -47,6 +65,8 @@ call_ssh_parallel() {
     pids+=(${!})
   done
 
+  local err=0
+
   while true; do
     set +e
     wait -n ${pids[@]}
@@ -54,7 +74,7 @@ call_ssh_parallel() {
     set -e
 
     # Wait return 127 if all pids are done or not sub-processes.
-    [[ ${result} == 127 ]] && return
-    [[ ${result} != 0 ]] && return ${result}
+    [[ ${result} == 127 ]] && return ${err}
+    [[ ${result} != 0 ]] && err=${result}
   done
 }

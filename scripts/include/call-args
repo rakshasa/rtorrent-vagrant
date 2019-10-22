@@ -10,6 +10,10 @@ while [[ -n "${1}" ]]; do
       shift
       ARG_ALL=true
       ;;
+    --verbose | -v)
+      shift
+      set -x
+      ;;
     --wait)
       shift
       [[ -z "${1##*[!0-9]*}" ]] && (echo "Not an integer."; exit 1)

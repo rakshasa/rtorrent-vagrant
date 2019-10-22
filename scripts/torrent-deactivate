@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-export DATA_FILENAME="${1:?Missing torrent filename.}"
+source "${BASH_SOURCE[0]%/*}/include/init"
 
-source "${BASH_SOURCE[0]%/*}/include/call"
-source "${BASH_SOURCE[0]%/*}/include/torrent"
+TORRENT_FILENAME="${1:?Missing torrent filename.}"
 
-rm "${DATA_HOST_WATCH}/${DATA_FILENAME}.torrent"
+rm "${DATA_HOST_WATCH}/${TORRENT_FILENAME}.torrent"

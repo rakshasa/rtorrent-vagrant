@@ -13,7 +13,7 @@ call_rpc_node() {
     exit -1
   fi
 
-  "${RPC_CLIENT}" -s "scgi://localhost:${forward_port}" "${cmd}" "${args[@]}"
+  "${RPC_CLIENT}" -s "scgi://localhost:${forward_port}" "${cmd}" "${args[@]}" 2> /dev/null
 }
 
 call_rpc_sequential() {

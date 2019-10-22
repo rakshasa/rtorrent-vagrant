@@ -26,6 +26,7 @@ DATA_VM_TORRENTS="/data/torrents"
 DATA_HOST_WATCH="${DATA_DIR}/shared/watch"
 
 TORRENT_VM_DIR="/data/torrents"
+TORRENT_VM_SHARED_DIR="/data/shared/torrents"
 TORRENT_SHARED_DIR="${DATA_DIR}/shared/torrents"
 
 GIT_RTORRENT="${DATA_DIR}/builder/rtorrent"
@@ -39,6 +40,8 @@ shopt -u progcomp
 declare -A LOG_FILENAMES
 
 [[ -f "${DATA_DIR}/current-nodes" ]] && source "${DATA_DIR}/current-nodes"
+
+SEED_NODE="${SEED_NODE:-node1}"
 
 call_quiet() {
   set +e

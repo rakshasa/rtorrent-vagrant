@@ -40,17 +40,11 @@ clean_all() {
   "${SCRIPT_DIR}/stop-rtorrent"; sleep 5
   "${SCRIPT_DIR}/config-clear"
 
-  # Make this work with stopped nodes.
+  echo "delete all torrents"
+  "${SCRIPT_DIR}/test-delete-all"
+  "${SCRIPT_DIR}/is-client-empty" --all --wait 20
 
-  # rename is-client-empty, check session dir (no need to check
-  # is-inactive+empty?) might need to as we can delete session files
-  # yet client still has torrents active
-
-  # TODO: --wait-completed, error if timeout echo error
-
-  "${SCRIPT_DIR}/test-delete-all"; sleep 1
-  WAIT_TIMEOUT=20 wait_for_nodes is-empty
-
+  echo "ip down"
   "${SCRIPT_DIR}/ip-down-4-1" node1 node2 node3 node4 node5 &> /dev/null
   "${SCRIPT_DIR}/ip-down-6-1" node1 node2 node3 node4 node5 &> /dev/null
   "${SCRIPT_DIR}/ip-down-4-2" node1 node2 node3 node4 node5 &> /dev/null

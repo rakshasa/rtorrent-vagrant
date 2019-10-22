@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 
 source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-args"
+source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
-"${SCRIPT_DIR}/stop-rtorrent" || :
+"${SCRIPT_DIR}/stop-rtorrent"
 
-for i in $("${SCRIPT_DIR}/test-torrent-all"); do
-  "${SCRIPT_DIR}/torrent-deactivate" $i &> /dev/null || :
-  "${SCRIPT_DIR}/rm-torrent" $i &> /dev/null || :
-done
+call_ssh_parallel rm "${TORRENT_VM_DIR}/*" 2> /dev/null || :
 
-for node in ${NODES[@]}; do
-  rm -f "${DATA_DIR}/${node}/session/*.torrent" &> /dev/null || :
-  rm -f "${DATA_DIR}/${node}/session/*.torrent.*" &> /dev/null || :
-  rm -f "${DATA_DIR}/${node}/session/rtorrent.{dht_cache,input_history}" &> /dev/null || :
+for node in "${NODES[@]}"; do
+  rm -f "${DATA_DIR}/${node}"/session/*.torrent &> /dev/null || :
+  rm -f "${DATA_DIR}/${node}"/session/*.torrent.* &> /dev/null || :
+  rm -f "${DATA_DIR}/${node}"/session/rtorrent.{dht_cache,input_history} &> /dev/null || :
 done

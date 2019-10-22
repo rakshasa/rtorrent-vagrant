@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+source "${BASH_SOURCE[0]%/*}/include/init"
+source "${BASH_SOURCE[0]%/*}/include/call-args"
+source "${BASH_SOURCE[0]%/*}/include/call-rpc"
+source "${BASH_SOURCE[0]%/*}/include/call-test"
+
+# Fail is-empty if any session torrents are still available as we
+# can't guarantee that the client successfuly loads all torrents.
+
+test_is_node_check() {
+  local node="${1:?Target node not given.}"
+
+  if local output="$(call_rpc_node "${node}" d.multicall2 s/ main d.hash=)"; then
+    [[ -n "${output}" ]] && return 1
+  fi
+
+  ! ls "${DATA_DIR}"/"${node}"/session/*.torrent &> /dev/null
+}
+
+test_is_node

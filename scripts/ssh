@@ -5,4 +5,4 @@ source "${BASH_SOURCE[0]%/*}/include/call-ssh"
 
 args=("${@}")
 
-call_ssh_node "${args[@]}"
+call_ssh_interactive "${args[@]}"
